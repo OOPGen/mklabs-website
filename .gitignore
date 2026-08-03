@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+
+# Keep only production files - ignore large originals if you add them later
+*.psd
+*.ai
+mklabs-pack/
+mklabs-website/
+
+# Generated / runtime
+inquiries.csv
+inquiries.json
+*.bak
+*.tmp
+
+# Dependencies (if ever added)
+node_modules/
+
+# Build output
+dist/
+.vercel/
