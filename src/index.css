@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* class-based dark mode, toggled on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* MKLabs brand palette */
+  --color-night: #1B003F;
+  --color-purple: #4B0082;
+  --color-midnight: #191970;
+  --color-corn: #6495ED;
+  --color-lavender: #E6E6FA;
+  --color-lilac: #DBC9F9;
+  --color-iris: #A78BFA;
+
+  /* neutral surfaces */
+  --color-ink: #0B0918;
+  --color-ink-2: #14112A;
+  --color-paper: #FBFAFF;
+
+  --radius-card: 20px;
+  --radius-pill: 999px;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-night antialiased;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .dark body {
+    @apply bg-ink text-lavender;
+  }
+
+  img, svg, video, iframe { display: block; max-width: 100%; }
+  img { height: auto; }
+
+  /* inputs must be 16px+ or iOS Safari zooms on focus */
+  input, textarea, select { font-size: 16px; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-iris);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection { background: var(--color-purple); color: #fff; }
+}
+
+/* ============================================================
+   MOTION
+   Every animation below degrades to a *complete, static* design
+   rather than disappearing — so the site never looks broken when
+   a phone has Reduce Motion switched on.
+   ============================================================ */
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal[data-direction="left"]  { transform: translate3d(-24px, 0, 0); }
+.reveal[data-direction="right"] { transform: translate3d(24px, 0, 0); }
+.reveal[data-direction="zoom"]  { transform: scale(0.96); }
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* marquee */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee var(--marquee-duration, 42s) linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ambient background orbs */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(34px, -26px, 0) scale(1.07); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-30px, 24px, 0) scale(1.06); }
+}
+.orb-a { animation: drift-a 32s ease-in-out infinite; }
+.orb-b { animation: drift-b 38s ease-in-out infinite -8s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* content is always fully visible — never hidden behind an animation */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .marquee-track,
+  .orb-a,
+  .orb-b {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.brand-gradient {
+  background: linear-gradient(100deg, var(--color-purple) 0%, var(--color-iris) 48%, var(--color-corn) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .brand-gradient {
+  background: linear-gradient(100deg, var(--color-lilac) 0%, var(--color-iris) 48%, var(--color-corn) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.glass {
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+/* ============================================================
+   GLASSMORPHISM
+   Frosted panels that let the blurred office scenery show through.
+   `-dark` sits on night sections, `-light` on pale ones.
+   ============================================================ */
+.glass-dark {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.10), rgba(167, 139, 250, 0.06));
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.glass-light {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(219, 201, 249, 0.30));
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 24px 60px -26px rgba(27, 0, 63, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+.dark .glass-light {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.09), rgba(167, 139, 250, 0.05));
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 24px 60px -26px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+/* Safari on older iOS has no backdrop-filter — fall back to a solid panel
+   so the text never sits on bare photography. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-dark { background: rgba(20, 17, 42, 0.92); }
+  .glass-light { background: rgba(255, 255, 255, 0.94); }
+  .dark .glass-light { background: rgba(20, 17, 42, 0.92); }
+}
+
+/* hide scrollbar on horizontal scrollers but keep them scrollable */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

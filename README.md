@@ -10,73 +10,76 @@ businesses, schools and lodges in Zimbabwe.
 ## Live
 
 - **Production:** https://mklabs.co.zw
-- **Deploy:** push to `main` → Vercel builds automatically
+- **Hosting:** Cloudflare Pages
+- **Deploy:** push to `main` → Cloudflare builds automatically
 
 ---
 
 ## Tech
 
-Plain HTML, CSS and JavaScript in a single file. No framework, no build step,
-no dependencies — `index.html` is the whole site.
-
 | | |
 |---|---|
-| Markup | Semantic HTML5, one file |
-| Styling | CSS custom properties, `clamp()` fluid type, mobile-first |
-| Motion | IntersectionObserver + CSS transitions, no animation library |
+| Framework | React 19 |
+| Build | Vite 8 |
+| Routing | React Router 7 |
+| Styling | Tailwind CSS 4 (brand palette as theme tokens) |
+| Forms | Cloudflare Pages Function → Resend |
 | Fonts | Instrument Sans (Google Fonts) |
-| Images | WebP photography, PNG logos |
 
 ---
 
-## Animation system
+## Running it locally
 
-The site's motion is built from four pieces, all in `index.html`.
-
-**1. Word-by-word reveal** — `splitWords()` walks each `[data-words]` heading,
-wraps every word in a `<span class="w">`, and assigns an increasing
-`transition-delay`. Words arrive oversized, blurred and near-invisible, then
-settle sharp one after another. Applies to all 14 headings.
-
-```html
-<h2 class="d2" data-words>One technology partner.</h2>
+```bash
+npm install
 ```
 
-Optional attributes: `data-delay` (start offset, ms) and `data-step`
-(gap between words, default 68ms).
-
-**2. Element reveal** — `[data-reveal]` fades and rises into view. Variants:
-`left`, `right`, `zoom`, `mask`. Stagger a group with `data-delay`.
-
-```html
-<div class="card" data-reveal="left" data-delay="160">…</div>
+```bash
+npm run dev
 ```
 
-**3. Circuit hero** — an MKLabs chip at centre wired to six product nodes.
-Light pulses travel the SVG traces via animated `stroke-dashoffset`, staggered
-per trace. Below 680px the traces are hidden and the nodes reflow into a grid.
+Then open the URL it prints (usually http://localhost:5173).
 
-**4. Drifting logo field** — `.logo-field` holds a watermark logo plus five
-frosted-glass logo tiles, each on its own keyframe path: clockwise, counter-
-clockwise, figure-of-eight, vertical and horizontal. It sits in the fixed
-backdrop for light sections, with a `screen`-blended copy inside each dark band.
+To check the real production output:
 
-Everything is disabled under `prefers-reduced-motion: reduce`.
+```bash
+npm run build
+```
+
+```bash
+npm run preview
+```
 
 ---
 
-## Brand palette
+## Making changes
 
-| Colour | Hex |
+Everything a visitor reads lives in `src/data/` — you rarely need to touch a
+component to update the site.
+
+| To change | Edit |
 |---|---|
-| Night Indigo | `#1B003F` |
-| Twilight Purple | `#4B0082` |
-| Midnight | `#191970` |
-| Cornflower | `#6495ED` |
-| Lavender Haze | `#E6E6FA` |
-| Light Lavender | `#DBC9F9` |
+| Product names, features, dashboard numbers | `src/data/products.js` |
+| The six service cards | `src/data/services.js` |
+| Phone numbers, emails, founder story, hours | `src/data/site.js` |
 
-Defined as CSS variables in `:root`, with a `html.dark` override for dark mode.
+Adding a fifth product means adding one object to `products.js` — the card,
+the nav dropdown, the footer link and the whole `/products/<slug>` page all
+appear automatically.
+
+Then publish:
+
+```bash
+git add -A
+```
+
+```bash
+git commit -m "Describe the change"
+```
+
+```bash
+git push
+```
 
 ---
 
@@ -84,64 +87,142 @@ Defined as CSS variables in `:root`, with a `html.dark` override for dark mode.
 
 ```
 /
-├── index.html                  full site — markup, styles and scripts
-├── index-legacy-backup.html    previous build, kept for reference
-├── admin.html                  local inbox for form submissions
-├── contact.php                 cPanel mail handler
-├── api-contact.js              Vercel serverless handler
-├── *.webp                      photography (33–130KB)
-├── logo-*.png / logo-*.webp    product and service logos
-├── manifest.json               PWA manifest
-├── robots.txt / sitemap.xml    SEO
-├── .htaccess                   Apache/cPanel config
-└── vercel.json                 Vercel headers and rewrites
+├── index.html               Vite entry (meta tags, fonts)
+├── vite.config.js
+├── functions/
+│   └── api/contact.js       Cloudflare Pages Function — the enquiry mailer
+├── public/                  Images and static files, served from /
+│   ├── _redirects           SPA fallback so /products/pos survives a refresh
+│   ├── _headers             Security headers and cache rules
+│   ├── *.webp / *.png       Photography and logos
+│   ├── manifest.json
+│   └── robots.txt, sitemap.xml
+├── src/
+│   ├── main.jsx             React entry
+│   ├── App.jsx              Routes
+│   ├── index.css            Tailwind theme, brand palette, motion
+│   ├── data/                ← all site content
+│   ├── components/          Nav, Footer, Reveal, Marquee, forms…
+│   └── pages/               Home, Products, ProductDetail, About, Contact
+└── legacy/                  The previous single-file site, kept for reference
 ```
 
 ---
 
-## Enquiry form
+## Pages
 
-A submission fans out to four places:
-
-1. **`localStorage`** — always; readable in `admin.html`
-2. **`contact.php`** — emails info@ / support@ when hosted on cPanel
-3. **`/api/contact`** — Vercel serverless route
-4. **WhatsApp draft** — prefilled message to 0786 233 766 including the
-   visitor's own number
-
-Routes 2 and 3 fail silently on static hosting; 1 and 4 always work.
-
-> **Note:** `api-contact.js` sits at the repo root. For Vercel to serve it at
-> `/api/contact` it needs to live at `api/contact.js`. Until then the form
-> falls back to the other three routes.
+| Route | What it does |
+|---|---|
+| `/` | Hero, product grid, cross-device showcase, clients, services, CTA |
+| `/products` | All four products with detail rows |
+| `/products/:slug` | Full page per product — dashboard preview, features, audience |
+| `/about` | Company, founder story, services |
+| `/contact` | Enquiry form, contact details, map |
 
 ---
 
-## Local development
+## Motion, and why the site never looks broken
 
-No build step — open the file:
+Animation is deliberately degradable. When a phone has **Reduce Motion** turned
+on (iOS Accessibility → Motion, or Android → Remove animations), the browser
+reports `prefers-reduced-motion: reduce` and:
 
-```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000
-```
+- scroll reveals are forced fully visible rather than staying hidden
+- the ecosystem marquee becomes a **static wrapped grid** of the same nine items
+- the ambient background orbs keep their gradient but stop drifting
 
-A plain `file://` open works too, except `contact.php` and `/api/contact`.
+Nothing disappears — it simply stops moving. This was a real bug in the previous
+build, where Reduce Motion left the page looking half-empty.
+
+Other mobile guarantees:
+
+- every button, link and input is at least 44–52px tall
+- inputs are 16px so iOS Safari does not zoom on focus
+- no interaction depends on hover
+- the mobile menu closes on navigation and locks background scroll while open
 
 ---
 
-## Deployment
+## The enquiry form
 
-Every push to `main` triggers a Vercel deploy.
+A submission fans out to three places so it can never silently vanish:
 
-```bash
-git add -A
-git commit -m "Describe the change"
-git push
-```
+1. **`localStorage`** — saved immediately, always works
+2. **`POST /api/contact`** — the Cloudflare Pages Function, which emails via Resend
+3. **WhatsApp draft** — offered after submit, prefilled with the whole enquiry
 
-For cPanel, upload the folder contents to `public_html/` — `contact.php`
-and `.htaccess` are used there, `vercel.json` is ignored.
+The form tells the visitor the truth about which of these worked. If the email
+could not be confirmed it turns amber and asks them to tap WhatsApp instead of
+claiming success.
+
+### What lands in the inbox
+
+Both `info@` and `support@` receive one email per enquiry containing the name,
+company, email, phone, service, budget and message — plus three one-tap reply
+buttons built from **the visitor's own phone number**:
+
+| Button | Goes to |
+|---|---|
+| 💬 WhatsApp | `wa.me/<their number>` with a greeting already typed |
+| 📞 Call | `tel:+<their number>` |
+| ✉️ Email | `mailto:<their address>` |
+
+`Reply-To` is set to the visitor, so simply hitting Reply in your mail app
+answers them directly.
+
+Zimbabwean numbers are normalised before the link is built — `0771 234 567`,
+`+263 77 123 4567` and `00263771234567` all become `263771234567`, which is the
+only form `wa.me` accepts. A raw `0771234567` would produce a dead link.
+
+### Turning on email
+
+**Until this is done the form works but no email arrives.** Cloudflare Workers
+cannot use SMTP, so mail goes out over Resend's HTTP API.
+
+1. Create a free account at [resend.com](https://resend.com) (3,000 emails/month)
+2. **Domains → Add Domain → `mklabs.co.zw`.** Resend shows a few DNS records;
+   add them in your Cloudflare dashboard under **DNS**, then click Verify.
+   This is what lets mail be sent *from* `@mklabs.co.zw` without being spammed.
+3. **API Keys → Create API Key** and copy it
+4. In Cloudflare → your Pages project → **Settings → Environment variables**,
+   add the key below, then **redeploy** for it to take effect
+
+| Variable | Value |
+|---|---|
+| `RESEND_API_KEY` | the key you copied |
+| `CONTACT_TO` | `info@mklabs.co.zw, support@mklabs.co.zw` *(optional)* |
+| `CONTACT_FROM` | `MKLabs Website <noreply@mklabs.co.zw>` *(optional)* |
+
+Until `RESEND_API_KEY` is set the endpoint returns `emailed: false`, and routes
+1 and 3 carry the enquiry — so the form is never broken, just quieter.
+
+---
+
+## Cloudflare Pages settings
+
+| Setting | Value |
+|---|---|
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node version | 20 or newer |
+
+---
+
+## Brand palette
+
+| Colour | Hex | Tailwind token |
+|---|---|---|
+| Night Indigo | `#1B003F` | `night` |
+| Twilight Purple | `#4B0082` | `purple` |
+| Midnight | `#191970` | `midnight` |
+| Cornflower | `#6495ED` | `corn` |
+| Lavender Haze | `#E6E6FA` | `lavender` |
+| Light Lavender | `#DBC9F9` | `lilac` |
+| Iris | `#A78BFA` | `iris` |
+
+Defined in `@theme` in `src/index.css`, so `bg-purple` and `text-lilac` work
+anywhere. Dark mode is a `.dark` class on `<html>`, toggled in the nav and
+remembered in `localStorage`.
 
 ---
 

@@ -1,0 +1,4 @@
+# Single-page app: every route falls through to index.html so
+# /products/pos and friends work on a hard refresh.
+# Pages Functions (/api/*) are matched before this rule.
+/*    /index.html   200
