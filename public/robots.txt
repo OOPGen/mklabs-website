@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /private/
+Disallow: /admin
 Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://mklabs.co.zw/sitemap.xml

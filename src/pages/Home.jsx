@@ -9,6 +9,7 @@ import Logo from '../components/Logo.jsx'
 import Marquee from '../components/Marquee.jsx'
 import Orbs from '../components/Orbs.jsx'
 import ProductCard from '../components/ProductCard.jsx'
+import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
 import usePageTitle from '../components/usePageTitle.js'
@@ -96,6 +97,9 @@ export default function Home() {
       </header>
 
       <Marquee />
+
+      {/* Only renders when there is a live offer — managed from /admin */}
+      <Promotions />
 
       {/* ------------------------------------------------------ PRODUCTS */}
       <Section>

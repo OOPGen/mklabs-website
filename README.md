@@ -113,11 +113,15 @@ git push
 
 | Route | What it does |
 |---|---|
-| `/` | Hero, product grid, cross-device showcase, clients, services, CTA |
+| `/` | Hero, live offers, product grid, cross-device showcase, clients, services, CTA |
 | `/products` | All four products with detail rows |
 | `/products/:slug` | Full page per product — dashboard preview, features, audience |
+| `/pos` | Preview of the POS landing site (its real home is pos.mklabs.co.zw) |
 | `/about` | Company, founder story, services |
 | `/contact` | Enquiry form, contact details, map |
+| `/admin` | Promotions dashboard — guarded by Cloudflare Access |
+
+On **pos.mklabs.co.zw** the same app serves the POS landing page at `/` instead.
 
 ---
 
@@ -198,6 +202,83 @@ Until `RESEND_API_KEY` is set the endpoint returns `emailed: false`, and routes
 
 ---
 
+## Promotions dashboard
+
+You add and edit offers yourself at **mklabs.co.zw/admin** — no code, no
+redeploy. Saving updates the live site within about a minute.
+
+Each promotion has a headline, details, a badge (`20% off`), a button with a
+link, an on/off switch, and optional start and end dates. Outside those dates
+it hides itself. The section disappears entirely when nothing is live, so the
+home page never shows an empty "Offers" heading.
+
+Promotions appear on the home page and on the POS landing page.
+
+### Setup — two things, both one-off
+
+**1. Storage (Cloudflare KV)**
+
+Cloudflare dashboard → **Storage & Databases → KV → Create a namespace**, call
+it `mklabs-promotions`. Then in your Pages project → **Settings → Bindings →
+Add → KV namespace**:
+
+| Field | Value |
+|---|---|
+| Variable name | `PROMOS` |
+| KV namespace | `mklabs-promotions` |
+
+The variable name must be exactly `PROMOS`.
+
+**2. Login (Cloudflare Access)**
+
+Cloudflare dashboard → **Zero Trust → Access → Applications → Add an
+application → Self-hosted**:
+
+| Field | Value |
+|---|---|
+| Application name | `MKLabs admin` |
+| Domain | `mklabs.co.zw` path `admin` |
+| Add a second domain | `mklabs.co.zw` path `api/admin` |
+
+Add a policy: **Action** Allow, **Include** → *Emails* → your address. Save,
+then copy the **Application Audience (AUD) tag** from the app's overview.
+
+Back in Pages → **Settings → Environment variables**, add:
+
+| Variable | Value |
+|---|---|
+| `ACCESS_TEAM_DOMAIN` | `yourteam.cloudflareaccess.com` |
+| `ACCESS_AUD` | the AUD tag you copied |
+
+Redeploy. Visiting `/admin` now asks for your email, sends a one-time code, and
+lets you in.
+
+> **Both paths matter.** The policy must cover `api/admin` as well as `admin`.
+> The API verifies the Access token itself as a second lock, and refuses every
+> request when `ACCESS_TEAM_DOMAIN` or `ACCESS_AUD` is missing — so a
+> half-finished setup fails closed rather than leaving the site editable.
+
+Links entered in the dashboard are restricted to `http(s)`, `mailto:`, `tel:`
+and site-relative paths. `javascript:` and `data:` URLs are rejected, because
+that field ends up in an `href`.
+
+---
+
+## The POS landing site
+
+**pos.mklabs.co.zw** serves a standalone sales page for MKLabs POS — its own
+slim header, its own hero, the objection-handling section, features, and an
+enquiry form. Same deployment and same codebase; `src/App.jsx` checks the
+hostname and serves the POS site when it starts with `pos.`.
+
+Preview it without the subdomain at **/pos** on the main site.
+
+To connect the subdomain: Pages project → **Custom domains → Set up a domain →
+`pos.mklabs.co.zw`**. Your nameservers are already Cloudflare, so the DNS
+record is created for you.
+
+---
+
 ## Cloudflare Pages settings
 
 | Setting | Value |
@@ -205,6 +286,17 @@ Until `RESEND_API_KEY` is set the endpoint returns `emailed: false`, and routes
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Node version | 20 or newer |
+
+### Every binding and variable
+
+| Name | Type | Needed for |
+|---|---|---|
+| `RESEND_API_KEY` | Environment variable | Enquiry emails |
+| `CONTACT_TO` | Environment variable *(optional)* | Who receives enquiries |
+| `CONTACT_FROM` | Environment variable *(optional)* | Sender address |
+| `PROMOS` | KV namespace binding | Promotions storage |
+| `ACCESS_TEAM_DOMAIN` | Environment variable | Admin login |
+| `ACCESS_AUD` | Environment variable | Admin login |
 
 ---
 
