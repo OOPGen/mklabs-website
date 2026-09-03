@@ -9,9 +9,38 @@ import Logo from '../components/Logo.jsx'
 import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
+import SocialRail from '../components/SocialRail.jsx'
 import usePageTitle from '../components/usePageTitle.js'
 
 const demoLink = waLink('Hello MKLabs! I would like a demo of MKLabs POS for my shop.')
+
+/**
+ * The three promises the hero closes on — dark, brand and light in turn, so the
+ * band reads as one object rather than three repeated cards.
+ */
+const promises = [
+  {
+    title: 'Offline first',
+    body: 'The till keeps selling when the line drops, and syncs itself the moment it returns.',
+    tone: 'glass-dark text-lavender',
+    rule: 'bg-lilac/40',
+    muted: 'text-lavender/65',
+  },
+  {
+    title: 'Stock that tracks itself',
+    body: 'Every sale updates your stock, with a warning before a fast mover runs out.',
+    tone: 'bg-purple text-white ring-1 ring-iris/30',
+    rule: 'bg-white/40',
+    muted: 'text-white/75',
+  },
+  {
+    title: 'Running the same day',
+    body: 'Installed on your counter and your staff trained, here in Bulawayo.',
+    tone: 'bg-lavender text-night',
+    rule: 'bg-purple/30',
+    muted: 'text-night/65',
+  },
+]
 
 /** The three objections that actually stop a Bulawayo retailer from buying. */
 const objections = [
@@ -46,56 +75,91 @@ export default function PosLanding() {
   return (
     <>
       {/* ---------------------------------------------------------- HERO */}
-      <header className="relative overflow-hidden bg-night px-5 pb-20 pt-14 text-lavender sm:px-8 sm:pb-28 sm:pt-20">
+      <header
+        id="top"
+        className="hero-compact relative flex min-h-svh flex-col overflow-hidden bg-night px-5 pb-10 pt-28 text-lavender sm:px-8 sm:pb-14 sm:pt-32"
+      >
         <AmbientOffice src={pos.clientImage} />
+        <SocialRail />
 
-        <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <Reveal className="flex items-center gap-3">
-                <Logo src={pos.logo} size="md" />
-                <span className="glass-dark rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-lilac">
+        <Container className="relative flex flex-1 flex-col justify-center">
+          {/* my-auto: on a tall screen the spare height goes above and below the
+              copy, which parks the band on the bottom edge of the hero. On a
+              phone there is no spare height and it resolves to nothing. */}
+          <div className="mx-auto my-auto max-w-3xl text-center">
+            <Reveal className="flex justify-center">
+              <span className="hero-badge glass-dark inline-flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-4">
+                <Logo src={pos.logo} alt="" size="xs" className="hero-badge-mark" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-lilac">
                   Point of sale
                 </span>
-              </Reveal>
+              </span>
+            </Reveal>
 
-              <Reveal as="h1" delay={80} className="mt-6 text-[38px] font-bold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
-                Sell fast. <span className="brand-gradient">Even when the internet drops.</span>
-              </Reveal>
+            <Reveal
+              as="h1"
+              delay={80}
+              className="mt-7 text-[40px] font-bold leading-[1.02] tracking-tight sm:text-6xl xl:text-7xl"
+            >
+              Sell fast.
+              <br />
+              <span className="brand-gradient">Even offline.</span>
+            </Reveal>
 
-              <Reveal as="p" delay={160} className="mt-6 max-w-lg text-base leading-relaxed text-lavender/75 sm:text-lg">
-                A point-of-sale and stock system built for how shops in {site.city} actually trade —
-                through load shedding, patchy lines and a queue that will not wait.
-              </Reveal>
+            {/* the letter-spaced line that names what the system actually holds */}
+            <Reveal
+              delay={150}
+              className="hero-tag mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] font-bold uppercase tracking-[0.34em] text-lavender/55 sm:text-xs"
+            >
+              <span>Sales</span>
+              <span className="text-lilac/50" aria-hidden="true">
+                ·
+              </span>
+              <span>Stock</span>
+              <span className="text-lilac/50" aria-hidden="true">
+                ·
+              </span>
+              <span>Profit</span>
+            </Reveal>
 
-              <Reveal delay={240} className="mt-8 flex flex-wrap gap-3">
+            <Reveal as="p" delay={220} className="hero-lead mx-auto mt-6 max-w-xl text-base leading-relaxed text-lavender/70 sm:text-lg">
+              A point-of-sale and stock system built for how shops in {site.city} actually trade —
+              through load shedding, patchy lines and a queue that will not wait.
+            </Reveal>
+
+            <Reveal delay={300} className="hero-actions mt-9 flex justify-center">
+              <div className="relative inline-flex flex-wrap items-center justify-center gap-3">
                 <Button href={demoLink} variant="whatsapp">
                   💬 Book a free demo
                 </Button>
-                <Button href="#features" variant="ghost" className="!text-lavender !border-white/25">
-                  See what it does
+                <Button href="#features" variant="ghost" className="!border-white/25 !text-lavender">
+                  See how it works
                 </Button>
-              </Reveal>
 
-              <Reveal delay={320} className="glass-dark mt-8 flex flex-wrap gap-x-8 gap-y-4 rounded-2xl px-6 py-5">
-                <div>
-                  <div className="text-xl font-bold sm:text-2xl">Works offline</div>
-                  <div className="text-xs text-lavender/55">No connection needed to sell</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold sm:text-2xl">Same day</div>
-                  <div className="text-xs text-lavender/55">Installed and staff trained</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold sm:text-2xl">{site.city}</div>
-                  <div className="text-xs text-lavender/55">Local support, not a call centre</div>
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal direction="zoom" delay={200}>
-              <DashboardPreview dashboard={pos.dashboard} logo={pos.logo} />
+                {/* the hand-lettered aside that overlaps the buttons */}
+                <span
+                  className="hero-sticker pointer-events-none absolute -right-7 -top-6 hidden -rotate-12 rounded-full bg-lilac px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-night shadow-lg shadow-night/40 sm:block"
+                  aria-hidden="true"
+                >
+                  Free demo…!
+                </span>
+              </div>
             </Reveal>
+          </div>
+
+          {/* ---- the closing band: dark, brand, light ---- */}
+          <div className="hero-band mt-14 grid gap-3 sm:mt-16 sm:grid-cols-3">
+            {promises.map((promise, index) => (
+              <Reveal
+                key={promise.title}
+                delay={380 + index * 90}
+                className={`rounded-2xl p-5 ${promise.tone}`}
+              >
+                <span className={`block h-0.5 w-8 rounded-full ${promise.rule}`} aria-hidden="true" />
+                <h2 className="mt-4 text-[11px] font-bold uppercase tracking-[0.22em]">{promise.title}</h2>
+                <p className={`mt-2 text-sm leading-relaxed ${promise.muted}`}>{promise.body}</p>
+              </Reveal>
+            ))}
           </div>
         </Container>
       </header>
@@ -107,7 +171,7 @@ export default function PosLanding() {
         <Container>
           <SectionHead
             center
-            kicker="The honest answers"
+            kicker="THE HONEST ANSWERS"
             title="What shop owners ask us first."
             lead="Three questions come up in almost every demo. Here is the straight answer to each."
           />
@@ -135,7 +199,7 @@ export default function PosLanding() {
         <Container>
           <SectionHead
             center
-            kicker="What you get"
+            kicker="WHAT YOU GET"
             title="Everything the shop needs, in one system."
             lead="No modules to buy separately and no per-till licence. This is the whole thing."
           />
@@ -158,8 +222,35 @@ export default function PosLanding() {
         </Container>
       </Section>
 
+      {/* ----------------------------------------------------- THE SCREEN */}
+      <Section tone="dark">
+        <AmbientOffice src={pos.clientImage} />
+        <Container className="relative">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <Reveal direction="left">
+              <SectionHead
+                tone="dark"
+                kicker="YOUR DAY, ONE SCREEN"
+                title="Open the till and the numbers are already there."
+                lead="Takings, transactions and anything running low — per branch and per cashier, without exporting a thing."
+              />
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button href={demoLink} variant="whatsapp">
+                  💬 Book a free demo
+                </Button>
+              </div>
+            </Reveal>
+
+            <Reveal direction="zoom" delay={120}>
+              <DashboardPreview dashboard={pos.dashboard} logo={pos.logo} />
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
       {/* --------------------------------------------------------- PROOF */}
-      <Section>
+      <Section id="why">
         <Container>
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <Reveal direction="left">
@@ -174,7 +265,7 @@ export default function PosLanding() {
             </Reveal>
 
             <Reveal direction="right" delay={120}>
-              <SectionHead kicker="Who it is for" title="Built for the counter, not the boardroom." />
+              <SectionHead kicker="WHO IT IS FOR" title="Built for the counter, not the boardroom." />
 
               <ul className="mt-7 grid gap-3">
                 {pos.audience.map((item) => (
@@ -211,7 +302,7 @@ export default function PosLanding() {
             <div>
               <SectionHead
                 tone="dark"
-                kicker="Get started"
+                kicker="GET STARTED"
                 title="See it running in your shop."
                 lead="Tell us what you sell and we will show you the till set up for your products — free, no obligation."
               />

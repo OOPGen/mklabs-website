@@ -38,10 +38,13 @@ function PosSite() {
   return (
     <>
       <PosNav />
-      <main className="pt-20">
+      {/* no blanket top padding here: the landing hero runs full-bleed beneath
+          the floating header and clears it itself. Pages that are not the
+          landing still need the gap. */}
+      <main>
         <Routes>
           <Route path="/" element={<PosLanding />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact" element={<div className="pt-20"><Contact /></div>} />
           {/* the POS site has no other pages — send strays to the pitch */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
@@ -60,8 +63,9 @@ function MainSite() {
           <Route path="/products" element={<Products />} />
           <Route path="/products/:slug" element={<ProductDetail />} />
           {/* the POS landing is reachable here too, so it can be previewed
-              without the subdomain */}
-          <Route path="/pos" element={<PosLanding />} />
+              without the subdomain. The negative margin cancels the padding
+              above, so the preview matches what pos.mklabs.co.zw serves. */}
+          <Route path="/pos" element={<div className="-mt-20"><PosLanding /></div>} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />

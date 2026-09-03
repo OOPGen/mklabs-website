@@ -266,12 +266,41 @@ that field ends up in an `href`.
 
 ## The POS landing site
 
-**pos.mklabs.co.zw** serves a standalone sales page for MKLabs POS — its own
-slim header, its own hero, the objection-handling section, features, and an
-enquiry form. Same deployment and same codebase; `src/App.jsx` checks the
-hostname and serves the POS site when it starts with `pos.`.
+**pos.mklabs.co.zw** serves a standalone sales page for MKLabs POS. Same
+deployment and same codebase; `src/App.jsx` checks the hostname and serves the
+POS site when it starts with `pos.`.
 
 Preview it without the subdomain at **/pos** on the main site.
+
+### How the page is built
+
+A full-height hero opens it: the headline, a letter-spaced `SALES · STOCK ·
+PROFIT` line, one paragraph, a solid and an outlined button with a rotated
+sticker across them, and a closing band of three tiles — dark, brand purple and
+light in turn. `SocialRail` runs down the left gutter from `xl` up. Below the
+fold: live offers, the three objections, the feature grid, the dashboard
+preview, who it is for, and the enquiry form.
+
+The backdrop is the same `AmbientOffice` used elsewhere on the site — blurred
+client photography under a night scrim — and the palette is the MKLabs one, so
+the page belongs to the same family as the rest of mklabs.co.zw.
+
+`PosNav` is bare over the hero and collects itself into a glass pill once the
+page scrolls onto the pale sections. Its centre link group is absolutely
+centred, so the brand and the button can be any width without moving it. Below
+`sm` the CTA drops out of the bar and lives in the sheet instead — there is not
+room for both it and the menu button on a 360px phone.
+
+Two things to know before editing it:
+
+- **A phone in landscape has ~390px of height**, which the full-size hero
+  cannot fit. `.hero-compact` in `src/index.css` shrinks the headline, the
+  gaps and the sticker under `max-height: 560px` until the button is back
+  above the fold. Those rules are deliberately outside `@layer`, because
+  unlayered CSS beats Tailwind's utilities.
+- **`Button` sets its own `display`.** Tailwind emits `.inline-flex` after
+  `.hidden`, so hiding a `Button` needs `!hidden` / `sm:!inline-flex`; a plain
+  `hidden` silently loses.
 
 To connect the subdomain: Pages project → **Custom domains → Set up a domain →
 `pos.mklabs.co.zw`**. Your nameservers are already Cloudflare, so the DNS
