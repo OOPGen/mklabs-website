@@ -20,6 +20,7 @@ export default function Products() {
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
+            as="h1"
             tone="dark"
             kicker="Product ecosystem"
             title="One partner. Four systems that run a business."

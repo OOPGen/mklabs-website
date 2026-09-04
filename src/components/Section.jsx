@@ -27,8 +27,12 @@ export default function Section({
   )
 }
 
-/** Kicker + heading + optional lead, used at the top of most sections. */
-export function SectionHead({ kicker, title, lead, center = false, tone = 'light' }) {
+/**
+ * Kicker + heading + optional lead, used at the top of most sections.
+ * `as` sets the heading level: sections are `h2`, but a page whose main
+ * heading this is passes `as="h1"` so the document is not missing one.
+ */
+export function SectionHead({ kicker, title, lead, center = false, tone = 'light', as = 'h2' }) {
   const muted = tone === 'dark' ? 'text-lavender/70' : 'text-night/65 dark:text-lavender/70'
 
   return (
@@ -46,7 +50,7 @@ export function SectionHead({ kicker, title, lead, center = false, tone = 'light
         </Reveal>
       )}
 
-      <Reveal as="h2" delay={80} className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]">
+      <Reveal as={as} delay={80} className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]">
         {title}
       </Reveal>
 

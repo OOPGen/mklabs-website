@@ -21,6 +21,7 @@ export default function About() {
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
+            as="h1"
             tone="dark"
             kicker="About MKLabs"
             title="We build technology with purpose."
