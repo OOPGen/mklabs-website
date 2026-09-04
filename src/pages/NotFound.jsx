@@ -1,8 +1,15 @@
 import Button from '../components/Button.jsx'
 import Orbs from '../components/Orbs.jsx'
 import { Container } from '../components/Section.jsx'
+import usePageTitle from '../components/usePageTitle.js'
 
 export default function NotFound() {
+  // Without this a dead link keeps the title of whatever page came before it.
+  usePageTitle(
+    'Page not found | MKLabs',
+    'That page does not exist. Browse MKLabs products, services and contact details.'
+  )
+
   return (
     <section className="relative overflow-hidden bg-night px-5 py-28 text-center text-lavender sm:py-40">
       <Orbs />

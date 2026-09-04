@@ -17,6 +17,7 @@ export default function Contact() {
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
+            as="h1"
             tone="dark"
             kicker="Contact MKLabs"
             title="Let's build something better."
