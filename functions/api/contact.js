@@ -11,74 +11,121 @@
  *   RESEND_API_KEY   key from resend.com          (required to send)
  *   CONTACT_TO       comma-separated recipients   (optional)
  *   CONTACT_FROM     verified sender address      (optional)
+ *   TURNSTILE_SECRET_KEY  Cloudflare Turnstile secret — when set, every
+ *                    enquiry must carry a valid widget token (optional)
  *
  * Without a key the endpoint reports `emailed: false` and the form falls back
  * to its WhatsApp route, so an enquiry is never silently lost.
  */
 
+import {
+  HONEYPOT_FIELD,
+  LIMITS,
+  MAX_BODY_BYTES,
+  isValidEmail,
+  toWhatsAppNumber,
+} from '../_lib/enquiry.js'
+
 const DEFAULT_TO = 'info@mklabs.co.zw, support@mklabs.co.zw'
 const DEFAULT_FROM = 'MKLabs Website <noreply@mklabs.co.zw>'
-const ZW_COUNTRY_CODE = '263'
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
   })
 
-/**
- * Turn what a visitor typed into a number wa.me will accept.
- * Zimbabwean numbers are usually given locally — "0786 233 766" — but wa.me
- * needs the country code and no leading zero: 263786233766.
- */
-function toWhatsAppNumber(input) {
-  let digits = String(input || '').replace(/[^0-9]/g, '')
-  if (!digits) return ''
+const reject = (error, status = 400) => json({ success: false, error }, status)
 
-  // 00263… international prefix
-  if (digits.startsWith('00')) digits = digits.slice(2)
-
-  // already has the country code
-  if (digits.startsWith(ZW_COUNTRY_CODE)) return digits
-
-  // local form: 0786233766 → 263786233766
-  if (digits.startsWith('0')) return ZW_COUNTRY_CODE + digits.slice(1)
-
-  // bare mobile without the zero: 786233766
-  if (digits.length === 9) return ZW_COUNTRY_CODE + digits
-
-  return digits
-}
-
-/** Keep visitor-supplied text from breaking the HTML email. */
+/** Keep visitor-supplied text from breaking the HTML email — values and attributes alike. */
 function escapeHtml(value) {
   return String(value || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+const FIELD_LABELS = {
+  name: 'Name',
+  company: 'Company',
+  email: 'Email',
+  phone: 'Phone',
+  service: 'Interest',
+  budget: 'Budget',
+  message: 'Message',
+}
+
+/**
+ * Cloudflare Turnstile, switched on by setting TURNSTILE_SECRET_KEY.
+ * Without the secret the check is skipped, so the form keeps working before
+ * the widget is configured.
+ */
+async function passesTurnstile(token, request, env) {
+  if (!env.TURNSTILE_SECRET_KEY) return true
+  if (!token) return false
+
+  const form = new FormData()
+  form.append('secret', env.TURNSTILE_SECRET_KEY)
+  form.append('response', String(token).slice(0, 2048))
+  const ip = request.headers.get('CF-Connecting-IP')
+  if (ip) form.append('remoteip', ip)
+
+  try {
+    const response = await fetch(TURNSTILE_VERIFY_URL, { method: 'POST', body: form })
+    const result = await response.json()
+    return result.success === true
+  } catch (error) {
+    // fail closed — if Cloudflare cannot vouch for the visitor, nothing is sent
+    console.error('Turnstile verification failed:', error)
+    return false
+  }
 }
 
 export async function onRequestPost({ request, env }) {
+  const declaredLength = Number(request.headers.get('Content-Length') || 0)
+  if (declaredLength > MAX_BODY_BYTES) return reject('Enquiry is too large', 413)
+
   let body
   try {
-    body = await request.json()
+    const raw = await request.text()
+    if (raw.length > MAX_BODY_BYTES) return reject('Enquiry is too large', 413)
+    body = JSON.parse(raw)
   } catch {
-    return json({ success: false, error: 'Invalid JSON body' }, 400)
+    return reject('Invalid JSON body')
+  }
+  if (!body || typeof body !== 'object') return reject('Invalid JSON body')
+
+  /* Bots fill every field. Pretend it worked so they have nothing to tune against. */
+  if (String(body[HONEYPOT_FIELD] || '').trim()) {
+    return json({ success: true, emailed: true })
   }
 
-  const name = (body.name || '').trim()
-  const email = (body.email || '').trim()
-  const message = (body.message || '').trim()
+  const fields = {}
+  for (const [field, limit] of Object.entries(LIMITS)) {
+    let value = typeof body[field] === 'string' ? body[field].trim() : ''
+    // only the message may span lines — the rest end up in a subject or a table cell
+    if (field !== 'message') value = value.replace(/[\u0000-\u001f\u007f]+/g, ' ')
+    if (value.length > limit) {
+      return reject(`${FIELD_LABELS[field]} is too long (at most ${limit} characters)`)
+    }
+    fields[field] = value
+  }
+
+  const { name, company, email, phone, service, budget, message } = fields
 
   if (!name || !email || !message) {
-    return json({ success: false, error: 'Name, email and message are required' }, 400)
+    return reject('Name, email and message are required')
+  }
+  if (!isValidEmail(email)) {
+    return reject('Please enter a valid email address')
   }
 
-  const company = (body.company || '').trim()
-  const phone = (body.phone || '').trim()
-  const service = (body.service || '').trim()
-  const budget = (body.budget || '').trim()
+  if (!(await passesTurnstile(body.turnstileToken, request, env))) {
+    return reject('Please complete the spam check and try again')
+  }
 
   const waNumber = toWhatsAppNumber(phone)
   const waGreeting = `Hello ${name.split(' ')[0]}, thank you for contacting MKLabs about ${service || 'your enquiry'}.`
@@ -106,7 +153,7 @@ export async function onRequestPost({ request, env }) {
     '',
     '— REPLY —',
     `Email:    ${email}`,
-    phone && `Call:     tel:+${waNumber}`,
+    waNumber && `Call:     tel:+${waNumber}`,
     waLink && `WhatsApp: ${waLink}`,
     '',
     `Received: ${received} (Harare)`,
@@ -126,7 +173,7 @@ export async function onRequestPost({ request, env }) {
 
   const button = (href, label, colour) =>
     href
-      ? `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:12px 20px;border-radius:999px;background:${colour};color:#ffffff;font-size:14px;font-weight:600;text-decoration:none">${label}</a>`
+      ? `<a href="${escapeHtml(href)}" style="display:inline-block;margin:0 8px 8px 0;padding:12px 20px;border-radius:999px;background:${colour};color:#ffffff;font-size:14px;font-weight:600;text-decoration:none">${label}</a>`
       : ''
 
   const html = `
@@ -171,7 +218,7 @@ export async function onRequestPost({ request, env }) {
   /* --------------------------------------------------------------- send */
   const apiKey = env.RESEND_API_KEY
   if (!apiKey) {
-    return json({ success: true, emailed: false, reason: 'RESEND_API_KEY not configured' })
+    return json({ success: true, emailed: false, reason: 'not_configured' })
   }
 
   try {
@@ -192,12 +239,14 @@ export async function onRequestPost({ request, env }) {
     })
 
     if (!response.ok) {
-      const detail = await response.text()
-      return json({ success: true, emailed: false, reason: `Provider error: ${detail}` })
+      // the detail stays in the Functions log — visitors only learn it did not send
+      console.error(`Resend rejected enquiry (${response.status}):`, await response.text())
+      return json({ success: true, emailed: false, reason: 'send_failed' })
     }
 
     return json({ success: true, emailed: true })
   } catch (error) {
-    return json({ success: true, emailed: false, reason: error.message })
+    console.error('Could not reach Resend:', error)
+    return json({ success: true, emailed: false, reason: 'send_failed' })
   }
 }

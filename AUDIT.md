@@ -73,7 +73,10 @@ Checked and fine: Access JWT verification fails closed and checks alg/iss/aud/ex
 
 Each phase is one PR, independently shippable, ordered by risk × effort.
 
-### Phase 1 — Lock down the contact endpoint (🔴, ~½ day)
+### Phase 1 — Lock down the contact endpoint (🔴, ~½ day) — ✅ done
+
+Turnstile ships switched off until its keys are set; per-IP limiting is a Cloudflare WAF rule (see README → Spam protection) rather than code.
+
 - A2 escape the `mailto:` href; validate email format server-side.
 - A3 cap every field length (name 120, email 254, message 5 000, …) and reject oversized bodies.
 - A4 stop echoing provider errors to the client; `console.error` them instead.

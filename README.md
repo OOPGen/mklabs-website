@@ -151,7 +151,8 @@ Other mobile guarantees:
 
 A submission fans out to three places so it can never silently vanish:
 
-1. **`localStorage`** — saved immediately, always works
+1. **`localStorage`** — saved immediately, removed again once the email is
+   confirmed (at most 5 kept, none older than 30 days)
 2. **`POST /api/contact`** — the Cloudflare Pages Function, which emails via Resend
 3. **WhatsApp draft** — offered after submit, prefilled with the whole enquiry
 
@@ -177,6 +178,28 @@ answers them directly.
 Zimbabwean numbers are normalised before the link is built — `0771 234 567`,
 `+263 77 123 4567` and `00263771234567` all become `263771234567`, which is the
 only form `wa.me` accepts. A raw `0771234567` would produce a dead link.
+Foreign numbers are linked only when typed with their country code (`+44 …`);
+a number whose country cannot be told is shown as typed, without buttons.
+
+### Spam protection
+
+The shared rules live in `functions/_lib/enquiry.js` and are used by both the
+form and the Function, so they always agree.
+
+- **Field limits** — name 120, email 254, message 5,000 characters, etc.
+  Oversized or malformed enquiries are refused with a clear message.
+- **Honeypot** — a hidden `website` field people never see. Bots fill it, and
+  their enquiry is dropped while looking successful to them.
+- **Cloudflare Turnstile** *(optional, recommended)* — Cloudflare's free,
+  mostly invisible "are you human" check. Turn it on in Cloudflare →
+  **Turnstile → Add site** (`mklabs.co.zw`, `pos.mklabs.co.zw`), then add both
+  keys below and redeploy. Until then the form works without it.
+- **Rate limit** *(recommended)* — Cloudflare → your domain → **Security →
+  WAF → Rate limiting rules**: path equals `/api/contact`, e.g. 5 requests per
+  minute per IP → Block. The free plan includes one rule.
+
+Delivery errors are written to the Functions log (**Pages project →
+Functions → Real-time logs**), never shown to visitors.
 
 ### Turning on email
 
@@ -196,6 +219,8 @@ cannot use SMTP, so mail goes out over Resend's HTTP API.
 | `RESEND_API_KEY` | the key you copied |
 | `CONTACT_TO` | `info@mklabs.co.zw, support@mklabs.co.zw` *(optional)* |
 | `CONTACT_FROM` | `MKLabs Website <noreply@mklabs.co.zw>` *(optional)* |
+| `TURNSTILE_SECRET_KEY` | Turnstile secret key *(optional — spam check)* |
+| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key *(set together with the secret)* |
 
 Until `RESEND_API_KEY` is set the endpoint returns `emailed: false`, and routes
 1 and 3 carry the enquiry — so the form is never broken, just quieter.
@@ -323,6 +348,8 @@ record is created for you.
 | `RESEND_API_KEY` | Environment variable | Enquiry emails |
 | `CONTACT_TO` | Environment variable *(optional)* | Who receives enquiries |
 | `CONTACT_FROM` | Environment variable *(optional)* | Sender address |
+| `TURNSTILE_SECRET_KEY` | Environment variable *(optional)* | Spam check on the enquiry form |
+| `VITE_TURNSTILE_SITE_KEY` | Environment variable *(optional, build-time)* | Shows the Turnstile widget |
 | `PROMOS` | KV namespace binding | Promotions storage |
 | `ACCESS_TEAM_DOMAIN` | Environment variable | Admin login |
 | `ACCESS_AUD` | Environment variable | Admin login |
