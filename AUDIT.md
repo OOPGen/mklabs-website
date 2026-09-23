@@ -86,7 +86,10 @@ Turnstile ships switched off until its keys are set; per-IP limiting is a Cloudf
 
 **Needs from you:** a Turnstile site/secret key (free) if we go that route.
 
-### Phase 2 — SEO correctness (🔴/🟠, ~½ day)
+### Phase 2 — SEO correctness (🔴/🟠, ~½ day) — ✅ done
+
+Implemented with build-time prerendering (`scripts/prerender.js`) rather than client-only tags, so non-JS crawlers see correct metadata too. Share image and icons are generated from the existing logo.
+
 - C1 make `usePageTitle` → `useSeo` and set `canonical`, `og:url`, `og:title`, `og:description` per route; correct canonical for the POS host.
 - C2 404 page sets `noindex` + title; add `404.html` handling so unknown paths return a real 404 where feasible.
 - B4 reset description on route change.

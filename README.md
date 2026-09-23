@@ -89,23 +89,57 @@ git push
 /
 ├── index.html               Vite entry (meta tags, fonts)
 ├── vite.config.js
+├── scripts/prerender.js     After the build: one HTML file per route, 404.html, sitemaps
 ├── functions/
-│   └── api/contact.js       Cloudflare Pages Function — the enquiry mailer
+│   ├── index.js             Serves the POS page at / on pos.mklabs.co.zw
+│   ├── api/contact.js       The enquiry mailer
+│   ├── api/promotions.js    Live offers for the public site
+│   ├── api/admin/…          Promotions dashboard API (Cloudflare Access)
+│   └── _lib/                Shared rules — not routes
 ├── public/                  Images and static files, served from /
-│   ├── _redirects           SPA fallback so /products/pos survives a refresh
 │   ├── _headers             Security headers and cache rules
 │   ├── *.webp / *.png       Photography and logos
+│   ├── og-image.jpg         1200×630 link-preview image
+│   ├── icon-*, favicon-*    App and browser icons
 │   ├── manifest.json
-│   └── robots.txt, sitemap.xml
+│   └── robots.txt
 ├── src/
 │   ├── main.jsx             React entry
 │   ├── App.jsx              Routes
 │   ├── index.css            Tailwind theme, brand palette, motion
-│   ├── data/                ← all site content
+│   ├── data/                ← all site content (seo.js: every page title and description)
 │   ├── components/          Nav, Footer, Reveal, Marquee, forms…
 │   └── pages/               Home, Products, ProductDetail, About, Contact
 └── legacy/                  The previous single-file site, kept for reference
 ```
+
+---
+
+## Search engines and link previews
+
+Every page's title, description and canonical address live in
+**`src/data/seo.js`**. Product pages are generated from `products.js`, so a new
+product gets correct tags automatically.
+
+`npm run build` runs `scripts/prerender.js` after Vite. It writes a separate
+HTML file for each route (`dist/about.html`, `dist/products/pos.html`, …)
+carrying that page's tags, so WhatsApp, Facebook and LinkedIn previews — which
+never run JavaScript — show the right page. It also writes:
+
+- **`404.html`** — its presence tells Cloudflare Pages to return a real 404
+  status for unknown URLs instead of a "200 OK" copy of the home page
+- **`sitemap.xml`** and **`sitemap-pos.xml`** — rebuilt on every deploy
+
+A new route needs an entry in `seo.js`; without one it still works for
+visitors but answers with a 404 status.
+
+`/pos` is a preview of pos.mklabs.co.zw, so its canonical points at the
+subdomain. `functions/index.js` makes the subdomain's root return the POS page's
+HTML (the rest of the site is plain static files).
+
+After deploying, submit both sitemaps in Google Search Console, and use
+[the Facebook sharing debugger](https://developers.facebook.com/tools/debug/)
+to refresh old link previews.
 
 ---
 

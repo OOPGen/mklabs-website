@@ -10,17 +10,10 @@ import Logo from '../components/Logo.jsx'
 import Orbs from '../components/Orbs.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 export default function ProductDetail() {
   const { slug } = useParams()
   const product = getProduct(slug)
-
-  /* keep the browser tab honest as visitors move between products */
-  usePageTitle(
-    product && `${product.name} — ${product.category} | MKLabs`,
-    product && product.summary
-  )
 
   if (!product) return <Navigate to="/products" replace />
 

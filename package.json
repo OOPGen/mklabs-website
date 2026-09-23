@@ -3,10 +3,10 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
-  "description": "MKLabs — software development and technology solutions, Bulawayo, Zimbabwe",
+  "description": "MKLabs \u2014 software development and technology solutions, Bulawayo, Zimbabwe",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.js",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -3,14 +3,8 @@ import ContactForm from '../components/ContactForm.jsx'
 import AmbientOffice from '../components/AmbientOffice.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 export default function Contact() {
-  usePageTitle(
-    'Contact MKLabs — Bulawayo, Zimbabwe',
-    'Request a demo or a quote from MKLabs. WhatsApp 0786 233 766 or email info@mklabs.co.zw.'
-  )
-
   return (
     <>
       <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-20">

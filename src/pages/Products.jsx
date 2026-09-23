@@ -6,14 +6,8 @@ import AmbientOffice from '../components/AmbientOffice.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 export default function Products() {
-  usePageTitle(
-    'Products — POS, FinanceFlow, LearnCloud & LodgeCloud | MKLabs',
-    'Four systems from MKLabs: point of sale, accounting, school management and lodge management, built for Zimbabwe.'
-  )
-
   return (
     <>
       <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-24">

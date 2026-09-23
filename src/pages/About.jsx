@@ -7,14 +7,8 @@ import AmbientOffice from '../components/AmbientOffice.jsx'
 import Orbs from '../components/Orbs.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 export default function About() {
-  usePageTitle(
-    'About MKLabs — Software company in Bulawayo',
-    'MKLabs builds practical software for businesses, schools and lodges in Bulawayo, Zimbabwe. Meet founder Michael Junior Jere.'
-  )
-
   return (
     <>
       <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-24">

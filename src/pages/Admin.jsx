@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Button from '../components/Button.jsx'
 import { Container } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 /**
  * Promotions dashboard.
@@ -29,8 +28,6 @@ const field =
 const label = 'block text-[12px] font-semibold mb-1.5 text-night/70 dark:text-lavender/70'
 
 export default function Admin() {
-  usePageTitle('Promotions dashboard | MKLabs')
-
   const [promotions, setPromotions] = useState([])
   const [saved, setSaved] = useState('[]')
   const [status, setStatus] = useState('loading') // loading | ready | denied | error

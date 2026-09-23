@@ -10,7 +10,6 @@ import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
 import SocialRail from '../components/SocialRail.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 const demoLink = waLink('Hello MKLabs! I would like a demo of MKLabs POS for my shop.')
 
@@ -66,11 +65,6 @@ const objections = [
 
 export default function PosLanding() {
   const pos = getProduct('pos')
-
-  usePageTitle(
-    'MKLabs POS — Point of sale for Zimbabwean retail',
-    'Offline-first point of sale and stock management for shops in Bulawayo. Keeps selling when the internet drops. Book a free demo on WhatsApp.'
-  )
 
   return (
     <>
