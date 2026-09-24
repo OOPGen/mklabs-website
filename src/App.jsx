@@ -43,14 +43,19 @@ const AdminLoading = () => (
   </p>
 )
 
-/** Every route change starts at the top of the new page, with its own title and tags. */
+/**
+ * Every route change starts at the top of the new page, with its own title and
+ * tags — unless the link names a section (/#services), which is scrolled to.
+ */
 function RouteEffects() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useSeo(pathname, { posHost: isPosHost })
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [pathname])
+    const target = hash && document.getElementById(decodeURIComponent(hash.slice(1)))
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    else window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [pathname, hash])
 
   return null
 }

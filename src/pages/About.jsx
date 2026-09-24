@@ -12,7 +12,7 @@ export default function About() {
   return (
     <>
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
-      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40">
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40 short:pb-10 short:pt-24">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
@@ -48,7 +48,7 @@ export default function About() {
                   </span>
                   <span>
                     <span className="block text-xs font-bold text-white">{founder.name}</span>
-                    <span className="block text-[10px] text-white/60">Founder · MKLabs</span>
+                    <span className="block text-[11px] text-white/65">Founder · MKLabs</span>
                   </span>
                 </div>
 
@@ -78,7 +78,7 @@ export default function About() {
                 ))}
 
                 <div className="mt-6 rounded-2xl border border-iris/25 bg-iris/8 p-4">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-purple dark:text-iris">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-purple dark:text-iris">
                     Why work with MKLabs?
                   </div>
                   <p className="mt-1.5 text-sm">{founder.why}</p>

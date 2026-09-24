@@ -3,6 +3,20 @@
 /* class-based dark mode, toggled on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Screen shape, for the home hero. `wide` is anywhere the picture fits beside
+   the words — laptops up, and tablets or phones held sideways. Everything else
+   (phones, upright tablets) stacks the picture above them. `short` is a phone
+   held sideways, where height is what runs out. */
+@custom-variant wide {
+  @media (min-width: 1024px) {
+    @slot;
+  }
+  @media (orientation: landscape) and (min-width: 640px) {
+    @slot;
+  }
+}
+@custom-variant short (@media (orientation: landscape) and (max-height: 520px));
+
 @theme {
   --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
@@ -184,6 +198,27 @@
 .logo-slant {
   background-image: repeating-linear-gradient(123deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 46px);
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%);
+}
+
+/* the hero's scroll cue: a light travelling down a thin rail, like the
+   glow coming down the stairs in the picture */
+@keyframes scroll-cue {
+  0%   { transform: translate3d(0, -100%, 0); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translate3d(0, 260%, 0); opacity: 0; }
+}
+.scroll-cue-light { animation: scroll-cue 2.4s cubic-bezier(0.6, 0, 0.4, 1) infinite; }
+
+/* the hero picture settles in slowly on load */
+@keyframes hero-in {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-in { animation: hero-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-light, .hero-in { animation: none !important; }
+  .scroll-cue-light { transform: translate3d(0, 80%, 0); }
 }
 
 /* the hero logo drifts a few pixels, like it is floating */

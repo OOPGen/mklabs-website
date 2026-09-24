@@ -91,9 +91,15 @@ const chunkFor = (name) => {
 }
 const splitChunks = { '/pos': chunkFor('PosLanding'), '/admin': chunkFor('Admin') }
 
+/* the home page opens on a full-screen picture: ask for it with the HTML,
+   not after the app has loaded and rendered the hero */
+const heroPreload =
+  '  <link rel="preload" href="/hero-scroll.webp" as="image" type="image/webp" fetchpriority="high" />\n</head>'
+
 for (const route of prerenderRoutes) {
   let html = render(metaFor(route))
   if (splitChunks[route]) html = html.replace('</head>', splitChunks[route])
+  if (route === '/') html = html.replace('</head>', heroPreload)
   write(route === '/' ? 'index.html' : `${route.slice(1)}.html`, html)
 }
 
