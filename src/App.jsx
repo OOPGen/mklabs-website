@@ -38,7 +38,7 @@ const PosLoading = () => <div className="min-h-[100svh] bg-night" aria-busy="tru
 
 /** Same size as the dashboard's own loading state, so the swap does not shift the page. */
 const AdminLoading = () => (
-  <p className="px-5 py-24 text-center text-night/60 dark:text-lavender/60" aria-busy="true">
+  <p className="flex min-h-[70svh] items-center justify-center px-5 py-24 text-center text-night/60 dark:text-lavender/60" aria-busy="true">
     Loading your promotions…
   </p>
 )

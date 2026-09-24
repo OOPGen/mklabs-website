@@ -11,7 +11,7 @@ const variants = {
     'border border-purple/25 text-purple hover:bg-purple/5 ' +
     'dark:border-white/20 dark:text-lavender dark:hover:bg-white/10',
   white: 'bg-white text-purple shadow-lg shadow-black/10 hover:shadow-xl',
-  whatsapp: 'bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 hover:shadow-xl',
+  whatsapp: 'bg-whatsapp text-white shadow-lg shadow-whatsapp/30 hover:shadow-xl hover:brightness-110',
   // same as solid, with a stronger glow for dark sections
   brand: 'logo-gradient text-white shadow-lg shadow-violet/35 hover:shadow-xl hover:shadow-violet/45',
   // quiet partner to `brand` on dark sections

@@ -17,6 +17,7 @@ export default function About() {
         <Container className="relative">
           <SectionHead
             tone="dark"
+            level="h1"
             kicker="About MKLabs"
             title={<>We build technology <span className="logo-gradient-text">with purpose.</span></>}
             lead={`MKLabs is a software development and technology company creating practical digital solutions for businesses, schools, lodges and organisations in ${site.city}, ${site.country}.`}

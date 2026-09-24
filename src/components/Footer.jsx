@@ -86,7 +86,7 @@ export default function Footer() {
                 href={waLink('Hello MKLabs!')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-[44px] w-fit items-center gap-2 rounded-full bg-[#25D366] px-5 text-sm font-semibold text-white"
+                className="mt-3 inline-flex min-h-[44px] w-fit items-center gap-2 rounded-full bg-whatsapp px-5 text-sm font-semibold text-white"
               >
                 💬 WhatsApp us
               </a>

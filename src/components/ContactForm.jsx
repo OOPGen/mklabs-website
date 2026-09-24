@@ -144,7 +144,7 @@ export default function ContactForm() {
   if (state === 'sent') {
     return (
       <div
-        className={`rounded-3xl border p-8 text-center ${
+        className={`rounded-3xl border p-8 text-center text-night dark:text-lavender ${
           emailed ? 'border-emerald-500/25 bg-emerald-500/8' : 'border-amber-500/30 bg-amber-500/8'
         }`}
       >
@@ -187,7 +187,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="relative rounded-3xl border border-night/10 bg-white p-6 sm:p-8 dark:border-white/10 dark:bg-white/5">
+    <form onSubmit={handleSubmit} noValidate className="relative rounded-3xl border border-night/10 bg-white p-6 text-night sm:p-8 dark:border-white/10 dark:bg-white/5 dark:text-lavender">
       <h3 className="text-xl font-bold">Request a demo or a quote</h3>
       <p className="mt-1.5 text-sm text-night/60 dark:text-lavender/60">
         Tell us what you need. Fields marked * are required.

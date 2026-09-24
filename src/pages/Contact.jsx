@@ -13,6 +13,7 @@ export default function Contact() {
         <Container className="relative">
           <SectionHead
             tone="dark"
+            level="h1"
             kicker="Contact MKLabs"
             title={<>Let&apos;s build <span className="logo-gradient-text">something better.</span></>}
             lead="Tell us what you need built, fixed or supported. We reply within one working day."
@@ -43,7 +44,7 @@ export default function Contact() {
                   href={waLink('Hello MKLabs!')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#25D366] px-5 text-sm font-semibold text-white"
+                  className="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-whatsapp px-5 text-sm font-semibold text-white"
                 >
                   💬 Open WhatsApp
                 </a>

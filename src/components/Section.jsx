@@ -30,7 +30,8 @@ export default function Section({
 }
 
 /** Kicker + heading + optional lead, used at the top of most sections. */
-export function SectionHead({ kicker, title, lead, center = false, tone = 'light' }) {
+/** `level` is the heading element — 'h1' when this is the page's own title. */
+export function SectionHead({ kicker, title, lead, center = false, tone = 'light', level = 'h2' }) {
   const onDark = tone === 'dark' || tone === 'void'
   const muted = onDark ? 'text-lavender/70' : 'text-night/65 dark:text-lavender/70'
 
@@ -49,7 +50,7 @@ export function SectionHead({ kicker, title, lead, center = false, tone = 'light
         </Reveal>
       )}
 
-      <Reveal as="h2" delay={80} className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]">
+      <Reveal as={level} delay={80} className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]">
         {title}
       </Reveal>
 

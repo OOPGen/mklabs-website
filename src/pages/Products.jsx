@@ -16,6 +16,7 @@ export default function Products() {
         <Container className="relative">
           <SectionHead
             tone="dark"
+            level="h1"
             kicker="Product ecosystem"
             title={<>One partner. <span className="logo-gradient-text">Four systems</span> that run a business.</>}
             lead="Each product solves one job properly. They share the same account, the same look and the same support line."

@@ -189,7 +189,7 @@ export default function Admin() {
   /* ------------------------------------------------------------- states */
   if (status === 'loading') {
     return (
-      <Container className="py-24 text-center">
+      <Container className="flex min-h-[70svh] items-center justify-center py-24 text-center">
         <p className="text-night/60 dark:text-lavender/60">Loading your promotions…</p>
       </Container>
     )
@@ -197,7 +197,7 @@ export default function Admin() {
 
   if (status === 'denied' || status === 'error') {
     return (
-      <Container className="py-24">
+      <Container className="flex min-h-[70svh] items-center justify-center py-24">
         <div className="mx-auto max-w-lg rounded-2xl border border-amber-500/30 bg-amber-500/8 p-8 text-center">
           <div className="text-4xl">{status === 'denied' ? '🔒' : '⚠️'}</div>
           <h1 className="mt-4 text-xl font-bold">
