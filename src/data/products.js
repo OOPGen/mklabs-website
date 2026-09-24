@@ -8,6 +8,8 @@ export const products = [
   {
     slug: 'pos',
     name: 'MKLabs POS',
+    // has its own website; linked from the card, product page and menus
+    site: { url: 'https://pos.mklabs.co.zw', label: 'pos.mklabs.co.zw' },
     category: 'Point of sale',
     icon: '🛒',
     logo: '/logo-pos.png',

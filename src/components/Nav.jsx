@@ -118,9 +118,22 @@ export default function Nav() {
                       </span>
                     </Link>
                   ))}
+                  {products
+                    .filter((product) => product.site)
+                    .map((product) => (
+                      <a
+                        key={`${product.slug}-site`}
+                        href={product.site.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/10"
+                      >
+                        Visit {product.site.label} ↗
+                      </a>
+                    ))}
                   <Link
                     to="/products"
-                    className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-lilac transition-colors hover:bg-white/10"
+                    className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-lilac transition-colors hover:bg-white/10"
                   >
                     View all products →
                   </Link>
@@ -208,6 +221,21 @@ export default function Nav() {
                 </span>
               </Link>
             ))}
+            {products
+              .filter((product) => product.site)
+              .map((product) => (
+                <a
+                  key={`${product.slug}-site`}
+                  href={product.site.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex min-h-[52px] items-center justify-between rounded-2xl border border-iris/30 px-4 text-[15px] font-semibold"
+                >
+                  Visit {product.site.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ))}
           </div>
         </div>
 
