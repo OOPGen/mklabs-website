@@ -13,9 +13,10 @@ const contentSecurityPolicy = [
   // theme.js and the app bundle are served from here; no inline scripts anywhere.
   // Turnstile (spam check) and Cloudflare Web Analytics, if switched on.
   "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com",
-  // React sets style properties at runtime; the Google Fonts stylesheet
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
+  // React sets style properties at runtime; the Turnstile widget adds its own
+  "style-src 'self' 'unsafe-inline'",
+  // Instrument Sans is self-hosted with the build
+  "font-src 'self'",
   "img-src 'self' data:",
   "connect-src 'self' https://cloudflareinsights.com",
   // Google Maps on the contact page, and the Turnstile widget

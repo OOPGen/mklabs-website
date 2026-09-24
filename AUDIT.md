@@ -123,7 +123,10 @@ Prettier was left out on purpose: adopting it means reformatting every file in o
 - A8/E6 `npm audit fix` and minor dependency bumps.
 - E5 add `engines` + `.nvmrc`.
 
-### Phase 6 — Performance & cleanup (🟡/⚪, ~½ day)
+### Phase 6 — Performance & cleanup (🟡/⚪, ~½ day) — ✅ done
+
+Legacy files are deleted from `main` but remain in history at `7426ec5` (a `legacy-archive` tag could not be pushed from this environment). The code-split saves ~7.5 KB gzip — most of the main bundle is React itself.
+
 - D1 lazy-load `Admin` and `PosLanding`.
 - D2 add intrinsic `width`/`height` to images.
 - D3 self-host / preload the font.

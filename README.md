@@ -24,7 +24,7 @@ businesses, schools and lodges in Zimbabwe.
 | Routing | React Router 7 |
 | Styling | Tailwind CSS 4 (brand palette as theme tokens) |
 | Forms | Cloudflare Pages Function → Resend |
-| Fonts | Instrument Sans (Google Fonts) |
+| Fonts | Instrument Sans (self-hosted via Fontsource) |
 
 ---
 
@@ -132,8 +132,11 @@ git push
 │   ├── data/                ← all site content (seo.js: every page title and description)
 │   ├── components/          Nav, Footer, Reveal, Marquee, forms…
 │   └── pages/               Home, Products, ProductDetail, About, Contact
-└── legacy/                  The previous single-file site, kept for reference
 ```
+
+The previous single-file site (and its PHP mailer and old admin page) was
+removed in September 2026. It is still in git history — restore it with
+`git checkout 7426ec5 -- legacy/` if you ever need it.
 
 ---
 
@@ -171,9 +174,9 @@ Defined once in **`functions/_lib/security-headers.js`**. The build copies them
 into `dist/_headers` for static files, and the Functions set them in code,
 because Cloudflare Pages does not apply `_headers` to Function responses.
 
-The Content-Security-Policy lists every outside host the site uses — Google
-Fonts, the Google Maps embed, Cloudflare Turnstile and Cloudflare Web
-Analytics. **Adding a new embed, script or font host means adding it there**,
+The Content-Security-Policy lists every outside host the site uses — the
+Google Maps embed, Cloudflare Turnstile and Cloudflare Web Analytics. The font
+is self-hosted, so fonts may only come from the site itself. **Adding a new embed, script or font host means adding it there**,
 otherwise browsers will block it. There are no inline scripts; keep it that way
 (`theme.js` is a file for exactly this reason).
 

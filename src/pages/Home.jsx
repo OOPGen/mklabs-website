@@ -153,6 +153,8 @@ export default function Home() {
             <Reveal direction="zoom" delay={160} className="grid grid-cols-2 gap-4">
               <img
                 src="/device-laptop-finance.webp"
+                width={1408}
+                height={768}
                 alt="FinanceFlow dashboard on a laptop"
                 loading="lazy"
                 decoding="async"
@@ -160,6 +162,8 @@ export default function Home() {
               />
               <img
                 src="/device-tablet-learn.webp"
+                width={1408}
+                height={768}
                 alt="LearnCloud on a tablet"
                 loading="lazy"
                 decoding="async"
@@ -167,6 +171,8 @@ export default function Home() {
               />
               <img
                 src="/device-phone-pos.webp"
+                width={1408}
+                height={768}
                 alt="MKLabs POS on a phone"
                 loading="lazy"
                 decoding="async"

@@ -14,7 +14,7 @@
  * Functions share one definition.
  */
 
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -22,7 +22,17 @@ import { MAIN_ORIGIN, POS_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from
 import { pageSecurityHeaders } from '../functions/_lib/security-headers.js'
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const template = readFileSync(join(dist, 'index.html'), 'utf8')
+
+/* Preload the Latin font file so text renders in the brand font on first
+   paint, instead of waiting for the CSS to be parsed before it is found. */
+const latinFont = readdirSync(join(dist, 'assets')).find((file) =>
+  /^instrument-sans-latin-wght-normal-.*\.woff2$/.test(file)
+)
+if (!latinFont) throw new Error('Could not find the Instrument Sans latin font in dist/assets')
+const template = readFileSync(join(dist, 'index.html'), 'utf8').replace(
+  '</head>',
+  `  <link rel="preload" href="/assets/${latinFont}" as="font" type="font/woff2" crossorigin />\n</head>`
+)
 
 const escapeAttr = (value) =>
   String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -71,8 +81,20 @@ function write(relativePath, contents) {
   writeFileSync(target, contents)
 }
 
+/* Pages split out of the main bundle get their chunk preloaded, so the
+   split never costs a visitor who lands straight on them. */
+const assets = readdirSync(join(dist, 'assets'))
+const chunkFor = (name) => {
+  const file = assets.find((candidate) => new RegExp(`^${name}-[\\w-]+\\.js$`).test(candidate))
+  if (!file) throw new Error(`Could not find the ${name} chunk in dist/assets`)
+  return `  <link rel="modulepreload" crossorigin href="/assets/${file}" />\n</head>`
+}
+const splitChunks = { '/pos': chunkFor('PosLanding'), '/admin': chunkFor('Admin') }
+
 for (const route of prerenderRoutes) {
-  write(route === '/' ? 'index.html' : `${route.slice(1)}.html`, render(metaFor(route)))
+  let html = render(metaFor(route))
+  if (splitChunks[route]) html = html.replace('</head>', splitChunks[route])
+  write(route === '/' ? 'index.html' : `${route.slice(1)}.html`, html)
 }
 
 write('404.html', render(metaFor('/__not-found__')))
