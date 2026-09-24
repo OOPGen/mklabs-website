@@ -65,8 +65,9 @@ GitHub Actions (`.github/workflows/ci.yml`) runs the same on every pull request
 and every push to `main`. Merge only when it is green — `main` deploys straight
 to production.
 
-> Recommended: GitHub → Settings → Branches → add a rule for `main` requiring
-> the **CI / check** status to pass, so a red build can never be merged.
+`main` is protected by the **Protect main** ruleset (GitHub → Settings → Rules →
+Rulesets): changes arrive only through a pull request, the **check** status
+must pass before merging, and force pushes and deletion are blocked.
 
 ---
 
