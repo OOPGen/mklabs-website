@@ -458,6 +458,11 @@ site uses cut-outs of it with the black corners removed:
 (top bar, footer, cards). The favicons, app icons and `og-image.jpg` link
 preview are all made from it too.
 
+The home page hero picture — the mouse with the glowing portal and stairs —
+is `brand/hero-portal-original.png` (1024×1536). The site serves it as
+`public/hero-portal.webp` (desktop and tablets) and `public/hero-portal-640.webp`
+(phones); to replace it, export new files at those two widths with the same names.
+
 Its colours are theme tokens, and every page is built from them:
 
 | Colour | Hex | Tailwind token |

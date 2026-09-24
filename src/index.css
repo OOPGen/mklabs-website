@@ -38,6 +38,10 @@
   --color-violet: #7443F7;
   --color-magenta: #CC61FC;
 
+  /* WhatsApp's green, deepened so white text on it passes WCAG AA (5.0:1;
+     the bright #25D366 is only 2:1) */
+  --color-whatsapp: #15803D;
+
   /* neutral surfaces */
   --color-ink: #07061A;
   --color-ink-2: #0E0C22;

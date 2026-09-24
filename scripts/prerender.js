@@ -94,7 +94,9 @@ const splitChunks = { '/pos': chunkFor('PosLanding'), '/admin': chunkFor('Admin'
 /* the home page opens on a full-screen picture: ask for it with the HTML,
    not after the app has loaded and rendered the hero */
 const heroPreload =
-  '  <link rel="preload" href="/hero-scroll.webp" as="image" type="image/webp" fetchpriority="high" />\n</head>'
+  '  <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="/hero-portal.webp"' +
+  ' imagesrcset="/hero-portal-640.webp 640w, /hero-portal.webp 1024w"' +
+  ' imagesizes="(min-width: 1024px) 64vw, (orientation: landscape) and (min-width: 640px) 64vw, 100vw" />\n</head>'
 
 for (const route of prerenderRoutes) {
   let html = render(metaFor(route))
