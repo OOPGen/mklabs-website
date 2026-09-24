@@ -29,11 +29,14 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* close everything whenever the route changes */
-  useEffect(() => {
+  /* close everything whenever the route changes — adjusted during render,
+     so the menu never paints open on the new page */
+  const [lastPath, setLastPath] = useState(location.pathname)
+  if (lastPath !== location.pathname) {
+    setLastPath(location.pathname)
     setMenuOpen(false)
     setProductsOpen(false)
-  }, [location.pathname])
+  }
 
   /* lock body scroll while the mobile sheet is open */
   useEffect(() => {

@@ -50,6 +50,24 @@ npm run build
 npm run preview
 ```
 
+### Checks
+
+```bash
+npm run check
+```
+
+Runs everything CI runs: **lint** (`npm run lint`, ESLint), **tests**
+(`npm test`, Vitest — the enquiry mailer, the promotions API and its Cloudflare
+Access check, SEO rules and security headers) and the **build**. Node 22.12 or
+newer (see `.nvmrc`).
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the same on every pull request
+and every push to `main`. Merge only when it is green — `main` deploys straight
+to production.
+
+> Recommended: GitHub → Settings → Branches → add a rule for `main` requiring
+> the **CI / check** status to pass, so a red build can never be merged.
+
 ---
 
 ## Making changes
@@ -89,6 +107,8 @@ git push
 /
 ├── index.html               Vite entry (meta tags, fonts)
 ├── vite.config.js
+├── .github/workflows/ci.yml  Lint, test and build on every PR and push to main
+├── tests/                   Vitest suites for Functions, SEO rules and headers
 ├── scripts/prerender.js     After the build: one HTML file per route, 404.html, sitemaps
 ├── functions/
 │   ├── index.js             Serves the POS page at / on pos.mklabs.co.zw
@@ -408,7 +428,7 @@ record is created for you.
 |---|---|
 | Build command | `npm run build` |
 | Build output directory | `dist` |
-| Node version | 20 or newer |
+| Node version | 22 (from `.nvmrc`) |
 
 ### Every binding and variable
 

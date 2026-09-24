@@ -107,6 +107,7 @@ export async function onRequestPost({ request, env }) {
   for (const [field, limit] of Object.entries(LIMITS)) {
     let value = typeof body[field] === 'string' ? body[field].trim() : ''
     // only the message may span lines — the rest end up in a subject or a table cell
+    // eslint-disable-next-line no-control-regex -- matching control characters is the point
     if (field !== 'message') value = value.replace(/[\u0000-\u001f\u007f]+/g, ' ')
     if (value.length > limit) {
       return reject(`${FIELD_LABELS[field]} is too long (at most ${limit} characters)`)

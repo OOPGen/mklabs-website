@@ -3,7 +3,8 @@ import { contact, waLink } from '../data/site.js'
 import { products } from '../data/products.js'
 import { HONEYPOT_FIELD, LIMITS, isValidEmail } from '../../functions/_lib/enquiry.js'
 import Button from './Button.jsx'
-import Turnstile, { TURNSTILE_SITE_KEY } from './Turnstile.jsx'
+import Turnstile from './Turnstile.jsx'
+import { TURNSTILE_SITE_KEY } from './turnstileKey.js'
 
 const serviceOptions = [
   ...products.map((product) => product.name),

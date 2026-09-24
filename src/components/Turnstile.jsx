@@ -1,9 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent, useRef } from 'react'
+import { TURNSTILE_SITE_KEY } from './turnstileKey.js'
 
 const SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
-
-/** Set in Cloudflare Pages → Settings → Environment variables, then redeploy. */
-export const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 
 let scriptPromise = null
 
@@ -34,8 +32,8 @@ function loadScript() {
  */
 export default function Turnstile({ onToken, resetKey = 0 }) {
   const container = useRef(null)
-  const onTokenRef = useRef(onToken)
-  onTokenRef.current = onToken
+  // always calls the latest onToken without re-rendering the widget
+  const reportToken = useEffectEvent((token) => onToken(token))
 
   useEffect(() => {
     if (!TURNSTILE_SITE_KEY || !container.current) return
@@ -48,9 +46,9 @@ export default function Turnstile({ onToken, resetKey = 0 }) {
         if (cancelled || !container.current) return
         widgetId = turnstile.render(container.current, {
           sitekey: TURNSTILE_SITE_KEY,
-          callback: (token) => onTokenRef.current(token),
-          'expired-callback': () => onTokenRef.current(''),
-          'error-callback': () => onTokenRef.current(''),
+          callback: (token) => reportToken(token),
+          'expired-callback': () => reportToken(''),
+          'error-callback': () => reportToken(''),
         })
       })
       .catch(() => {
@@ -59,7 +57,7 @@ export default function Turnstile({ onToken, resetKey = 0 }) {
 
     return () => {
       cancelled = true
-      onTokenRef.current('')
+      reportToken('')
       if (widgetId !== null && window.turnstile) window.turnstile.remove(widgetId)
     }
   }, [resetKey])

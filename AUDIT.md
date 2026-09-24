@@ -114,7 +114,10 @@ Version = fingerprint of the stored KV text, so existing data needed no migratio
 - A7 version/ETag on promotions; reject stale PUTs with 409; reject duplicate ids.
 - B5 delete confirmation + `beforeunload` guard for unsaved changes.
 
-### Phase 5 — Guardrails (🟠, ~1 day)
+### Phase 5 — Guardrails (🟠, ~1 day) — ✅ done
+
+Prettier was left out on purpose: adopting it means reformatting every file in one noisy commit — worth doing separately if wanted. Lint surfaced three set-state-in-effect patterns (Nav, Reveal, useReducedMotion) and a ref written during render (Turnstile); all fixed.
+
 - E1 add ESLint (react + hooks), Prettier, and a GitHub Actions workflow running `lint` + `build` + tests on every PR.
 - E2 Vitest unit tests for `functions/_lib/*` and `toWhatsAppNumber`.
 - A8/E6 `npm audit fix` and minor dependency bumps.
