@@ -41,7 +41,7 @@ export default function AmbientOffice({
     return () => clearInterval(timer)
   }, [cycle, reduced, interval])
 
-  const scrim = intensity === 'strong' ? 'bg-night/74' : 'bg-night/52'
+  const scrim = intensity === 'strong' ? 'bg-void/78' : 'bg-void/58'
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -64,13 +64,15 @@ export default function AmbientOffice({
       {/* scrim — keeps every headline readable over a busy photo */}
       <div className={`absolute inset-0 ${scrim}`} />
       {/* anchors the top behind the nav and blends the bottom into the next section */}
-      <div className="absolute inset-0 bg-gradient-to-b from-night/75 via-transparent to-night" />
+      <div className="absolute inset-0 bg-gradient-to-b from-void/80 via-transparent to-void" />
       {/* extra shade on the left, where the copy sits */}
-      <div className="absolute inset-0 bg-gradient-to-r from-night/80 via-night/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-void/85 via-void/10 to-transparent" />
 
-      {/* a hint of brand colour, kept light so the room still reads through */}
-      <div className="orb-a absolute -left-[10%] -top-[20%] h-[min(600px,90vw)] w-[min(600px,90vw)] rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(167,139,250,0.16),transparent_70%)] blur-3xl" />
-      <div className="orb-b absolute -right-[12%] top-[26%] h-[min(520px,80vw)] w-[min(520px,80vw)] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(100,149,237,0.14),transparent_72%)] blur-3xl" />
+      {/* the logo's light: cyan from the bottom left, magenta from the top right,
+          and faint lines at the angle of its strokes */}
+      <div className="orb-a absolute -bottom-[35%] -left-[12%] h-[min(640px,100vw)] w-[min(640px,100vw)] rounded-full bg-[radial-gradient(circle,rgba(18,161,255,0.26),transparent_68%)] blur-3xl" />
+      <div className="orb-b absolute -right-[10%] -top-[40%] h-[min(680px,105vw)] w-[min(680px,105vw)] rounded-full bg-[radial-gradient(circle,rgba(204,97,252,0.24),transparent_68%)] blur-3xl" />
+      <div className="logo-slant absolute inset-0" />
     </div>
   )
 }

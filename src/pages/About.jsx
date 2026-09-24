@@ -11,13 +11,14 @@ import Section, { Container, SectionHead } from '../components/Section.jsx'
 export default function About() {
   return (
     <>
-      <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-24">
+      {/* -mt-20 lets the dark hero run up behind the floating bar */}
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
             tone="dark"
             kicker="About MKLabs"
-            title="We build technology with purpose."
+            title={<>We build technology <span className="logo-gradient-text">with purpose.</span></>}
             lead={`MKLabs is a software development and technology company creating practical digital solutions for businesses, schools, lodges and organisations in ${site.city}, ${site.country}.`}
           />
         </Container>

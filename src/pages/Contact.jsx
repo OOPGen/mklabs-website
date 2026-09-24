@@ -7,13 +7,14 @@ import Section, { Container, SectionHead } from '../components/Section.jsx'
 export default function Contact() {
   return (
     <>
-      <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-20">
+      {/* -mt-20 lets the dark hero run up behind the floating bar */}
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
             tone="dark"
             kicker="Contact MKLabs"
-            title="Let's build something better."
+            title={<>Let&apos;s build <span className="logo-gradient-text">something better.</span></>}
             lead="Tell us what you need built, fixed or supported. We reply within one working day."
           />
         </Container>
