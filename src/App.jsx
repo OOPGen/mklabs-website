@@ -5,6 +5,7 @@ import Nav from './components/Nav.jsx'
 import PosNav from './components/PosNav.jsx'
 import Footer from './components/Footer.jsx'
 import WhatsAppFab from './components/WhatsAppFab.jsx'
+import useSeo from './components/useSeo.js'
 
 import Home from './pages/Home.jsx'
 import Products from './pages/Products.jsx'
@@ -23,9 +24,10 @@ import NotFound from './pages/NotFound.jsx'
 const isPosHost =
   typeof window !== 'undefined' && /^pos\./i.test(window.location.hostname)
 
-/** Every route change starts at the top of the new page. */
-function ScrollToTop() {
+/** Every route change starts at the top of the new page, with its own title and tags. */
+function RouteEffects() {
   const { pathname } = useLocation()
+  useSeo(pathname, { posHost: isPosHost })
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -79,7 +81,7 @@ function MainSite() {
 export default function App() {
   return (
     <>
-      <ScrollToTop />
+      <RouteEffects />
       {isPosHost ? <PosSite /> : <MainSite />}
       <Footer />
       <WhatsAppFab />

@@ -12,7 +12,6 @@ import ProductCard from '../components/ProductCard.jsx'
 import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 const stats = [
   { value: '4', label: 'Flagship products' },
@@ -27,11 +26,6 @@ const devices = [
 ]
 
 export default function Home() {
-  usePageTitle(
-    'MKLabs | Software Development & Technology Solutions — Bulawayo, Zimbabwe',
-    'MKLabs builds POS, accounting, school and lodge management software for businesses in Bulawayo, Zimbabwe. Custom software, websites, cloud, security and IT support.'
-  )
-
   return (
     <>
       {/* ---------------------------------------------------------- HERO */}

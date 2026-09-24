@@ -4,6 +4,7 @@ import { products } from '../data/products.js'
 import { contact, waLink } from '../data/site.js'
 import Button from './Button.jsx'
 import Logo from './Logo.jsx'
+import useTheme from './useTheme.js'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -16,27 +17,9 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [dark, setDark] = useState(false)
+  const [dark, toggleTheme] = useTheme()
   const dropdownRef = useRef(null)
   const location = useLocation()
-
-  /* restore theme */
-  useEffect(() => {
-    const saved = localStorage.getItem('mklabs-theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDark = saved ? saved === 'dark' : prefersDark
-    setDark(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
-  }, [])
-
-  function toggleTheme() {
-    setDark((previous) => {
-      const next = !previous
-      document.documentElement.classList.toggle('dark', next)
-      localStorage.setItem('mklabs-theme', next ? 'dark' : 'light')
-      return next
-    })
-  }
 
   /* shrink the bar once the page scrolls */
   useEffect(() => {
@@ -46,11 +29,14 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* close everything whenever the route changes */
-  useEffect(() => {
+  /* close everything whenever the route changes — adjusted during render,
+     so the menu never paints open on the new page */
+  const [lastPath, setLastPath] = useState(location.pathname)
+  if (lastPath !== location.pathname) {
+    setLastPath(location.pathname)
     setMenuOpen(false)
     setProductsOpen(false)
-  }, [location.pathname])
+  }
 
   /* lock body scroll while the mobile sheet is open */
   useEffect(() => {

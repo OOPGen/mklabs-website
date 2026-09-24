@@ -50,6 +50,24 @@ npm run build
 npm run preview
 ```
 
+### Checks
+
+```bash
+npm run check
+```
+
+Runs everything CI runs: **lint** (`npm run lint`, ESLint), **tests**
+(`npm test`, Vitest — the enquiry mailer, the promotions API and its Cloudflare
+Access check, SEO rules and security headers) and the **build**. Node 22.12 or
+newer (see `.nvmrc`).
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the same on every pull request
+and every push to `main`. Merge only when it is green — `main` deploys straight
+to production.
+
+> Recommended: GitHub → Settings → Branches → add a rule for `main` requiring
+> the **CI / check** status to pass, so a red build can never be merged.
+
 ---
 
 ## Making changes
@@ -89,23 +107,84 @@ git push
 /
 ├── index.html               Vite entry (meta tags, fonts)
 ├── vite.config.js
+├── .github/workflows/ci.yml  Lint, test and build on every PR and push to main
+├── tests/                   Vitest suites for Functions, SEO rules and headers
+├── scripts/prerender.js     After the build: one HTML file per route, 404.html, sitemaps
 ├── functions/
-│   └── api/contact.js       Cloudflare Pages Function — the enquiry mailer
+│   ├── index.js             Serves the POS page at / on pos.mklabs.co.zw
+│   ├── api/contact.js       The enquiry mailer
+│   ├── api/promotions.js    Live offers for the public site
+│   ├── api/admin/…          Promotions dashboard API (Cloudflare Access)
+│   ├── api/_middleware.js   Security headers on every API response
+│   └── _lib/                Shared rules — not routes (security-headers.js lives here)
 ├── public/                  Images and static files, served from /
-│   ├── _redirects           SPA fallback so /products/pos survives a refresh
-│   ├── _headers             Security headers and cache rules
+│   ├── _headers             Cache rules (security headers are added at build)
+│   ├── theme.js             Applies dark mode before first paint
 │   ├── *.webp / *.png       Photography and logos
+│   ├── og-image.jpg         1200×630 link-preview image
+│   ├── icon-*, favicon-*    App and browser icons
 │   ├── manifest.json
-│   └── robots.txt, sitemap.xml
+│   └── robots.txt
 ├── src/
 │   ├── main.jsx             React entry
 │   ├── App.jsx              Routes
 │   ├── index.css            Tailwind theme, brand palette, motion
-│   ├── data/                ← all site content
+│   ├── data/                ← all site content (seo.js: every page title and description)
 │   ├── components/          Nav, Footer, Reveal, Marquee, forms…
 │   └── pages/               Home, Products, ProductDetail, About, Contact
 └── legacy/                  The previous single-file site, kept for reference
 ```
+
+---
+
+## Search engines and link previews
+
+Every page's title, description and canonical address live in
+**`src/data/seo.js`**. Product pages are generated from `products.js`, so a new
+product gets correct tags automatically.
+
+`npm run build` runs `scripts/prerender.js` after Vite. It writes a separate
+HTML file for each route (`dist/about.html`, `dist/products/pos.html`, …)
+carrying that page's tags, so WhatsApp, Facebook and LinkedIn previews — which
+never run JavaScript — show the right page. It also writes:
+
+- **`404.html`** — its presence tells Cloudflare Pages to return a real 404
+  status for unknown URLs instead of a "200 OK" copy of the home page
+- **`sitemap.xml`** and **`sitemap-pos.xml`** — rebuilt on every deploy
+
+A new route needs an entry in `seo.js`; without one it still works for
+visitors but answers with a 404 status.
+
+`/pos` is a preview of pos.mklabs.co.zw, so its canonical points at the
+subdomain. `functions/index.js` makes the subdomain's root return the POS page's
+HTML (the rest of the site is plain static files).
+
+After deploying, submit both sitemaps in Google Search Console, and use
+[the Facebook sharing debugger](https://developers.facebook.com/tools/debug/)
+to refresh old link previews.
+
+---
+
+## Security headers
+
+Defined once in **`functions/_lib/security-headers.js`**. The build copies them
+into `dist/_headers` for static files, and the Functions set them in code,
+because Cloudflare Pages does not apply `_headers` to Function responses.
+
+The Content-Security-Policy lists every outside host the site uses — Google
+Fonts, the Google Maps embed, Cloudflare Turnstile and Cloudflare Web
+Analytics. **Adding a new embed, script or font host means adding it there**,
+otherwise browsers will block it. There are no inline scripts; keep it that way
+(`theme.js` is a file for exactly this reason).
+
+HSTS is one year and deliberately does not include subdomains. Once every
+subdomain is HTTPS-only you can add `includeSubDomains`.
+
+`/admin` and every `/api/*` response carry `X-Robots-Tag: noindex`, and are
+never cached (the public promotions feed keeps its one-minute cache).
+
+After deploying, [securityheaders.com](https://securityheaders.com) should grade
+the site A.
 
 ---
 
@@ -151,7 +230,8 @@ Other mobile guarantees:
 
 A submission fans out to three places so it can never silently vanish:
 
-1. **`localStorage`** — saved immediately, always works
+1. **`localStorage`** — saved immediately, removed again once the email is
+   confirmed (at most 5 kept, none older than 30 days)
 2. **`POST /api/contact`** — the Cloudflare Pages Function, which emails via Resend
 3. **WhatsApp draft** — offered after submit, prefilled with the whole enquiry
 
@@ -177,6 +257,28 @@ answers them directly.
 Zimbabwean numbers are normalised before the link is built — `0771 234 567`,
 `+263 77 123 4567` and `00263771234567` all become `263771234567`, which is the
 only form `wa.me` accepts. A raw `0771234567` would produce a dead link.
+Foreign numbers are linked only when typed with their country code (`+44 …`);
+a number whose country cannot be told is shown as typed, without buttons.
+
+### Spam protection
+
+The shared rules live in `functions/_lib/enquiry.js` and are used by both the
+form and the Function, so they always agree.
+
+- **Field limits** — name 120, email 254, message 5,000 characters, etc.
+  Oversized or malformed enquiries are refused with a clear message.
+- **Honeypot** — a hidden `website` field people never see. Bots fill it, and
+  their enquiry is dropped while looking successful to them.
+- **Cloudflare Turnstile** *(optional, recommended)* — Cloudflare's free,
+  mostly invisible "are you human" check. Turn it on in Cloudflare →
+  **Turnstile → Add site** (`mklabs.co.zw`, `pos.mklabs.co.zw`), then add both
+  keys below and redeploy. Until then the form works without it.
+- **Rate limit** *(recommended)* — Cloudflare → your domain → **Security →
+  WAF → Rate limiting rules**: path equals `/api/contact`, e.g. 5 requests per
+  minute per IP → Block. The free plan includes one rule.
+
+Delivery errors are written to the Functions log (**Pages project →
+Functions → Real-time logs**), never shown to visitors.
 
 ### Turning on email
 
@@ -196,6 +298,8 @@ cannot use SMTP, so mail goes out over Resend's HTTP API.
 | `RESEND_API_KEY` | the key you copied |
 | `CONTACT_TO` | `info@mklabs.co.zw, support@mklabs.co.zw` *(optional)* |
 | `CONTACT_FROM` | `MKLabs Website <noreply@mklabs.co.zw>` *(optional)* |
+| `TURNSTILE_SECRET_KEY` | Turnstile secret key *(optional — spam check)* |
+| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key *(set together with the secret)* |
 
 Until `RESEND_API_KEY` is set the endpoint returns `emailed: false`, and routes
 1 and 3 carry the enquiry — so the form is never broken, just quieter.
@@ -213,6 +317,16 @@ it hides itself. The section disappears entirely when nothing is live, so the
 home page never shows an empty "Offers" heading.
 
 Promotions appear on the home page and on the POS landing page.
+
+**Two people editing at once.** Every save names the version it was edited
+from. If someone else saved in the meantime, nothing is overwritten: the
+dashboard says who saved and when, and offers **Load their version** or
+**Keep mine and save**. (Cloudflare KV takes up to a minute to sync between
+locations, so two saves within that minute from different places can still
+collide — rare for a small team.)
+
+The dashboard also asks before deleting a promotion, and warns before you
+close, reload or leave the page with unsaved changes.
 
 ### Setup — two things, both one-off
 
@@ -314,7 +428,7 @@ record is created for you.
 |---|---|
 | Build command | `npm run build` |
 | Build output directory | `dist` |
-| Node version | 20 or newer |
+| Node version | 22 (from `.nvmrc`) |
 
 ### Every binding and variable
 
@@ -323,6 +437,8 @@ record is created for you.
 | `RESEND_API_KEY` | Environment variable | Enquiry emails |
 | `CONTACT_TO` | Environment variable *(optional)* | Who receives enquiries |
 | `CONTACT_FROM` | Environment variable *(optional)* | Sender address |
+| `TURNSTILE_SECRET_KEY` | Environment variable *(optional)* | Spam check on the enquiry form |
+| `VITE_TURNSTILE_SITE_KEY` | Environment variable *(optional, build-time)* | Shows the Turnstile widget |
 | `PROMOS` | KV namespace binding | Promotions storage |
 | `ACCESS_TEAM_DOMAIN` | Environment variable | Admin login |
 | `ACCESS_AUD` | Environment variable | Admin login |
@@ -343,7 +459,9 @@ record is created for you.
 
 Defined in `@theme` in `src/index.css`, so `bg-purple` and `text-lilac` work
 anywhere. Dark mode is a `.dark` class on `<html>`, toggled in the nav and
-remembered in `localStorage`.
+remembered in `localStorage`. `public/theme.js` applies it in `<head>` before
+the page paints — on both hosts — so dark-mode visitors never see a white
+flash. The toggle itself lives in `src/components/useTheme.js`.
 
 ---
 

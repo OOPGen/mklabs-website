@@ -14,17 +14,12 @@ export default function Reveal({
   ...rest
 }) {
   const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
+  // no IntersectionObserver (very old browser) → just show it
+  const [visible, setVisible] = useState(() => typeof IntersectionObserver === 'undefined')
 
   useEffect(() => {
     const el = ref.current
-    if (!el) return
-
-    // no IntersectionObserver (very old browser) → just show it
-    if (typeof IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return
-    }
+    if (!el || typeof IntersectionObserver === 'undefined') return
 
     const observer = new IntersectionObserver(
       ([entry]) => {

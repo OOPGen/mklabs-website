@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Button from '../components/Button.jsx'
 import { Container } from '../components/Section.jsx'
-import usePageTitle from '../components/usePageTitle.js'
 
 /**
  * Promotions dashboard.
@@ -11,8 +10,13 @@ import usePageTitle from '../components/usePageTitle.js'
  * The API verifies that cookie again on every request.
  */
 
+const newId = () =>
+  typeof crypto !== 'undefined' && crypto.randomUUID
+    ? `promo-${crypto.randomUUID().slice(0, 18)}`
+    : `promo-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
 const blank = () => ({
-  id: `promo-${Date.now()}`,
+  id: newId(),
   title: '',
   body: '',
   badge: '',
@@ -29,14 +33,14 @@ const field =
 const label = 'block text-[12px] font-semibold mb-1.5 text-night/70 dark:text-lavender/70'
 
 export default function Admin() {
-  usePageTitle('Promotions dashboard | MKLabs')
-
   const [promotions, setPromotions] = useState([])
   const [saved, setSaved] = useState('[]')
   const [status, setStatus] = useState('loading') // loading | ready | denied | error
   const [message, setMessage] = useState('')
   const [signedInAs, setSignedInAs] = useState('')
   const [saving, setSaving] = useState(false)
+  const [version, setVersion] = useState('')
+  const [conflict, setConflict] = useState(null) // the newer list someone else saved
 
   useEffect(() => {
     fetch('/api/admin/promotions')
@@ -70,6 +74,7 @@ export default function Admin() {
         setPromotions(list)
         setSaved(JSON.stringify(list))
         setSignedInAs(data.signedInAs || '')
+        setVersion(data.version || '')
         setStatus('ready')
       })
       .catch((error) => {
@@ -79,6 +84,52 @@ export default function Admin() {
   }, [])
 
   const dirty = JSON.stringify(promotions) !== saved
+
+  /* warn before unsaved edits are lost — closing the tab, reloading, or
+     following a link to another page of the site */
+  useEffect(() => {
+    if (!dirty) return
+
+    const leaving = 'You have unsaved changes. Leave without saving?'
+
+    function onBeforeUnload(event) {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    // capture phase on document runs before React Router's own click handling
+    function onClick(event) {
+      const link = event.target.closest?.('a[href]')
+      if (!link || link.target === '_blank' || event.defaultPrevented) return
+      if (/^(mailto|tel):/i.test(link.getAttribute('href'))) return // opens another app, page stays
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return
+      if (!window.confirm(leaving)) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+    }
+
+    window.addEventListener('beforeunload', onBeforeUnload)
+    document.addEventListener('click', onClick, true)
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload)
+      document.removeEventListener('click', onClick, true)
+    }
+  }, [dirty])
+
+  function remove(index) {
+    const title = promotions[index]?.title.trim() || 'this untitled promotion'
+    if (!window.confirm(`Delete "${title}"? It disappears from your site when you save.`)) return
+    setPromotions((current) => current.filter((_, position) => position !== index))
+  }
+
+  function loadTheirs() {
+    setPromotions(conflict.promotions)
+    setSaved(JSON.stringify(conflict.promotions))
+    setVersion(conflict.version)
+    setConflict(null)
+    setMessage('')
+  }
 
   function update(index, key, value) {
     setPromotions((current) =>
@@ -98,24 +149,34 @@ export default function Admin() {
     })
   }
 
-  async function save() {
+  /** `baseVersion` is what the edits were made against; "keep mine" passes the newer one. */
+  async function save(baseVersion = version) {
     setSaving(true)
     setMessage('')
+    setConflict(null)
 
     try {
       const response = await fetch('/api/admin/promotions', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ promotions }),
+        body: JSON.stringify({ promotions, baseVersion }),
       })
       const data = await response.json().catch(() => ({}))
 
-      if (!response.ok) {
+      if (response.status === 409 && data.conflict) {
+        setConflict({
+          promotions: Array.isArray(data.promotions) ? data.promotions : [],
+          version: data.version || '',
+          updatedBy: data.updatedBy || '',
+          updatedAt: data.updatedAt || '',
+        })
+      } else if (!response.ok) {
         setMessage(data.error || `Could not save (${response.status})`)
       } else {
         const list = Array.isArray(data.promotions) ? data.promotions : promotions
         setPromotions(list)
         setSaved(JSON.stringify(list))
+        setVersion(data.version || '')
         setMessage('Saved. Your website is updated.')
       }
     } catch (error) {
@@ -165,7 +226,7 @@ export default function Admin() {
 
         <div className="flex items-center gap-3">
           {dirty && <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Unsaved changes</span>}
-          <Button onClick={save} disabled={saving || !dirty} className="disabled:opacity-50">
+          <Button onClick={() => save()} disabled={saving || !dirty} className="disabled:opacity-50">
             {saving ? 'Saving…' : 'Save changes'}
           </Button>
         </div>
@@ -182,6 +243,39 @@ export default function Admin() {
         >
           {message}
         </p>
+      )}
+
+      {conflict && (
+        <div role="alert" className="mt-5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
+          <p className="font-semibold text-amber-800 dark:text-amber-300">
+            Not saved — someone else saved changes after you opened this page
+            {conflict.updatedBy && <> ({conflict.updatedBy}</>}
+            {conflict.updatedAt && (
+              <>
+                {conflict.updatedBy ? ', ' : ' ('}
+                {new Date(conflict.updatedAt).toLocaleString('en-GB', {
+                  timeZone: 'Africa/Harare',
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
+              </>
+            )}
+            {(conflict.updatedBy || conflict.updatedAt) && ')'}.
+          </p>
+          <p className="mt-1 text-night/70 dark:text-lavender/70">
+            Their version has {conflict.promotions.length}{' '}
+            {conflict.promotions.length === 1 ? 'promotion' : 'promotions'}. Load theirs and redo your
+            edits, or keep yours and replace what they saved.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <Button variant="ghost" onClick={loadTheirs}>
+              Load their version
+            </Button>
+            <Button onClick={() => save(conflict.version)} disabled={saving} className="disabled:opacity-50">
+              Keep mine and save
+            </Button>
+          </div>
+        </div>
       )}
 
       <div className="mt-8 grid gap-5">
@@ -230,9 +324,7 @@ export default function Admin() {
                 </button>
                 <button
                   type="button"
-                  onClick={() =>
-                    setPromotions((current) => current.filter((_, position) => position !== index))
-                  }
+                  onClick={() => remove(index)}
                   className="ml-1 grid h-10 min-w-[76px] place-items-center rounded-lg border border-red-500/30 px-3 text-sm font-semibold text-red-600 dark:text-red-400"
                 >
                   Delete
@@ -335,7 +427,7 @@ export default function Admin() {
         <Button variant="ghost" onClick={() => setPromotions((current) => [...current, blank()])}>
           + Add a promotion
         </Button>
-        <Button onClick={save} disabled={saving || !dirty} className="disabled:opacity-50">
+        <Button onClick={() => save()} disabled={saving || !dirty} className="disabled:opacity-50">
           {saving ? 'Saving…' : 'Save changes'}
         </Button>
       </div>

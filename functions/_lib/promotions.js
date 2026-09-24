@@ -63,7 +63,11 @@ export function validate(promotions) {
   if (!Array.isArray(promotions)) return 'Expected an array of promotions'
   if (promotions.length > MAX_PROMOTIONS) return `At most ${MAX_PROMOTIONS} promotions`
 
+  const seen = new Set()
   for (const promotion of promotions) {
+    if (seen.has(promotion.id)) return `Two promotions share the id "${promotion.id}" — reload and try again`
+    seen.add(promotion.id)
+
     if (!promotion.title) return 'Every promotion needs a title'
     if (promotion.ctaLabel && !promotion.ctaHref) {
       return `"${promotion.title}" has a button label but no link`
@@ -84,9 +88,14 @@ export function isLive(promotion, today = todayInHarare()) {
   return true
 }
 
-export async function readAll(env) {
-  if (!env.PROMOS) return []
-  const raw = await env.PROMOS.get(KV_KEY)
+/** A short fingerprint of exactly what is stored, so a save can tell if it is out of date. */
+async function fingerprint(raw) {
+  if (!raw) return 'empty'
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw))
+  return [...new Uint8Array(digest).slice(0, 12)].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+}
+
+function parse(raw) {
   if (!raw) return []
   try {
     const parsed = JSON.parse(raw)
@@ -96,6 +105,31 @@ export async function readAll(env) {
   }
 }
 
-export async function writeAll(env, promotions) {
-  await env.PROMOS.put(KV_KEY, JSON.stringify(promotions))
+/**
+ * Everything stored, plus its version and who last saved it.
+ * The version is a fingerprint of the stored text, so records written before
+ * versioning existed still get one — no migration needed.
+ */
+export async function readStored(env) {
+  if (!env.PROMOS) return { promotions: [], version: 'empty', updatedBy: '', updatedAt: '' }
+  const { value, metadata } = await env.PROMOS.getWithMetadata(KV_KEY)
+  return {
+    promotions: parse(value),
+    version: await fingerprint(value),
+    updatedBy: metadata?.updatedBy || '',
+    updatedAt: metadata?.updatedAt || '',
+  }
+}
+
+export async function readAll(env) {
+  return (await readStored(env)).promotions
+}
+
+/** Saves the list and returns its new version. */
+export async function writeAll(env, promotions, updatedBy = '') {
+  const raw = JSON.stringify(promotions)
+  await env.PROMOS.put(KV_KEY, raw, {
+    metadata: { updatedBy, updatedAt: new Date().toISOString() },
+  })
+  return fingerprint(raw)
 }
