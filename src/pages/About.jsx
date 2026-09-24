@@ -114,7 +114,7 @@ export default function About() {
                 delay={index * 70}
                 className="rounded-2xl border border-night/10 bg-white p-5 dark:border-white/10 dark:bg-white/5"
               >
-                <Logo src={service.logo} size="sm" tone={service.dark ? 'dark' : 'light'} />
+                <Logo src={service.logo} size="sm" tone={service.tone || 'light'} />
                 <h3 className="mt-4 text-[15px] font-bold">{service.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-night/60 dark:text-lavender/60">{service.blurb}</p>
               </Reveal>

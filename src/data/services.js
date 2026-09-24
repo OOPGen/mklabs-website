@@ -26,14 +26,15 @@ export const services = [
   {
     id: 'support',
     title: 'Support & Training',
-    logo: '/logo-mklabs-small.png',
+    logo: '/mklabs-logo-128.webp',
+    tone: 'bare',
     blurb: 'Onboarding, staff training and ongoing support so your team actually uses the system.',
   },
   {
     id: 'consult',
     title: 'Consulting & Setup',
-    logo: '/logo-mklabs.png',
+    logo: '/mklabs-logo-128.webp',
+    tone: 'bare',
     blurb: 'We assess what you need, recommend the right fit, then install and configure it end to end.',
-    dark: true,
   },
 ]

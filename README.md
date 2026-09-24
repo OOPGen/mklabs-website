@@ -450,7 +450,32 @@ record is created for you.
 
 ---
 
+## The logo
+
+The official logo lives at `brand/mklabs-logo-original.jpg` (1254×1254). The
+site uses cut-outs of it with the black corners removed:
+`public/mklabs-logo.webp` (512px, hero) and `public/mklabs-logo-128.webp`
+(top bar, footer, cards). The favicons, app icons and `og-image.jpg` link
+preview are all made from it too.
+
+Its colours are theme tokens, and the Home page and top bar are built from them:
+
+| Colour | Hex | Tailwind token |
+|---|---|---|
+| Logo tile black | `#05040F` | `void` |
+| Cyan | `#12A1FF` | `cyan` |
+| Violet | `#7443F7` | `violet` |
+| Magenta | `#CC61FC` | `magenta` |
+
+Helpers in `src/index.css`: `logo-gradient` (the cyan → violet → magenta sweep
+as a fill), `logo-gradient-text`, `logo-border` (the logo's gradient outline
+around any fill), `logo-slant` (faint lines at the angle of its strokes) —
+and `BrandGlow`, the component that lights dark sections in the logo's colours.
+Buttons have `brand` and `glass` variants for dark backgrounds.
+
 ## Brand palette
+
+The original palette, still used by the other pages:
 
 | Colour | Hex | Tailwind token |
 |---|---|---|

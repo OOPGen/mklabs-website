@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom'
+
 import { products } from '../data/products.js'
 import { services } from '../data/services.js'
 import { contact, waLink } from '../data/site.js'
 
-import AmbientOffice from '../components/AmbientOffice.jsx'
+import BrandGlow from '../components/BrandGlow.jsx'
 import Button from '../components/Button.jsx'
 import ClientGallery from '../components/ClientGallery.jsx'
 import Logo from '../components/Logo.jsx'
 import Marquee from '../components/Marquee.jsx'
-import Orbs from '../components/Orbs.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -17,6 +18,14 @@ const stats = [
   { value: '4', label: 'Flagship products' },
   { value: '6', label: 'Service areas' },
   { value: 'Bulawayo', label: 'Based & on call' },
+]
+
+/* where each product sits around the hero logo (desktop only) */
+const orbit = [
+  'left-0 top-[10%]',
+  'right-0 top-[4%]',
+  'bottom-[12%] left-[-4%]',
+  'bottom-[4%] right-[-2%]',
 ]
 
 const devices = [
@@ -29,61 +38,100 @@ export default function Home() {
   return (
     <>
       {/* ---------------------------------------------------------- HERO */}
-      <header className="relative overflow-hidden bg-night px-5 pb-20 pt-14 text-lavender sm:px-8 sm:pb-28 sm:pt-20">
-        <AmbientOffice cycle />
+      {/* -mt-20 cancels the page's top padding so the dark hero runs up behind
+          the floating bar, with no pale strip above it */}
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-28 text-lavender sm:px-8 sm:pb-24 sm:pt-36">
+        <BrandGlow strength="strong" />
 
         <Container className="relative">
-          <div className="max-w-3xl">
-            <Reveal
-              as="span"
-              className="glass-dark inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-lilac"
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Bulawayo · Available for new projects
-            </Reveal>
+          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              {/* on a phone the logo leads, like an app icon; on desktop it gets its own column */}
+              <Reveal className="mb-7 lg:hidden">
+                <img
+                  src="/mklabs-logo.webp"
+                  alt="MKLabs"
+                  width={88}
+                  height={88}
+                  className="h-[88px] w-[88px] rounded-[22%] shadow-2xl shadow-violet/40"
+                />
+              </Reveal>
 
-            <Reveal as="h1" delay={80} className="mt-6 text-[38px] font-bold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
-              Technology that <span className="brand-gradient">moves your business</span> forward.
-            </Reveal>
-
-            <Reveal as="p" delay={180} className="mt-6 max-w-xl text-base leading-relaxed text-lavender/70 sm:text-lg">
-              MKLabs builds point-of-sale, accounting, school and lodge software — plus the websites,
-              networks and support behind them — for organisations across Zimbabwe.
-            </Reveal>
-
-            <Reveal delay={260} className="mt-8 flex flex-wrap gap-3">
-              <Button to="/products">Explore our products →</Button>
-              <Button to="/contact" variant="ghost" className="!text-lavender !border-white/25">
-                Talk to MKLabs
-              </Button>
-            </Reveal>
-
-            <Reveal delay={340} className="mt-7 flex flex-wrap gap-2">
-              {contact.phones.map((phone) => (
-                <a
-                  key={phone.tel}
-                  href={waLink('Hello MKLabs!', phone.wa)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass-dark inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 text-sm text-lavender/90 transition-colors hover:bg-white/15"
-                >
-                  💬 {phone.label}
-                </a>
-              ))}
-              <a
-                href={`mailto:${contact.emails[0].address}`}
-                className="glass-dark inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 text-sm text-lavender/90 transition-colors hover:bg-white/15"
+              <Reveal
+                as="span"
+                className="logo-border inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-white/85 [--fill:rgba(5,4,15,0.7)]"
               >
-                ✉️ {contact.emails[0].address}
-              </a>
-            </Reveal>
+                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px] shadow-emerald-400/70" />
+                Bulawayo · Available for new projects
+              </Reveal>
 
-            <Reveal delay={420} className="glass-dark mt-10 flex flex-wrap gap-x-10 gap-y-5 rounded-2xl px-6 py-5">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-2xl font-bold sm:text-3xl">{stat.value}</div>
-                  <div className="text-xs text-lavender/55">{stat.label}</div>
-                </div>
+              <Reveal as="h1" delay={80} className="mt-6 text-[40px] font-bold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[76px]">
+                Technology that <span className="logo-gradient-text">moves your business</span> forward.
+              </Reveal>
+
+              <Reveal as="p" delay={180} className="mt-6 max-w-xl text-base leading-relaxed text-lavender/70 sm:text-lg">
+                MKLabs builds point-of-sale, accounting, school and lodge software — plus the websites,
+                networks and support behind them — for organisations across Zimbabwe.
+              </Reveal>
+
+              <Reveal delay={260} className="mt-8 flex flex-wrap gap-3">
+                <Button to="/products" variant="brand">
+                  Explore our products →
+                </Button>
+                <Button to="/contact" variant="glass">
+                  Talk to MKLabs
+                </Button>
+              </Reveal>
+
+              <Reveal delay={340} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-lavender/60">
+                {contact.phones.map((phone) => (
+                  <a
+                    key={phone.tel}
+                    href={waLink('Hello MKLabs!', phone.wa)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-white"
+                  >
+                    💬 {phone.label}
+                  </a>
+                ))}
+                <a
+                  href={`mailto:${contact.emails[0].address}`}
+                  className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-white"
+                >
+                  ✉️ {contact.emails[0].address}
+                </a>
+              </Reveal>
+
+              <Reveal as="dl" delay={420} className="mt-8 grid max-w-lg grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-6">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="flex flex-col px-4 first:pl-0">
+                    <dt className="order-2 mt-1 text-xs text-lavender/50">{stat.label}</dt>
+                    <dd className="text-xl font-bold text-white sm:text-2xl">{stat.value}</dd>
+                  </div>
+                ))}
+              </Reveal>
+            </div>
+
+            {/* the logo, lit from behind, with the four products around it */}
+            <Reveal direction="zoom" delay={200} className="relative mx-auto hidden aspect-square w-full max-w-[460px] lg:block">
+              <div className="logo-gradient absolute inset-[18%] rounded-[22%] opacity-45 blur-3xl" aria-hidden="true" />
+              <img
+                src="/mklabs-logo.webp"
+                alt="MKLabs"
+                width={512}
+                height={512}
+                className="float absolute inset-[17%] h-[66%] w-[66%] rounded-[22%] shadow-2xl shadow-black/60"
+              />
+              {products.map((product, index) => (
+                <Link
+                  key={product.slug}
+                  to={`/products/${product.slug}`}
+                  className={`logo-border absolute flex items-center gap-2.5 rounded-2xl py-2 pl-2 pr-4 text-sm font-semibold text-white shadow-xl shadow-black/40 backdrop-blur-md transition-transform duration-200 hover:-translate-y-0.5 [--fill:rgba(12,10,30,0.85)] ${orbit[index]}`}
+                >
+                  <Logo src={product.logo} size="xs" />
+                  {product.name}
+                </Link>
               ))}
             </Reveal>
           </div>
@@ -184,12 +232,12 @@ export default function Home() {
       </Section>
 
       {/* --------------------------------------------------- IN THE WILD */}
-      <Section tone="dark">
-        <Orbs />
+      <Section tone="void">
+        <BrandGlow />
         <Container className="relative">
           <SectionHead
             center
-            tone="dark"
+            tone="void"
             kicker="🎬 Clients in action"
             title="See the software in real businesses."
             lead="Boardrooms, classrooms, tills and lodge receptions — running in Bulawayo right now."
@@ -218,7 +266,7 @@ export default function Home() {
                 delay={index * 70}
                 className="flex items-start gap-4 rounded-2xl border border-night/10 bg-white p-5 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/5"
               >
-                <Logo src={service.logo} size="sm" tone={service.dark ? 'dark' : 'light'} />
+                <Logo src={service.logo} size="sm" tone={service.tone || 'light'} />
                 <div>
                   <h3 className="text-[15px] font-bold">{service.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-night/60 dark:text-lavender/60">{service.blurb}</p>
@@ -234,18 +282,26 @@ export default function Home() {
         <Container>
           <Reveal
             direction="zoom"
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple via-night to-midnight px-6 py-14 text-center text-white sm:px-12 sm:py-20"
+            className="logo-border relative overflow-hidden rounded-3xl px-6 py-14 text-center text-white [--fill:#05040F] sm:px-12 sm:py-20"
           >
-            <Orbs />
+            <BrandGlow strength="strong" />
             <div className="relative">
-              <h2 className="mx-auto max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-                Have a problem technology can solve?
+              <img
+                src="/mklabs-logo-128.webp"
+                alt=""
+                width={64}
+                height={64}
+                loading="lazy"
+                className="mx-auto h-16 w-16 rounded-[22%] shadow-xl shadow-violet/40"
+              />
+              <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+                Have a problem <span className="logo-gradient-text">technology can solve?</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-lg text-base text-white/70">
+              <p className="mx-auto mt-4 max-w-lg text-base text-white/65">
                 Tell us what is slowing your business down. We will tell you honestly whether we can fix it.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Button to="/contact" variant="white">
+                <Button to="/contact" variant="brand">
                   Start a project →
                 </Button>
                 <Button href={waLink('Hello MKLabs! I have a project in mind.')} variant="whatsapp">
