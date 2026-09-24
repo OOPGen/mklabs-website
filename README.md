@@ -67,7 +67,8 @@ to production.
 
 `main` is protected by the **Protect main** ruleset (GitHub → Settings → Rules →
 Rulesets): changes arrive only through a pull request, the **check** status
-must pass before merging, and force pushes and deletion are blocked.
+must pass before merging (the job in `.github/workflows/ci.yml`), and force
+pushes and deletion are blocked.
 
 ---
 
