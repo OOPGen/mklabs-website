@@ -86,29 +86,33 @@ export default function Home() {
     <div className="dark bg-void text-lavender">
       {/* ---------------------------------------------------------- HERO */}
       {/* -mt-20 lets the picture run up behind the clear top bar */}
-      <header className="relative -mt-20 flex min-h-[100svh] flex-col overflow-hidden bg-[#020106] text-white">
+      <header className="relative -mt-20 flex min-h-[100svh] flex-col overflow-hidden bg-[#01061f] text-white">
         {/* the picture: full-bleed behind the text on a phone, the right-hand
             two-thirds on a wide screen, always fading into black at its edges */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <img
-            src="/hero-scroll.webp"
+            src="/hero-portal.webp"
+            srcSet="/hero-portal-640.webp 640w, /hero-portal.webp 1024w"
+            sizes="(min-width: 1024px) 64vw, (orientation: landscape) and (min-width: 640px) 64vw, 100vw"
             alt=""
-            width={694}
-            height={835}
+            width={1024}
+            height={1536}
             fetchPriority="high"
             decoding="async"
-            className="hero-in absolute right-0 top-[-9svh] h-[68svh] w-full object-cover object-[44%_28%] wide:top-0 wide:h-full wide:w-[64%] wide:object-[50%_32%]"
+            className="hero-in absolute right-0 top-[-9svh] h-[68svh] w-full object-cover object-[45%_30%] wide:top-0 wide:h-full wide:w-[64%] wide:object-[46%_42%]"
           />
           {/* phone: the picture fades out beneath the doorway, where the words begin */}
-          <div className="absolute inset-x-0 top-[24svh] h-[36svh] bg-gradient-to-b from-transparent to-[#020106] wide:hidden" />
+          <div className="absolute inset-x-0 top-[24svh] h-[36svh] bg-gradient-to-b from-transparent to-[#01061f] wide:hidden" />
           {/* desktop: the picture's left edge melts into the black beside it */}
-          <div className="absolute inset-y-0 left-[36%] hidden w-[24%] bg-gradient-to-r from-[#020106] to-transparent wide:block" />
+          <div className="absolute inset-y-0 left-[36%] hidden w-[24%] bg-gradient-to-r from-[#01061f] to-transparent wide:block" />
           {/* below laptop width the words overlap the picture more, so shade it further */}
-          <div className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-[#020106] via-[#020106]/80 to-transparent wide:block lg:hidden" />
+          <div className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-[#01061f] via-[#01061f]/80 to-transparent wide:block lg:hidden" />
           {/* the top stays dark under the clear bar */}
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#020106]/80 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#01061f]/80 to-transparent" />
           {/* every size: the bottom sinks into the page */}
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-void to-transparent" />
+          {/* the picture's pink-violet floor glow, carried on past its edge */}
+          <div className="absolute -bottom-[10%] right-[-10%] hidden h-[min(560px,60vw)] w-[min(560px,60vw)] rounded-full bg-[radial-gradient(circle,rgba(204,97,252,0.16),transparent_68%)] blur-3xl wide:block" />
           {/* a trace of the logo's colour behind the words */}
           <div className="orb-a absolute -bottom-[20%] -left-[15%] h-[min(640px,110vw)] w-[min(640px,110vw)] rounded-full bg-[radial-gradient(circle,rgba(116,67,247,0.22),transparent_68%)] blur-3xl" />
         </div>
@@ -146,14 +150,16 @@ export default function Home() {
             </Reveal>
           </div>
 
-          {/* on a wide screen the cue sits on the picture, as in the artwork */}
-          <Reveal delay={600} className="absolute bottom-16 right-10 hidden lg:block xl:right-16">
-            <ScrollCue />
-          </Reveal>
           <Reveal delay={400} className="mt-12 lg:hidden short:hidden">
             <ScrollCue />
           </Reveal>
         </Container>
+
+        {/* on a wide screen the cue sits at the right edge of the picture, on the
+            dark body of the mouse — clear of the lit staircase */}
+        <Reveal delay={600} className="absolute bottom-40 right-8 hidden lg:block xl:right-14">
+          <ScrollCue />
+        </Reveal>
 
         {/* what MKLabs does, at a glance — anchors the bottom of the hero */}
         <Container className="relative pb-8">
