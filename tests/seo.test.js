@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
-import { products } from '../src/data/products.js'
+import { POS_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
+import { getProduct, products } from '../src/data/products.js'
 
 describe('metaFor', () => {
   it('gives each page its own canonical address', () => {
@@ -13,6 +13,10 @@ describe('metaFor', () => {
     for (const product of products) {
       expect(metaFor(`/products/${product.slug}`).description).toBe(product.summary)
     }
+  })
+
+  it('links the POS product to the same subdomain the canonical uses', () => {
+    expect(`${getProduct('pos').site.url}/`).toBe(`${POS_ORIGIN}/`)
   })
 
   it('points the /pos preview at the POS subdomain', () => {

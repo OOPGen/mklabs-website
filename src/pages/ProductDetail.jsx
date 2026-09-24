@@ -59,6 +59,11 @@ export default function ProductDetail() {
                 <Button to="/contact" variant="ghost" className="!text-lavender !border-white/25">
                   Request a quote
                 </Button>
+                {product.site && (
+                  <Button href={product.site.url} variant="ghost" className="!text-lavender !border-white/25">
+                    Visit the {product.name} site ↗
+                  </Button>
+                )}
               </Reveal>
             </div>
 

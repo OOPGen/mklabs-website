@@ -75,6 +75,11 @@ export default function Products() {
                     >
                       💬 Book a demo
                     </Button>
+                    {product.site && (
+                      <Button href={product.site.url} variant="ghost">
+                        Visit {product.site.label} ↗
+                      </Button>
+                    )}
                   </div>
                 </div>
               </Reveal>
