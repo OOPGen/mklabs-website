@@ -2,7 +2,7 @@ import Logo from './Logo.jsx'
 import useReducedMotion from './useReducedMotion.js'
 
 const items = [
-  { logo: '/logo-mklabs.png', label: 'MKLabs', dark: true },
+  { logo: '/mklabs-logo-128.webp', label: 'MKLabs', tone: 'bare' },
   { logo: '/logo-pos.png', label: 'MKLabs POS' },
   { logo: '/logo-financeflow.png', label: 'FinanceFlow' },
   { logo: '/logo-learncloud.png', label: 'LearnCloud' },
@@ -16,7 +16,7 @@ const items = [
 function Item({ item }) {
   return (
     <div className="flex shrink-0 items-center gap-2.5 rounded-full border border-night/10 bg-white/70 px-4 py-2.5 dark:border-white/10 dark:bg-white/5">
-      <Logo src={item.logo} size="xs" tone={item.dark ? 'dark' : 'light'} />
+      <Logo src={item.logo} size="xs" tone={item.tone || 'light'} />
       <span className="text-sm font-semibold whitespace-nowrap">{item.label}</span>
     </div>
   )

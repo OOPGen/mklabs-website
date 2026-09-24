@@ -13,6 +13,10 @@ const variants = {
     'dark:border-white/20 dark:text-lavender dark:hover:bg-white/10',
   white: 'bg-white text-purple shadow-lg shadow-black/10 hover:shadow-xl',
   whatsapp: 'bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 hover:shadow-xl',
+  // the logo's cyan → violet → magenta, for the main action on dark sections
+  brand: 'logo-gradient text-white shadow-lg shadow-violet/35 hover:shadow-xl hover:shadow-violet/45',
+  // quiet partner to `brand` on dark sections
+  glass: 'border border-white/15 bg-white/5 text-white hover:bg-white/10',
 }
 
 /**

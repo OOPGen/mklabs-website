@@ -9,7 +9,8 @@
  *      `align-items: stretch`, which silently defeats `w-auto`. The tile is
  *      `shrink-0` with a fixed width, so that can't happen.
  *   2. The opaque background needs something to sit on, or it reads as a stray
- *      white rectangle on a dark card. `tone` matches the tile to the artwork.
+ *      white rectangle on a dark card. `tone` matches the tile to the artwork —
+ *      except `bare`, for the MKLabs logo, which is already a finished tile.
  */
 
 const sizes = {
@@ -22,6 +23,8 @@ const sizes = {
 const tones = {
   light: 'bg-white ring-1 ring-night/10',
   dark: 'bg-ink ring-1 ring-white/15',
+  // the MKLabs logo is its own rounded tile — no backing, no padding
+  bare: '!p-0 !rounded-[22%]',
 }
 
 export default function Logo({ src, alt = '', size = 'sm', tone = 'light', className = '' }) {

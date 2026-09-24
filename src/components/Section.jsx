@@ -12,6 +12,8 @@ const tones = {
   light: 'bg-paper text-night dark:bg-ink dark:text-lavender',
   tint: 'bg-lavender/50 text-night dark:bg-ink-2 dark:text-lavender',
   dark: 'bg-night text-lavender',
+  // the black of the logo's own tile
+  void: 'bg-void text-lavender',
 }
 
 export default function Section({
@@ -29,7 +31,8 @@ export default function Section({
 
 /** Kicker + heading + optional lead, used at the top of most sections. */
 export function SectionHead({ kicker, title, lead, center = false, tone = 'light' }) {
-  const muted = tone === 'dark' ? 'text-lavender/70' : 'text-night/65 dark:text-lavender/70'
+  const onDark = tone === 'dark' || tone === 'void'
+  const muted = onDark ? 'text-lavender/70' : 'text-night/65 dark:text-lavender/70'
 
   return (
     <div className={`max-w-2xl ${center ? 'mx-auto text-center' : ''}`}>
@@ -37,7 +40,7 @@ export function SectionHead({ kicker, title, lead, center = false, tone = 'light
         <Reveal
           as="span"
           className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide ${
-            tone === 'dark'
+            onDark
               ? 'border-white/15 bg-white/5 text-lilac'
               : 'border-purple/15 bg-purple/5 text-purple dark:border-white/15 dark:bg-white/5 dark:text-lilac'
           }`}

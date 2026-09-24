@@ -13,7 +13,7 @@ export default function Footer() {
           {/* brand */}
           <div>
             <Link to="/" className="flex items-center gap-2.5">
-              <Logo src="/logo-mklabs.png" alt="MKLabs" size="sm" tone="dark" />
+              <Logo src="/mklabs-logo-128.webp" alt="MKLabs" size="sm" tone="bare" />
               <span className="text-lg font-bold">MKLabs</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/55">
