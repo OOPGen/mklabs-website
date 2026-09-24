@@ -9,6 +9,9 @@
  *
  * Cloudflare Pages serves dist/products/pos.html at /products/pos, and because
  * dist/404.html exists, any URL without a file gets a real 404 status.
+ *
+ * It also fills the security headers into dist/_headers, so static files and
+ * Functions share one definition.
  */
 
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -16,6 +19,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { MAIN_ORIGIN, POS_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
+import { pageSecurityHeaders } from '../functions/_lib/security-headers.js'
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
 const template = readFileSync(join(dist, 'index.html'), 'utf8')
@@ -81,5 +85,16 @@ const sitemap = (urls) =>
 
 write('sitemap.xml', sitemap(sitemapRoutes.map((route) => `${MAIN_ORIGIN}${route}`)))
 write('sitemap-pos.xml', sitemap([`${POS_ORIGIN}/`]))
+
+const headersPath = join(dist, '_headers')
+const marker = '# @security-headers'
+const headersFile = readFileSync(headersPath, 'utf8')
+if (!headersFile.includes(marker)) throw new Error(`public/_headers is missing the "${marker}" line`)
+const securityBlock =
+  '/*\n' +
+  Object.entries(pageSecurityHeaders)
+    .map(([name, value]) => `  ${name}: ${value}`)
+    .join('\n')
+writeFileSync(headersPath, headersFile.replace(marker, securityBlock))
 
 console.log(`prerendered ${prerenderRoutes.length} routes, 404.html and sitemaps`)

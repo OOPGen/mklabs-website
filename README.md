@@ -95,9 +95,11 @@ git push
 │   ├── api/contact.js       The enquiry mailer
 │   ├── api/promotions.js    Live offers for the public site
 │   ├── api/admin/…          Promotions dashboard API (Cloudflare Access)
-│   └── _lib/                Shared rules — not routes
+│   ├── api/_middleware.js   Security headers on every API response
+│   └── _lib/                Shared rules — not routes (security-headers.js lives here)
 ├── public/                  Images and static files, served from /
-│   ├── _headers             Security headers and cache rules
+│   ├── _headers             Cache rules (security headers are added at build)
+│   ├── theme.js             Applies dark mode before first paint
 │   ├── *.webp / *.png       Photography and logos
 │   ├── og-image.jpg         1200×630 link-preview image
 │   ├── icon-*, favicon-*    App and browser icons
@@ -140,6 +142,29 @@ HTML (the rest of the site is plain static files).
 After deploying, submit both sitemaps in Google Search Console, and use
 [the Facebook sharing debugger](https://developers.facebook.com/tools/debug/)
 to refresh old link previews.
+
+---
+
+## Security headers
+
+Defined once in **`functions/_lib/security-headers.js`**. The build copies them
+into `dist/_headers` for static files, and the Functions set them in code,
+because Cloudflare Pages does not apply `_headers` to Function responses.
+
+The Content-Security-Policy lists every outside host the site uses — Google
+Fonts, the Google Maps embed, Cloudflare Turnstile and Cloudflare Web
+Analytics. **Adding a new embed, script or font host means adding it there**,
+otherwise browsers will block it. There are no inline scripts; keep it that way
+(`theme.js` is a file for exactly this reason).
+
+HSTS is one year and deliberately does not include subdomains. Once every
+subdomain is HTTPS-only you can add `includeSubDomains`.
+
+`/admin` and every `/api/*` response carry `X-Robots-Tag: noindex`, and are
+never cached (the public promotions feed keeps its one-minute cache).
+
+After deploying, [securityheaders.com](https://securityheaders.com) should grade
+the site A.
 
 ---
 
@@ -404,7 +429,9 @@ record is created for you.
 
 Defined in `@theme` in `src/index.css`, so `bg-purple` and `text-lilac` work
 anywhere. Dark mode is a `.dark` class on `<html>`, toggled in the nav and
-remembered in `localStorage`.
+remembered in `localStorage`. `public/theme.js` applies it in `<head>` before
+the page paints — on both hosts — so dark-mode visitors never see a white
+flash. The toggle itself lives in `src/components/useTheme.js`.
 
 ---
 

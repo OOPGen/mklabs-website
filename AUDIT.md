@@ -98,7 +98,10 @@ Implemented with build-time prerendering (`scripts/prerender.js`) rather than cl
 
 **Needs from you:** a share image / square logo source if you want it designed rather than generated.
 
-### Phase 3 — Headers & theme polish (🟠, ~½ day)
+### Phase 3 — Headers & theme polish (🟠, ~½ day) — ✅ done
+
+Also fixed: the `*.png` / `*.webp` cache rules in `_headers` were invalid patterns — images were never long-cached and the stray lines attached themselves to the rule above.
+
 - A5 add CSP (self + Google Fonts + Maps embed + wa.me), HSTS, and `noindex`/`no-store` for `/admin` and `/api/*`.
 - B1 inline no-flash theme script in `index.html`.
 - B2 share theme logic via a `useTheme` hook used by both `Nav` and `PosNav`.

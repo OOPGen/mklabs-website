@@ -9,9 +9,14 @@
  * Only "/" runs through this Function; every other path is served statically.
  */
 
+import { pageSecurityHeaders, withHeaders } from './_lib/security-headers.js'
+
 export async function onRequest({ request, env, next }) {
   const url = new URL(request.url)
-  if (!/^pos\./i.test(url.hostname)) return next()
+  const response = /^pos\./i.test(url.hostname)
+    ? await env.ASSETS.fetch(new Request(new URL('/pos', url), request))
+    : await next()
 
-  return env.ASSETS.fetch(new Request(new URL('/pos', url), request))
+  // a Function's response skips _headers, so the page headers are set here
+  return withHeaders(response, pageSecurityHeaders)
 }

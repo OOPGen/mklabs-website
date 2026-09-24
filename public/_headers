@@ -1,15 +1,25 @@
-/*
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
+# Security headers for every page are generated at build time from
+# functions/_lib/security-headers.js — edit them there, not here.
+# @security-headers
+
+# The promotions dashboard: never indexed, never cached by a browser or proxy.
+/admin
+  X-Robots-Tag: noindex
+  Cache-Control: no-store
 
 # Vite fingerprints these filenames, so they can be cached forever.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-*.webp
+# Not fingerprinted and runs before first paint — keep it fresh.
+/theme.js
+  Cache-Control: public, max-age=3600
+
+/*.webp
   Cache-Control: public, max-age=2592000
 
-*.png
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.jpg
   Cache-Control: public, max-age=2592000
