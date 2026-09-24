@@ -113,18 +113,6 @@ export default function PosNav() {
               MKLabs ↗
             </a>
 
-            {/* Below sm the bar only has room for the brand and the menu — the
-                same CTA sits in the sheet and 200px down the hero. The `!` is
-                load-bearing: Button's own `inline-flex` is emitted after
-                `.hidden`, so a plain `hidden` would lose to it. */}
-            <Button
-              href={waLink('Hello MKLabs! I would like a demo of MKLabs POS.')}
-              variant="whatsapp"
-              className="!hidden !min-h-[44px] !px-5 !text-sm sm:!inline-flex"
-            >
-              💬 Get started
-            </Button>
-
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}

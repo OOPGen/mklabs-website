@@ -1,7 +1,9 @@
 import { waLink } from '../data/site.js'
 
 /**
- * Floating WhatsApp button.
+ * Floating WhatsApp button — the one WhatsApp entry that is always on screen,
+ * on every page and both sites. The top bars deliberately carry no WhatsApp
+ * button of their own, so there is never a second one competing with it.
  * Replaces the old scripted chat widget — it opens the channel MKLabs
  * actually answers on, instead of imitating a conversation.
  */

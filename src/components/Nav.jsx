@@ -160,14 +160,6 @@ export default function Nav() {
               {dark ? '☀️' : '🌙'}
             </button>
 
-            <Button
-              href={waLink('Hello MKLabs! I would like to talk about a project.')}
-              variant="whatsapp"
-              className="hidden !min-h-[44px] !px-5 !text-sm sm:inline-flex"
-            >
-              💬 WhatsApp
-            </Button>
-
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
