@@ -10,13 +10,14 @@ import Section, { Container, SectionHead } from '../components/Section.jsx'
 export default function Products() {
   return (
     <>
-      <header className="relative overflow-hidden bg-night px-5 py-16 text-lavender sm:px-8 sm:py-24">
+      {/* -mt-20 lets the dark hero run up behind the floating bar */}
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
             tone="dark"
             kicker="Product ecosystem"
-            title="One partner. Four systems that run a business."
+            title={<>One partner. <span className="logo-gradient-text">Four systems</span> that run a business.</>}
             lead="Each product solves one job properly. They share the same account, the same look and the same support line."
           />
         </Container>

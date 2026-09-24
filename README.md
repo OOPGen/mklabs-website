@@ -458,7 +458,7 @@ site uses cut-outs of it with the black corners removed:
 (top bar, footer, cards). The favicons, app icons and `og-image.jpg` link
 preview are all made from it too.
 
-Its colours are theme tokens, and the Home page and top bar are built from them:
+Its colours are theme tokens, and every page is built from them:
 
 | Colour | Hex | Tailwind token |
 |---|---|---|
@@ -475,17 +475,22 @@ Buttons have `brand` and `glass` variants for dark backgrounds.
 
 ## Brand palette
 
-The original palette, still used by the other pages:
+The site's older colour names are kept, but re-tuned to the logo, so every
+page follows it:
 
-| Colour | Hex | Tailwind token |
+| Token | Hex | Role |
 |---|---|---|
-| Night Indigo | `#1B003F` | `night` |
-| Twilight Purple | `#4B0082` | `purple` |
-| Midnight | `#191970` | `midnight` |
-| Cornflower | `#6495ED` | `corn` |
-| Lavender Haze | `#E6E6FA` | `lavender` |
-| Light Lavender | `#DBC9F9` | `lilac` |
-| Iris | `#A78BFA` | `iris` |
+| `night` | `#0B0A1C` | Near-black: body text in light mode, dark sections |
+| `purple` | `#6A3BEF` | The logo's violet, deepened for text on white |
+| `iris` | `#A38BFF` | Lighter violet for accents in dark mode |
+| `corn` | `#12A1FF` | The logo's cyan |
+| `midnight` | `#0F1A4A` | Deep blue |
+| `lilac` | `#D6CCFF` | Pale violet text on dark |
+| `lavender` | `#E6E6FA` | Body text in dark mode |
+| `ink` / `ink-2` | `#07061A` / `#0E0C22` | Dark-mode page and card surfaces |
+
+The main button (`solid`) is the logo gradient everywhere. Page heroes sit on
+the logo's black and run up behind the floating top bar.
 
 Defined in `@theme` in `src/index.css`, so `bg-purple` and `text-lilac` work
 anywhere. Dark mode is a `.dark` class on `<html>`, toggled in the nav and

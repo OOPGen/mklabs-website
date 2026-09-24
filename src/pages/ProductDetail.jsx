@@ -23,7 +23,8 @@ export default function ProductDetail() {
   return (
     <>
       {/* ---------------------------------------------------------- HERO */}
-      <header className="relative overflow-hidden bg-night px-5 py-14 text-lavender sm:px-8 sm:py-20">
+      {/* -mt-20 lets the dark hero run up behind the floating bar */}
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-14 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36">
         <AmbientOffice intensity="strong" src={product.clientImage} />
 
         <Container className="relative">
@@ -56,11 +57,11 @@ export default function ProductDetail() {
                 <Button href={demoLink} variant="whatsapp">
                   💬 Book a free demo
                 </Button>
-                <Button to="/contact" variant="ghost" className="!text-lavender !border-white/25">
+                <Button to="/contact" variant="glass">
                   Request a quote
                 </Button>
                 {product.site && (
-                  <Button href={product.site.url} variant="ghost" className="!text-lavender !border-white/25">
+                  <Button href={product.site.url} variant="glass">
                     Visit the {product.name} site ↗
                   </Button>
                 )}

@@ -8,8 +8,9 @@ import Logo from './Logo.jsx'
 export default function DashboardPreview({ dashboard, logo }) {
   if (!dashboard) return null
 
+  // sets its own text colour: it sits on dark heroes, whose pale text it would otherwise inherit
   return (
-    <div className="overflow-hidden rounded-2xl border border-night/10 bg-white shadow-2xl shadow-night/10 dark:border-white/10 dark:bg-ink-2">
+    <div className="overflow-hidden rounded-2xl border border-night/10 bg-white text-night shadow-2xl shadow-night/10 dark:border-white/10 dark:bg-ink-2 dark:text-lavender">
       {/* window bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-night/10 bg-lavender/40 px-4 py-3 dark:border-white/10 dark:bg-white/5">
         <div className="flex min-w-0 items-center gap-2.5">

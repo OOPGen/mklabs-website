@@ -5,15 +5,14 @@ const base =
   'transition-transform transition-shadow duration-200 active:scale-[0.98] whitespace-nowrap'
 
 const variants = {
-  solid:
-    'bg-purple text-white shadow-lg shadow-purple/30 hover:shadow-xl hover:shadow-purple/40 ' +
-    'dark:bg-iris dark:text-ink dark:shadow-iris/25',
+  // the logo's cyan → violet → magenta — the main action everywhere
+  solid: 'logo-gradient text-white shadow-lg shadow-violet/30 hover:shadow-xl hover:shadow-violet/40',
   ghost:
     'border border-purple/25 text-purple hover:bg-purple/5 ' +
     'dark:border-white/20 dark:text-lavender dark:hover:bg-white/10',
   white: 'bg-white text-purple shadow-lg shadow-black/10 hover:shadow-xl',
   whatsapp: 'bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 hover:shadow-xl',
-  // the logo's cyan → violet → magenta, for the main action on dark sections
+  // same as solid, with a stronger glow for dark sections
   brand: 'logo-gradient text-white shadow-lg shadow-violet/35 hover:shadow-xl hover:shadow-violet/45',
   // quiet partner to `brand` on dark sections
   glass: 'border border-white/15 bg-white/5 text-white hover:bg-white/10',
