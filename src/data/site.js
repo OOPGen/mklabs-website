@@ -29,6 +29,7 @@ export const contact = {
  */
 export const socials = [
   { id: 'facebook', label: 'Facebook', url: '' },
+  { id: 'linkedin', label: 'LinkedIn', url: '' },
   { id: 'x', label: 'X (Twitter)', url: '' },
   { id: 'instagram', label: 'Instagram', url: '' },
   { id: 'tiktok', label: 'TikTok', url: '' },

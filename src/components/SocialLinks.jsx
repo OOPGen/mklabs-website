@@ -5,6 +5,9 @@ const marks = {
   facebook: (
     <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H7.9v3h2.6V21h3Z" />
   ),
+  linkedin: (
+    <path d="M6.9 8.8H3.5V20h3.4V8.8ZM5.2 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM20.5 13.7c0-3.1-.7-5.2-4.3-5.2-1.7 0-2.9.9-3.3 1.8h-.1V8.8H9.5V20h3.4v-5.5c0-1.5.3-2.9 2.1-2.9s1.9 1.7 1.9 3V20h3.4v-6.3Z" />
+  ),
   x: (
     <path d="M17.8 3h3l-6.6 7.6L22 21h-6.1l-4.8-6.3L5.6 21H2.6l7.1-8.1L2.3 3h6.2l4.3 5.7L17.8 3Zm-1 16.2h1.7L7.3 4.7H5.5l11.3 14.5Z" />
   ),
@@ -17,7 +20,7 @@ const marks = {
 }
 
 /**
- * The four MKLabs social icons. Each becomes a link once its address is set
+ * MKLabs' social icons. Each becomes a link once its address is set
  * in src/data/site.js; until then it shows, marked "coming soon", but goes
  * nowhere.
  */
