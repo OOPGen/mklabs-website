@@ -6,6 +6,7 @@ import BrandGlow from './BrandGlow.jsx'
 import Button from './Button.jsx'
 import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
+import SocialLinks from './SocialLinks.jsx'
 import useTheme from './useTheme.js'
 
 const links = [
@@ -286,6 +287,11 @@ export default function Nav() {
           <Button href={`mailto:${contact.emails[0].address}`} variant="glass">
             ✉️ {contact.emails[0].address}
           </Button>
+        </div>
+
+        <div className="relative mt-8">
+          <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/40">Follow us</div>
+          <SocialLinks className="mt-3" />
         </div>
       </div>
     </>

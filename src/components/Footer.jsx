@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { products } from '../data/products.js'
 import { contact, site, waLink } from '../data/site.js'
 import Icon from './Icon.jsx'
+import SocialLinks from './SocialLinks.jsx'
 
 const linkClass = 'flex min-h-[44px] items-center text-sm text-white/55 transition-colors hover:text-white pointer-fine:lg:min-h-0 pointer-fine:lg:py-1.5'
 const headingClass = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40'
@@ -30,6 +31,11 @@ export default function Footer() {
             <p className="mt-4 text-sm font-semibold">
               <span className="logo-gradient-text">{site.tagline}</span>
             </p>
+
+            <div className="mt-7">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">Follow us</div>
+              <SocialLinks className="mt-3" />
+            </div>
           </div>
 
           {/* products */}
