@@ -11,9 +11,13 @@ describe('page security headers', () => {
   })
 
   it('allows every outside host the site uses', () => {
-    for (const host of ['fonts.googleapis.com', 'fonts.gstatic.com', 'www.google.com', 'challenges.cloudflare.com']) {
+    for (const host of ['www.google.com', 'challenges.cloudflare.com']) {
       expect(csp).toContain(host)
     }
+  })
+
+  it('serves fonts only from the site itself', () => {
+    expect(csp).toContain("font-src 'self';")
   })
 })
 

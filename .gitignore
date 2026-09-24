@@ -6,32 +6,23 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Env
+# Env — secrets live in Cloudflare Pages settings, never in the repo
 .env
-.env.local
+.env.*
 
 # Editor
 .vscode/
 .idea/
 
-# Keep only production files - ignore large originals if you add them later
+# Design originals — only optimised exports belong in public/
 *.psd
 *.ai
-mklabs-pack/
-mklabs-website/
 
-# Generated / runtime
-inquiries.csv
-inquiries.json
-*.bak
-*.tmp
-
-# Dependencies (if ever added)
+# Dependencies
 node_modules/
 
 # Build output
 dist/
-.vercel/
 
-# Local Cloudflare dev state
+# Local Cloudflare dev state (wrangler pages dev)
 .wrangler/

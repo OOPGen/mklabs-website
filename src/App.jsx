@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import Nav from './components/Nav.jsx'
@@ -10,10 +10,8 @@ import useSeo from './components/useSeo.js'
 import Home from './pages/Home.jsx'
 import Products from './pages/Products.jsx'
 import ProductDetail from './pages/ProductDetail.jsx'
-import PosLanding from './pages/PosLanding.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
-import Admin from './pages/Admin.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 /**
@@ -23,6 +21,27 @@ import NotFound from './pages/NotFound.jsx'
  */
 const isPosHost =
   typeof window !== 'undefined' && /^pos\./i.test(window.location.hostname)
+
+/*
+ * Split out of the main bundle: most visitors to mklabs.co.zw never open the
+ * POS pitch or the dashboard. On the POS host the pitch *is* the home page,
+ * so its download starts immediately, in parallel with the main bundle
+ * (the prerendered pos.html and admin.html also preload their own chunk).
+ */
+const loadPosLanding = () => import('./pages/PosLanding.jsx')
+const PosLanding = lazy(loadPosLanding)
+const Admin = lazy(() => import('./pages/Admin.jsx'))
+if (isPosHost) loadPosLanding()
+
+/** Holds the POS pitch's full-height dark hero while it downloads — no flash of footer. */
+const PosLoading = () => <div className="min-h-[100svh] bg-night" aria-busy="true" />
+
+/** Same size as the dashboard's own loading state, so the swap does not shift the page. */
+const AdminLoading = () => (
+  <p className="px-5 py-24 text-center text-night/60 dark:text-lavender/60" aria-busy="true">
+    Loading your promotions…
+  </p>
+)
 
 /** Every route change starts at the top of the new page, with its own title and tags. */
 function RouteEffects() {
@@ -45,7 +64,14 @@ function PosSite() {
           landing still need the gap. */}
       <main>
         <Routes>
-          <Route path="/" element={<PosLanding />} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<PosLoading />}>
+                <PosLanding />
+              </Suspense>
+            }
+          />
           <Route path="/contact" element={<div className="pt-20"><Contact /></div>} />
           {/* the POS site has no other pages — send strays to the pitch */}
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -67,10 +93,26 @@ function MainSite() {
           {/* the POS landing is reachable here too, so it can be previewed
               without the subdomain. The negative margin cancels the padding
               above, so the preview matches what pos.mklabs.co.zw serves. */}
-          <Route path="/pos" element={<div className="-mt-20"><PosLanding /></div>} />
+          <Route
+            path="/pos"
+            element={
+              <div className="-mt-20">
+                <Suspense fallback={<PosLoading />}>
+                  <PosLanding />
+                </Suspense>
+              </div>
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<AdminLoading />}>
+                <Admin />
+              </Suspense>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
