@@ -107,7 +107,10 @@ Also fixed: the `*.png` / `*.webp` cache rules in `_headers` were invalid patter
 - B2 share theme logic via a `useTheme` hook used by both `Nav` and `PosNav`.
 - B3 guard all `localStorage` access.
 
-### Phase 4 — Admin robustness (🟡, ~½ day)
+### Phase 4 — Admin robustness (🟡, ~½ day) — ✅ done
+
+Version = fingerprint of the stored KV text, so existing data needed no migration; last editor and time are kept in KV metadata.
+
 - A7 version/ETag on promotions; reject stale PUTs with 409; reject duplicate ids.
 - B5 delete confirmation + `beforeunload` guard for unsaved changes.
 

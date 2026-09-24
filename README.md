@@ -298,6 +298,16 @@ home page never shows an empty "Offers" heading.
 
 Promotions appear on the home page and on the POS landing page.
 
+**Two people editing at once.** Every save names the version it was edited
+from. If someone else saved in the meantime, nothing is overwritten: the
+dashboard says who saved and when, and offers **Load their version** or
+**Keep mine and save**. (Cloudflare KV takes up to a minute to sync between
+locations, so two saves within that minute from different places can still
+collide — rare for a small team.)
+
+The dashboard also asks before deleting a promotion, and warns before you
+close, reload or leave the page with unsaved changes.
+
 ### Setup — two things, both one-off
 
 **1. Storage (Cloudflare KV)**
