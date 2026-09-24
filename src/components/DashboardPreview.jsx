@@ -31,7 +31,7 @@ export default function DashboardPreview({ dashboard, logo }) {
               key={stat.label}
               className="rounded-xl border border-night/8 bg-lavender/30 p-3 dark:border-white/10 dark:bg-white/5"
             >
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-night/50 dark:text-lavender/50">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-night/55 dark:text-lavender/50">
                 {stat.label}
               </div>
               <div

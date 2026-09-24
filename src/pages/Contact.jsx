@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <>
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
-      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36">
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36 short:pb-10 short:pt-24">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
@@ -34,7 +34,7 @@ export default function Contact() {
                 </div>
                 <div className="mt-2 grid gap-1">
                   {contact.phones.map((phone) => (
-                    <a key={phone.tel} href={`tel:${phone.tel}`} className="text-lg font-bold hover:underline">
+                    <a key={phone.tel} href={`tel:${phone.tel}`} className="inline-flex min-h-[44px] items-center text-lg font-bold hover:underline">
                       {phone.label}
                     </a>
                   ))}
@@ -59,7 +59,7 @@ export default function Contact() {
                   <div className="text-[11px] font-bold uppercase tracking-wider text-night/45 dark:text-lavender/45">
                     {index === 0 ? 'General enquiries' : 'Technical support'}
                   </div>
-                  <a href={`mailto:${email.address}`} className="mt-1.5 block text-base font-bold hover:underline">
+                  <a href={`mailto:${email.address}`} className="mt-0.5 flex min-h-[44px] items-center text-base font-bold hover:underline">
                     {email.address}
                   </a>
                   <p className="mt-1 text-sm text-night/55 dark:text-lavender/55">{email.note}</p>

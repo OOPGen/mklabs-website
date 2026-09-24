@@ -39,7 +39,7 @@ export default function SocialRail() {
   return (
     <div className="pointer-events-none absolute inset-y-0 left-2 z-20 hidden items-center xl:flex">
       <div className="pointer-events-auto flex flex-col items-center gap-5">
-        <span className="text-[10px] font-bold uppercase tracking-[0.32em] text-lavender/45 [writing-mode:vertical-rl] rotate-180">
+        <span className="text-[11px] font-bold uppercase tracking-[0.32em] text-lavender/45 [writing-mode:vertical-rl] rotate-180">
           Our channels
         </span>
 

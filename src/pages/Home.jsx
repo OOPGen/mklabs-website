@@ -97,14 +97,14 @@ export default function Home() {
             height={835}
             fetchPriority="high"
             decoding="async"
-            className="hero-in absolute right-0 top-0 h-[70svh] w-full object-cover object-[44%_28%] sm:h-full lg:w-[64%] lg:object-[50%_32%]"
+            className="hero-in absolute right-0 top-[-9svh] h-[68svh] w-full object-cover object-[44%_28%] wide:top-0 wide:h-full wide:w-[64%] wide:object-[50%_32%]"
           />
           {/* phone: the picture fades out beneath the doorway, where the words begin */}
-          <div className="absolute inset-x-0 top-[34svh] h-[40svh] bg-gradient-to-b from-transparent to-[#020106] sm:hidden" />
-          {/* tablet: the picture spans the width, so the left side darkens under the copy */}
-          <div className="absolute inset-0 hidden bg-gradient-to-r from-[#020106] via-[#020106]/75 to-transparent sm:block lg:hidden" />
+          <div className="absolute inset-x-0 top-[24svh] h-[36svh] bg-gradient-to-b from-transparent to-[#020106] wide:hidden" />
           {/* desktop: the picture's left edge melts into the black beside it */}
-          <div className="absolute inset-y-0 left-[36%] hidden w-[24%] bg-gradient-to-r from-[#020106] to-transparent lg:block" />
+          <div className="absolute inset-y-0 left-[36%] hidden w-[24%] bg-gradient-to-r from-[#020106] to-transparent wide:block" />
+          {/* below laptop width the words overlap the picture more, so shade it further */}
+          <div className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-[#020106] via-[#020106]/80 to-transparent wide:block lg:hidden" />
           {/* the top stays dark under the clear bar */}
           <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#020106]/80 to-transparent" />
           {/* every size: the bottom sinks into the page */}
@@ -113,11 +113,11 @@ export default function Home() {
           <div className="orb-a absolute -bottom-[20%] -left-[15%] h-[min(640px,110vw)] w-[min(640px,110vw)] rounded-full bg-[radial-gradient(circle,rgba(116,67,247,0.22),transparent_68%)] blur-3xl" />
         </div>
 
-        <Container className="relative flex flex-1 flex-col justify-end pb-10 pt-[46svh] sm:justify-center sm:pt-32 lg:pb-16">
+        <Container className="relative flex flex-1 flex-col justify-end pb-10 pt-[38svh] wide:justify-center wide:pt-32 short:pb-6 short:pt-24 lg:pb-16">
           <div className="max-w-2xl">
             <Reveal
               as="span"
-              className="glass inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-white/85"
+              className="glass inline-flex items-center gap-2.5 rounded-full short:hidden border border-white/12 bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-white/85"
             >
               <span className="h-2 w-2 rounded-full bg-cyan shadow-[0_0_12px] shadow-cyan" />
               Bulawayo · Available for new projects
@@ -126,17 +126,17 @@ export default function Home() {
             <Reveal
               as="h1"
               delay={80}
-              className="mt-6 text-[42px] font-bold leading-[1.02] tracking-[-0.02em] sm:text-6xl lg:text-[80px]"
+              className="mt-6 text-[40px] font-bold leading-[1.02] tracking-[-0.02em] max-[359px]:text-[34px] sm:text-6xl lg:text-[80px] short:mt-4 short:text-[40px]"
             >
               Technology that <span className="logo-gradient-text">moves your business</span> forward.
             </Reveal>
 
-            <Reveal as="p" delay={180} className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
+            <Reveal as="p" delay={180} className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg short:mt-3 short:max-w-md short:text-sm">
               MKLabs builds point-of-sale, accounting, school and lodge software — plus the websites,
               networks and support behind them — for organisations across Zimbabwe.
             </Reveal>
 
-            <Reveal delay={260} className="mt-9 flex flex-wrap gap-3">
+            <Reveal delay={260} className="mt-9 flex flex-wrap gap-3 short:mt-5">
               <Button to="/products" variant="brand">
                 Explore our products <Icon name="arrow" className="h-4 w-4" />
               </Button>
@@ -150,7 +150,7 @@ export default function Home() {
           <Reveal delay={600} className="absolute bottom-16 right-10 hidden lg:block xl:right-16">
             <ScrollCue />
           </Reveal>
-          <Reveal delay={400} className="mt-12 lg:hidden">
+          <Reveal delay={400} className="mt-12 lg:hidden short:hidden">
             <ScrollCue />
           </Reveal>
         </Container>
@@ -174,7 +174,7 @@ export default function Home() {
                 </span>
                 <span className="min-w-0">
                   <span className="block text-sm font-semibold leading-snug text-white">{service.title}</span>
-                  <span className="mt-0.5 hidden text-xs text-white/50 sm:block">{service.short}</span>
+                  <span className="mt-0.5 hidden text-xs text-white/50 sm:block lg:hidden xl:block">{service.short}</span>
                 </span>
               </Link>
             ))}

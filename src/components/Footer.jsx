@@ -3,7 +3,7 @@ import { products } from '../data/products.js'
 import { contact, site, waLink } from '../data/site.js'
 import Icon from './Icon.jsx'
 
-const linkClass = 'block py-1.5 text-sm text-white/55 transition-colors hover:text-white'
+const linkClass = 'flex min-h-[44px] items-center text-sm text-white/55 transition-colors hover:text-white pointer-fine:lg:min-h-0 pointer-fine:lg:py-1.5'
 const headingClass = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40'
 
 export default function Footer() {
@@ -59,15 +59,15 @@ export default function Footer() {
           {/* contact */}
           <div>
             <div className={headingClass}>Get in touch</div>
-            <div className="mt-4 grid gap-2.5 text-sm">
+            <div className="mt-4 grid gap-0 text-sm pointer-fine:lg:gap-2.5">
               {contact.phones.map((phone) => (
-                <a key={phone.tel} href={`tel:${phone.tel}`} className="flex items-center gap-3 text-white/70 transition-colors hover:text-white">
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="flex min-h-[44px] items-center gap-3 text-white/70 transition-colors hover:text-white pointer-fine:lg:min-h-0">
                   <Icon name="phone" className="h-4 w-4 text-cyan" />
                   {phone.label}
                 </a>
               ))}
               {contact.emails.map((email) => (
-                <a key={email.address} href={`mailto:${email.address}`} className="flex items-center gap-3 text-white/70 transition-colors hover:text-white">
+                <a key={email.address} href={`mailto:${email.address}`} className="flex min-h-[44px] items-center gap-3 text-white/70 transition-colors hover:text-white pointer-fine:lg:min-h-0">
                   <Icon name="mail" className="h-4 w-4 text-cyan" />
                   {email.address}
                 </a>

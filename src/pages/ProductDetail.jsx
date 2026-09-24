@@ -24,12 +24,12 @@ export default function ProductDetail() {
     <>
       {/* ---------------------------------------------------------- HERO */}
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
-      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-14 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36">
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-14 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36 short:pb-10 short:pt-24">
         <AmbientOffice intensity="strong" src={product.clientImage} />
 
         <Container className="relative">
           <Reveal as="nav" className="flex items-center gap-2 text-sm text-lavender/50">
-            <Link to="/products" className="transition-colors hover:text-lavender">
+            <Link to="/products" className="-my-3 -ml-2 inline-flex min-h-[44px] items-center px-2 transition-colors hover:text-lavender">
               Products
             </Link>
             <span>/</span>

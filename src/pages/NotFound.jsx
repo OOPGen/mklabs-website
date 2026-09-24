@@ -4,7 +4,7 @@ import { Container } from '../components/Section.jsx'
 
 export default function NotFound() {
   return (
-    <section className="relative -mt-20 overflow-hidden bg-void px-5 pb-28 pt-48 text-center text-lavender sm:pb-40 sm:pt-60">
+    <section className="relative -mt-20 overflow-hidden bg-void px-5 pb-28 pt-48 text-center text-lavender sm:pb-40 sm:pt-60 short:pb-12 short:pt-28">
       <BrandGlow strength="strong" />
       <Container className="relative">
         <div className="logo-gradient-text text-7xl font-bold sm:text-8xl">404</div>

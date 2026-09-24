@@ -72,7 +72,7 @@ export default function Nav() {
 
   /* the active page gets the logo's gradient as a short bar under its label */
   const navLinkClass = ({ isActive }) =>
-    `relative px-3.5 py-2 text-sm font-medium transition-colors after:absolute after:inset-x-3.5 after:-bottom-1 after:h-0.5 after:rounded-full after:transition-opacity ${
+    `relative flex min-h-[44px] items-center px-3.5 text-sm font-medium transition-colors after:absolute after:inset-x-3.5 after:bottom-1.5 after:h-0.5 after:rounded-full after:transition-opacity ${
       isActive ? 'text-white after:logo-gradient after:opacity-100' : 'text-white/70 after:opacity-0 hover:text-white'
     }`
 
@@ -118,7 +118,7 @@ export default function Nav() {
                 onClick={() => setProductsOpen((open) => !open)}
                 aria-expanded={productsOpen}
                 aria-haspopup="true"
-                className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium transition-colors hover:text-white ${
+                className={`flex min-h-[44px] items-center gap-1.5 px-3.5 text-sm font-medium transition-colors hover:text-white ${
                   productsOpen || location.pathname.startsWith('/products') ? 'text-white' : 'text-white/70'
                 }`}
               >

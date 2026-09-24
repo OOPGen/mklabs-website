@@ -11,7 +11,7 @@ export default function Products() {
   return (
     <>
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
-      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40">
+      <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40 short:pb-10 short:pt-24">
         <AmbientOffice intensity="strong" />
         <Container className="relative">
           <SectionHead
