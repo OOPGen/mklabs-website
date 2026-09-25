@@ -17,7 +17,7 @@ export default function DashboardPreview({ dashboard, logo }) {
           {logo && <Logo src={logo} size="xs" />}
           <span className="truncate text-[13px] font-bold">{dashboard.title}</span>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           {dashboard.live}
         </span>
@@ -31,18 +31,18 @@ export default function DashboardPreview({ dashboard, logo }) {
               key={stat.label}
               className="rounded-xl border border-night/8 bg-lavender/30 p-3 dark:border-white/10 dark:bg-white/5"
             >
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-night/55 dark:text-lavender/50">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-night/65 dark:text-lavender/50">
                 {stat.label}
               </div>
               <div
                 className={`mt-1 text-base font-bold leading-tight sm:text-lg ${
-                  stat.good ? 'text-emerald-600 dark:text-emerald-400' : ''
-                } ${stat.warn ? 'text-amber-600 dark:text-amber-400' : ''}`}
+                  stat.good ? 'text-emerald-700 dark:text-emerald-400' : ''
+                } ${stat.warn ? 'text-amber-700 dark:text-amber-400' : ''}`}
               >
                 {stat.value}
               </div>
               {stat.trend && (
-                <div className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">▲ {stat.trend}</div>
+                <div className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">▲ {stat.trend}</div>
               )}
             </div>
           ))}
@@ -71,7 +71,7 @@ export default function DashboardPreview({ dashboard, logo }) {
               className="flex items-center justify-between gap-3 rounded-xl border border-night/8 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-white/5"
             >
               <span className="truncate text-[13px] font-semibold">{item.name}</span>
-              <span className="shrink-0 text-[11px] text-night/55 dark:text-lavender/55">{item.meta}</span>
+              <span className="shrink-0 text-[11px] text-night/65 dark:text-lavender/55">{item.meta}</span>
             </div>
           ))}
         </div>

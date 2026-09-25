@@ -4,7 +4,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 
 export default [
-  { ignores: ['dist', '.wrangler'] },
+  { ignores: ['dist', 'dist-server', '.wrangler'] },
 
   // the React app
   {

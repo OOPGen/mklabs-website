@@ -12,9 +12,16 @@ export const products = [
     site: { url: 'https://pos.mklabs.co.zw', label: 'pos.mklabs.co.zw' },
     category: 'Point of sale',
     icon: '🛒',
-    logo: '/logo-pos.png',
+    logo: '/logo-pos.webp',
     accent: '#4B0082',
     tagline: 'Sell fast. Even when the internet drops.',
+    // search: the phrase people type, and this page's title and description
+    seo: {
+      keyword: 'POS system',
+      title: 'MKLabs POS — Point of Sale & Stock System for Zimbabwe',
+      description:
+        'Offline-first POS system for shops, supermarkets, hardware stores and restaurants in Zimbabwe. Sales, stock and daily takings in one place — built in Bulawayo by MKLabs.',
+    },
     summary:
       'A point-of-sale and business management system built for Zimbabwean retail. It keeps working offline and syncs the moment your connection comes back.',
     clientImage: '/client-pos-cashier.webp',
@@ -51,9 +58,16 @@ export const products = [
     name: 'FinanceFlow',
     category: 'Accounting & finance',
     icon: '💰',
-    logo: '/logo-financeflow.png',
+    logo: '/logo-financeflow.webp',
     accent: '#191970',
     tagline: 'Know exactly where your money is going.',
+    // search: the phrase people type, and this page's title and description
+    seo: {
+      keyword: 'accounting software',
+      title: 'FinanceFlow — Accounting Software for Zimbabwe | MKLabs',
+      description:
+        'FinanceFlow is accounting and financial reporting software for Zimbabwean businesses: invoices, expenses and real-time reports in one dashboard. Built in Bulawayo by MKLabs.',
+    },
     summary:
       'Accounting, financial tracking and reporting in one dashboard — so you can make decisions from real numbers instead of guesswork.',
     clientImage: '/client-financeflow-boardroom.webp',
@@ -90,9 +104,16 @@ export const products = [
     name: 'LearnCloud',
     category: 'School management',
     icon: '🎓',
-    logo: '/logo-learncloud.png',
+    logo: '/logo-learncloud.webp',
     accent: '#6495ED',
     tagline: 'Run the whole school from one screen.',
+    // search: the phrase people type, and this page's title and description
+    seo: {
+      keyword: 'school management system',
+      title: 'LearnCloud — School Management System for Zimbabwe | MKLabs',
+      description:
+        'LearnCloud is a school management system for Zimbabwe: students, attendance, results, report cards and fees in one platform. Built in Bulawayo by MKLabs.',
+    },
     summary:
       'A complete digital platform for schools — students, academics, attendance, results and fees, all connected instead of scattered across registers and spreadsheets.',
     clientImage: '/client-learncloud-school.webp',
@@ -129,9 +150,16 @@ export const products = [
     name: 'LodgeCloud',
     category: 'Hospitality',
     icon: '🏨',
-    logo: '/logo-lodgecloud.png',
+    logo: '/logo-lodgecloud.webp',
     accent: '#A78BFA',
     tagline: 'Every room, every booking, one board.',
+    // search: the phrase people type, and this page's title and description
+    seo: {
+      keyword: 'lodge and hotel management software',
+      title: 'LodgeCloud — Lodge & Hotel Management Software | MKLabs',
+      description:
+        'LodgeCloud is lodge and hotel management software for Zimbabwe: bookings, room status, guests and occupancy on one screen. Built in Bulawayo by MKLabs.',
+    },
     summary:
       'Bookings, room status, guests and occupancy for lodges and hotels — replacing the reception diary with a screen anyone on shift can read.',
     clientImage: '/client-lodgecloud-lodge.webp',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { onRequest as apiMiddleware } from '../functions/api/_middleware.js'
-import { pageSecurityHeaders } from '../functions/_lib/security-headers.js'
+import { pageSecurityHeaders, pageSecurityHeadersFor } from '../functions/_lib/security-headers.js'
 
 describe('page security headers', () => {
   const csp = pageSecurityHeaders['Content-Security-Policy']
@@ -18,6 +18,15 @@ describe('page security headers', () => {
 
   it('serves fonts only from the site itself', () => {
     expect(csp).toContain("font-src 'self';")
+  })
+
+  it('only allows Google Analytics when a Measurement ID is configured', () => {
+    expect(csp).not.toContain('googletagmanager')
+    const withGa = pageSecurityHeadersFor({ VITE_GA_MEASUREMENT_ID: 'G-ABC123XYZ' })['Content-Security-Policy']
+    expect(withGa).toMatch(/script-src [^;]*https:\/\/\*\.googletagmanager\.com/)
+    expect(withGa).toMatch(/connect-src [^;]*https:\/\/\*\.google-analytics\.com/)
+    // a malformed value never loosens the policy
+    expect(pageSecurityHeadersFor({ VITE_GA_MEASUREMENT_ID: 'x; script-src *' })['Content-Security-Policy']).toBe(csp)
   })
 })
 

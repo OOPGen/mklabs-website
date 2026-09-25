@@ -10,6 +10,7 @@ import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
 import SocialRail from '../components/SocialRail.jsx'
+import { photoSrcSet } from '../components/responsive.js'
 
 const demoLink = waLink('Hello MKLabs! I would like a demo of MKLabs POS for my shop.')
 
@@ -30,7 +31,7 @@ const promises = [
     body: 'Every sale updates your stock, with a warning before a fast mover runs out.',
     tone: 'bg-purple text-white ring-1 ring-iris/30',
     rule: 'bg-white/40',
-    muted: 'text-white/75',
+    muted: 'text-white/90',
   },
   {
     title: 'Running the same day',
@@ -73,7 +74,7 @@ export default function PosLanding() {
         id="top"
         className="hero-compact relative flex min-h-svh flex-col overflow-hidden bg-night px-5 pb-10 pt-28 text-lavender sm:px-8 sm:pb-14 sm:pt-32"
       >
-        <AmbientOffice src={pos.clientImage} />
+        <AmbientOffice src={pos.clientImage} priority />
         <SocialRail />
 
         <Container className="relative flex flex-1 flex-col justify-center">
@@ -83,7 +84,7 @@ export default function PosLanding() {
           <div className="mx-auto my-auto max-w-3xl text-center">
             <Reveal className="flex justify-center">
               <span className="hero-badge glass-dark inline-flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-4">
-                <Logo src={pos.logo} alt="" size="xs" className="hero-badge-mark" />
+                <Logo src={pos.logo} alt="" size="xs" className="hero-badge-mark" loading="eager" />
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-lilac">
                   Point of sale
                 </span>
@@ -95,6 +96,7 @@ export default function PosLanding() {
               delay={80}
               className="mt-7 text-[40px] font-bold leading-[1.02] tracking-tight sm:text-6xl xl:text-7xl"
             >
+              <span className="sr-only">MKLabs POS, the point of sale system for Zimbabwe: </span>
               Sell fast.
               <br />
               <span className="brand-gradient">Even offline.</span>
@@ -250,12 +252,14 @@ export default function PosLanding() {
             <Reveal direction="left">
               <img
                 src={pos.clientImage}
+                srcSet={photoSrcSet(pos.clientImage)}
+                sizes="(min-width: 1152px) 544px, (min-width: 1024px) 45vw, 100vw"
                 alt={pos.clientCaption}
                 loading="lazy"
                 decoding="async"
                 className="aspect-[4/3] w-full rounded-3xl border border-night/10 object-cover shadow-2xl shadow-night/15 dark:border-white/10"
               />
-              <p className="mt-3 text-sm text-night/55 dark:text-lavender/55">{pos.clientCaption}</p>
+              <p className="mt-3 text-sm text-night/65 dark:text-lavender/55">{pos.clientCaption}</p>
             </Reveal>
 
             <Reveal direction="right" delay={120}>

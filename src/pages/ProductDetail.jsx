@@ -10,6 +10,7 @@ import Logo from '../components/Logo.jsx'
 import Orbs from '../components/Orbs.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
+import { photoSrcSet } from '../components/responsive.js'
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -25,7 +26,7 @@ export default function ProductDetail() {
       {/* ---------------------------------------------------------- HERO */}
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
       <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-14 pt-32 text-lavender sm:px-8 sm:pb-20 sm:pt-36 short:pb-10 short:pt-24">
-        <AmbientOffice intensity="strong" src={product.clientImage} />
+        <AmbientOffice intensity="strong" src={product.clientImage} priority />
 
         <Container className="relative">
           <Reveal as="nav" className="flex items-center gap-2 text-sm text-lavender/50">
@@ -39,13 +40,17 @@ export default function ProductDetail() {
           <div className="mt-8 grid items-center gap-10 lg:grid-cols-2">
             <div>
               <Reveal className="flex items-center gap-3">
-                <Logo src={product.logo} size="md" />
+                <Logo src={product.logo} size="md" loading="eager" />
                 <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-lilac">
                   {product.category}
                 </span>
               </Reveal>
 
               <Reveal as="h1" delay={80} className="mt-6 text-4xl font-bold leading-[1.06] tracking-tight sm:text-5xl">
+                {/* the product and what it is, as shown in the badge above */}
+                <span className="sr-only">
+                  {product.name}, {product.seo.keyword} for Zimbabwe:{' '}
+                </span>
                 {product.tagline}
               </Reveal>
 
@@ -83,12 +88,14 @@ export default function ProductDetail() {
             <Reveal direction="left">
               <img
                 src={product.clientImage}
+                srcSet={photoSrcSet(product.clientImage)}
+                sizes="(min-width: 1152px) 544px, (min-width: 1024px) 45vw, 100vw"
                 alt={product.clientCaption}
                 loading="lazy"
                 decoding="async"
                 className="aspect-[4/3] w-full rounded-3xl border border-night/10 object-cover shadow-2xl shadow-night/15 dark:border-white/10"
               />
-              <p className="mt-3 text-sm text-night/55 dark:text-lavender/55">{product.clientCaption}</p>
+              <p className="mt-3 text-sm text-night/65 dark:text-lavender/55">{product.clientCaption}</p>
             </Reveal>
 
             <Reveal direction="right" delay={120}>
@@ -186,7 +193,7 @@ export default function ProductDetail() {
                 <Logo src={item.logo} size="sm" />
                 <span className="min-w-0">
                   <span className="block text-[15px] font-bold">{item.name}</span>
-                  <span className="block truncate text-xs text-night/55 dark:text-lavender/55">{item.category}</span>
+                  <span className="block truncate text-xs text-night/65 dark:text-lavender/55">{item.category}</span>
                 </span>
                 <span className="ml-auto text-purple transition-transform group-hover:translate-x-1 dark:text-iris">→</span>
               </Link>

@@ -3,14 +3,14 @@ import useReducedMotion from './useReducedMotion.js'
 
 const items = [
   { logo: '/mklabs-logo-128.webp', label: 'MKLabs', tone: 'bare' },
-  { logo: '/logo-pos.png', label: 'MKLabs POS' },
-  { logo: '/logo-financeflow.png', label: 'FinanceFlow' },
-  { logo: '/logo-learncloud.png', label: 'LearnCloud' },
-  { logo: '/logo-lodgecloud.png', label: 'LodgeCloud' },
-  { logo: '/logo-software.png', label: 'Software Development' },
-  { logo: '/logo-website.png', label: 'Web Development' },
-  { logo: '/logo-cloud.png', label: 'Cloud & IT' },
-  { logo: '/logo-security.png', label: 'Security & Networking' },
+  { logo: '/logo-pos.webp', label: 'MKLabs POS' },
+  { logo: '/logo-financeflow.webp', label: 'FinanceFlow' },
+  { logo: '/logo-learncloud.webp', label: 'LearnCloud' },
+  { logo: '/logo-lodgecloud.webp', label: 'LodgeCloud' },
+  { logo: '/logo-software.webp', label: 'Software Development' },
+  { logo: '/logo-website.webp', label: 'Web Development' },
+  { logo: '/logo-cloud.webp', label: 'Cloud & IT' },
+  { logo: '/logo-security.webp', label: 'Security & Networking' },
 ]
 
 function Item({ item }) {

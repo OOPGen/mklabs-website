@@ -10,7 +10,14 @@ import useReducedMotion from './useReducedMotion.js'
  *
  * `cycle` slowly crossfades between the four scenes. With Reduce Motion on it
  * holds the first frame, which still looks finished — nothing disappears.
+ *
+ * Under that much blur a full-size photo is wasted bytes, so each scene is
+ * drawn from a small "-ambient" copy of the picture in /public. `priority`
+ * marks the backdrop of a page's opening header, which is usually the
+ * largest thing on screen at first paint.
  */
+
+const ambient = (src) => src.replace(/\.webp$/, '-ambient.webp')
 
 const scenes = [
   { src: '/client-financeflow-boardroom.webp', label: 'boardroom' },
@@ -24,6 +31,7 @@ export default function AmbientOffice({
   interval = 7500,
   intensity = 'normal',
   src,
+  priority = false,
 }) {
   const reduced = useReducedMotion()
   const [index, setIndex] = useState(0)
@@ -49,9 +57,10 @@ export default function AmbientOffice({
       {frames.map((scene, position) => (
         <img
           key={scene.src}
-          src={scene.src}
+          src={ambient(scene.src)}
           alt=""
           loading={position === 0 ? 'eager' : 'lazy'}
+          fetchPriority={position === 0 && priority ? 'high' : undefined}
           decoding="async"
           className="absolute inset-0 h-full w-full scale-110 object-cover transition-opacity duration-[2500ms] ease-in-out"
           style={{

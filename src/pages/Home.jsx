@@ -63,7 +63,6 @@ function ScrollCue({ className = '' }) {
     <a
       href="#services"
       className={`group inline-flex items-center gap-5 text-white/80 transition-colors hover:text-white ${className}`}
-      aria-label="Scroll to what we do"
     >
       <span className="relative block h-14 w-px overflow-hidden bg-white/15" aria-hidden="true">
         <span className="scroll-cue-light absolute left-0 top-0 block h-6 w-px bg-gradient-to-b from-transparent via-cyan to-transparent" />
@@ -73,6 +72,7 @@ function ScrollCue({ className = '' }) {
         <span className="mt-2 block text-sm tracking-wide text-white/55 transition-colors group-hover:text-white/75">
           The future moves one step at a time.
         </span>
+        <span className="sr-only"> Go to what we do.</span>
       </span>
     </a>
   )
@@ -92,7 +92,7 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <img
             src="/hero-portal.webp"
-            srcSet="/hero-portal-640.webp 640w, /hero-portal.webp 1024w"
+            srcSet="/hero-portal-640.webp 640w, /hero-portal-768.webp 768w, /hero-portal.webp 1024w"
             sizes="(min-width: 1024px) 64vw, (orientation: landscape) and (min-width: 640px) 64vw, 100vw"
             alt=""
             width={1024}
@@ -132,6 +132,9 @@ export default function Home() {
               delay={80}
               className="mt-6 text-[40px] font-bold leading-[1.02] tracking-[-0.02em] max-[359px]:text-[34px] sm:text-6xl lg:text-[80px] short:mt-4 short:text-[40px]"
             >
+              {/* what the page is, for search engines and screen readers; the
+                  headline carries it for everyone else */}
+              <span className="sr-only">MKLabs, software development company in Bulawayo, Zimbabwe: </span>
               Technology that <span className="logo-gradient-text">moves your business</span> forward.
             </Reveal>
 

@@ -1,0 +1,63 @@
+name: Backup
+
+# Nightly, encrypted copy of the promotions stored in Cloudflare KV — the only
+# data the site keeps outside this repository. The code itself is backed up by
+# git, and every Cloudflare Pages deployment can be rolled back from the
+# dashboard. Restore steps: docs/launch-checklist.md → "Backups".
+#
+# Until the secrets below are added (Settings → Secrets and variables →
+# Actions) the job only reports that backups are not configured.
+on:
+  schedule:
+    - cron: '17 1 * * *' # 03:17 in Bulawayo
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  promotions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - name: Check configuration
+        id: config
+        run: |
+          if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ACCOUNT_ID" ] || [ -z "$CF_KV_NAMESPACE_ID" ] || [ -z "$BACKUP_PASSPHRASE" ]; then
+            echo "::warning::Backups are not configured yet: add CF_API_TOKEN, CF_ACCOUNT_ID, CF_KV_NAMESPACE_ID and BACKUP_PASSPHRASE as repository secrets."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.config.outputs.ready == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.config.outputs.ready == 'true'
+        with:
+          node-version-file: .nvmrc
+
+      # the repository is public, so the copy is encrypted before it is stored:
+      # it holds the name of whoever last saved the promotions
+      - name: Export and encrypt
+        if: steps.config.outputs.ready == 'true'
+        run: |
+          umask 077
+          node scripts/kv-backup.js export > promos.json
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt \
+            -in promos.json -out "promos-$(date -u +%Y-%m-%d).json.enc" -pass env:BACKUP_PASSPHRASE
+          rm promos.json
+
+      - uses: actions/upload-artifact@v4
+        if: steps.config.outputs.ready == 'true'
+        with:
+          name: promotions-backup-${{ github.run_id }}
+          path: promos-*.json.enc
+          retention-days: 35
+          if-no-files-found: error

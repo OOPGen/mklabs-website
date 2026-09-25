@@ -4,7 +4,7 @@ export const services = [
     title: 'Software Development',
     icon: 'code',
     short: 'Built around how you work',
-    logo: '/logo-software.png',
+    logo: '/logo-software.webp',
     blurb: 'Custom systems built on modern technology, designed around how you actually work.',
   },
   {
@@ -12,7 +12,7 @@ export const services = [
     title: 'Website Development',
     icon: 'globe',
     short: 'Fast on any connection',
-    logo: '/logo-website.png',
+    logo: '/logo-website.webp',
     blurb: 'Fast, responsive websites that load quickly even on a slow Zimbabwean connection.',
   },
   {
@@ -20,7 +20,7 @@ export const services = [
     title: 'Security & Networking',
     icon: 'shield',
     short: 'CCTV, Wi-Fi and LAN',
-    logo: '/logo-security.png',
+    logo: '/logo-security.webp',
     blurb: 'CCTV, Wi-Fi and LAN installation, configuration and support across Bulawayo.',
   },
   {
@@ -28,7 +28,7 @@ export const services = [
     title: 'Cloud & IT Solutions',
     icon: 'cloud',
     short: 'Hosting, backups, migrations',
-    logo: '/logo-cloud.png',
+    logo: '/logo-cloud.webp',
     blurb: 'Hosting, automated backups and migrations, with your data kept safe and available.',
   },
   {

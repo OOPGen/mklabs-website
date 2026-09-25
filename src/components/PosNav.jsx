@@ -78,7 +78,7 @@ export default function PosNav() {
         >
           {/* brand */}
           <a href="#top" className="flex min-h-[44px] shrink-0 items-center gap-2.5" aria-label="MKLabs POS home">
-            <Logo src={pos.logo} alt="MKLabs POS" size="xs" />
+            <Logo src={pos.logo} alt="MKLabs POS" size="xs" loading="eager" />
             <span className="text-[15px] font-bold text-white">
               MKLabs <span className="text-lilac">POS</span>
             </span>
@@ -132,6 +132,7 @@ export default function PosNav() {
           menuOpen ? 'translate-y-0' : 'pointer-events-none -translate-y-full'
         }`}
         aria-hidden={!menuOpen}
+        inert={!menuOpen}
       >
         <nav className="flex flex-col">
           {links.map((link) => (

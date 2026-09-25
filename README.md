@@ -109,9 +109,14 @@ git push
 /
 ├── index.html               Vite entry (meta tags, fonts)
 ├── vite.config.js
-├── .github/workflows/ci.yml  Lint, test and build on every PR and push to main
-├── tests/                   Vitest suites for Functions, SEO rules and headers
-├── scripts/prerender.js     After the build: one HTML file per route, 404.html, sitemaps
+├── .github/workflows/ci.yml  Lint, test, build and check the build on every PR and push to main
+├── .github/workflows/backup.yml  Nightly encrypted backup of the promotions (KV)
+├── .github/dependabot.yml   Weekly dependency update PRs
+├── docs/launch-checklist.md The one-off account steps: Search Console, Bing, Business Profile…
+├── tests/                   Vitest suites for Functions, SEO rules, schema and headers
+├── scripts/prerender.js     After the build: each route's full HTML, 404.html, sitemaps
+├── scripts/check-build.js   Checks the built pages the way a search engine reads them
+├── scripts/kv-backup.js     Export / restore the promotions KV namespace
 ├── functions/
 │   ├── index.js             Serves the POS page at / on pos.mklabs.co.zw
 │   ├── api/contact.js       The enquiry mailer
@@ -128,10 +133,13 @@ git push
 │   ├── manifest.json
 │   └── robots.txt
 ├── src/
-│   ├── main.jsx             React entry
+│   ├── main.jsx             Browser entry — hydrates the prerendered HTML
+│   ├── entry-server.jsx     Build-time renderer used by scripts/prerender.js
 │   ├── App.jsx              Routes
+│   ├── analytics.js         Optional Google Analytics 4 (off until configured)
 │   ├── index.css            Tailwind theme, brand palette, motion
-│   ├── data/                ← all site content (seo.js: every page title and description)
+│   ├── data/                ← all site content (seo.js: every page title and description;
+│   │                          schema.js: structured data)
 │   ├── components/          Nav, Footer, Reveal, Marquee, forms…
 │   └── pages/               Home, Products, ProductDetail, About, Contact
 ```
@@ -148,25 +156,38 @@ Every page's title, description and canonical address live in
 **`src/data/seo.js`**. Product pages are generated from `products.js`, so a new
 product gets correct tags automatically.
 
-`npm run build` runs `scripts/prerender.js` after Vite. It writes a separate
-HTML file for each route (`dist/about.html`, `dist/products/pos.html`, …)
-carrying that page's tags, so WhatsApp, Facebook and LinkedIn previews — which
-never run JavaScript — show the right page. It also writes:
+`npm run build` builds the app, builds `src/entry-server.jsx` for Node, then
+runs `scripts/prerender.js`. It writes a separate HTML file for each route
+(`dist/about.html`, `dist/products/pos.html`, …) carrying that page's tags,
+its **structured data** (`src/data/schema.js` — MKLabs as a Bulawayo business,
+each product as software, breadcrumbs) and its **full content as React renders
+it**. Search engines index the content without running JavaScript, WhatsApp,
+Facebook and LinkedIn previews show the right page, and visitors see the page
+before the app has downloaded; the browser then *hydrates* that HTML
+(`src/main.jsx`) rather than drawing it again. It also writes:
 
 - **`404.html`** — its presence tells Cloudflare Pages to return a real 404
   status for unknown URLs instead of a "200 OK" copy of the home page
 - **`sitemap.xml`** and **`sitemap-pos.xml`** — rebuilt on every deploy
 
+- **`pos-host.html`** — the POS pitch as pos.mklabs.co.zw shows it
+
 A new route needs an entry in `seo.js`; without one it still works for
 visitors but answers with a 404 status.
+
+Code that renders a page runs at build time too, in Node: keep `window`,
+`document` and `localStorage` inside effects and event handlers, and anything
+that must differ between the build and the browser (the theme, the year)
+hydration-safe. `node scripts/check-build.js` (run by CI) fails the build if a
+page loses its title, canonical, h1, content or structured data.
 
 `/pos` is a preview of pos.mklabs.co.zw, so its canonical points at the
 subdomain. `functions/index.js` makes the subdomain's root return the POS page's
 HTML (the rest of the site is plain static files).
 
-After deploying, submit both sitemaps in Google Search Console, and use
-[the Facebook sharing debugger](https://developers.facebook.com/tools/debug/)
-to refresh old link previews.
+Verifying the site with Google and Bing, submitting the sitemaps, analytics
+and the Google Business Profile are account steps only you can do — they are
+listed in **[docs/launch-checklist.md](docs/launch-checklist.md)**.
 
 ---
 
@@ -219,7 +240,12 @@ reports `prefers-reduced-motion: reduce` and:
 - the ecosystem marquee becomes a **static wrapped grid** of the same nine items
 - the ambient background orbs keep their gradient but stop drifting
 
-Nothing disappears — it simply stops moving. This was a real bug in the previous
+Nothing disappears — it simply stops moving.
+
+Scroll reveals also never depend on JavaScript: the prerendered HTML plays a
+pure-CSS entrance from the first paint (and stays visible if scripts never
+load). Once the app is running, anything below the fold is hidden again before
+the browser paints and fades in when scrolled to — see `Reveal.jsx`. This was a real bug in the previous
 build, where Reduce Motion left the page looking half-empty.
 
 Other mobile guarantees:
@@ -444,6 +470,9 @@ record is created for you.
 | `CONTACT_FROM` | Environment variable *(optional)* | Sender address |
 | `TURNSTILE_SECRET_KEY` | Environment variable *(optional)* | Spam check on the enquiry form |
 | `VITE_TURNSTILE_SITE_KEY` | Environment variable *(optional, build-time)* | Shows the Turnstile widget |
+| `VITE_GA_MEASUREMENT_ID` | Environment variable *(optional, build + Functions)* | Google Analytics 4 (`G-…`) |
+| `GOOGLE_SITE_VERIFICATION` | Environment variable *(optional, build-time)* | Search Console meta-tag verification |
+| `BING_SITE_VERIFICATION` | Environment variable *(optional, build-time)* | Bing Webmaster meta-tag verification |
 | `PROMOS` | KV namespace binding | Promotions storage |
 | `ACCESS_TEAM_DOMAIN` | Environment variable | Admin login |
 | `ACCESS_AUD` | Environment variable | Admin login |

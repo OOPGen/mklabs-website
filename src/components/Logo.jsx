@@ -13,12 +13,17 @@
  *      except `bare`, for the MKLabs logo, which is already a finished tile.
  */
 
+import { logoSrcSet } from './responsive.js'
+
 const sizes = {
   xs: 'h-9 w-9 rounded-lg p-1',
   sm: 'h-11 w-11 rounded-xl p-1',
   md: 'h-16 w-16 rounded-xl p-1.5',
   lg: 'h-24 w-20 rounded-2xl p-2',
 }
+
+/* the picture's width inside each tile, for choosing a file from the srcset */
+const renderedWidth = { xs: '28px', sm: '36px', md: '52px', lg: '64px' }
 
 const tones = {
   light: 'bg-white ring-1 ring-night/10',
@@ -27,13 +32,16 @@ const tones = {
   bare: '!p-0 !rounded-[22%]',
 }
 
-export default function Logo({ src, alt = '', size = 'sm', tone = 'light', className = '' }) {
+/** `loading="eager"` for a logo that is on screen as the page opens. */
+export default function Logo({ src, alt = '', size = 'sm', tone = 'light', className = '', loading = 'lazy' }) {
   return (
     <span className={`grid shrink-0 place-items-center overflow-hidden ${sizes[size]} ${tones[tone]} ${className}`}>
       <img
         src={src}
+        srcSet={logoSrcSet(src)}
+        sizes={logoSrcSet(src) && renderedWidth[size]}
         alt={alt}
-        loading="lazy"
+        loading={loading}
         decoding="async"
         className="h-full w-full object-contain"
       />

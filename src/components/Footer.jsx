@@ -5,7 +5,7 @@ import Icon from './Icon.jsx'
 import SocialLinks from './SocialLinks.jsx'
 
 const linkClass = 'flex min-h-[44px] items-center text-sm text-white/55 transition-colors hover:text-white pointer-fine:lg:min-h-0 pointer-fine:lg:py-1.5'
-const headingClass = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40'
+const headingClass = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55'
 
 export default function Footer() {
   return (
@@ -33,7 +33,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-7">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">Follow us</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55">Follow us</div>
               <SocialLinks className="mt-3" />
             </div>
           </div>
@@ -94,8 +94,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} {site.name} · {site.city}, {site.country} · {site.domain}</span>
+        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
+          {/* the year comes from the build until the app hydrates */}
+          <span suppressHydrationWarning>© {new Date().getFullYear()} {site.name} · {site.city}, {site.country} · {site.domain}</span>
           <span className="flex items-center gap-2">
             <Icon name="clock" className="h-3.5 w-3.5" />
             {site.hours}

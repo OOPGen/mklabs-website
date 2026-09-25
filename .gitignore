@@ -23,6 +23,8 @@ node_modules/
 
 # Build output
 dist/
+# build-time renderer used by scripts/prerender.js
+dist-server/
 
 # Local Cloudflare dev state (wrangler pages dev)
 .wrangler/
