@@ -28,6 +28,14 @@ describe('structuredDataFor', () => {
     expect(app.url).toBe('https://pos.mklabs.co.zw/')
   })
 
+  it('names MKLabs as the Zimbabwe company, apart from others with the same name', () => {
+    const graph = structuredDataFor('/')['@graph']
+    for (const type of ['WebSite', 'ProfessionalService']) {
+      const node = graph.find((entry) => [].concat(entry['@type']).includes(type))
+      expect(node.alternateName).toEqual(expect.arrayContaining(['MKLabs Zimbabwe', 'MKLabs Bulawayo']))
+    }
+  })
+
   it('never lists an empty social profile', () => {
     const org = structuredDataFor('/')['@graph'][0]
     for (const url of org.sameAs || []) expect(url).toMatch(/^https:\/\//)
