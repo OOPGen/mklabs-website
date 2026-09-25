@@ -13,12 +13,17 @@ import { getProduct, products } from './products.js'
 import { contact, founder, site, socials } from './site.js'
 
 const ORG_ID = `${MAIN_ORIGIN}/#organization`
+
+/* Other companies abroad share the name "MKLabs"; these tell search engines
+   which one this is. Google also uses them as the site's name in results. */
+const ALTERNATE_NAMES = ['MKLabs Zimbabwe', 'MKLabs Bulawayo', 'MK Labs']
 const WEBSITE_ID = `${MAIN_ORIGIN}/#website`
 
 const organization = {
   '@type': ['Organization', 'ProfessionalService'],
   '@id': ORG_ID,
   name: site.name,
+  alternateName: ALTERNATE_NAMES,
   url: `${MAIN_ORIGIN}/`,
   logo: { '@type': 'ImageObject', url: `${MAIN_ORIGIN}/icon-512.png`, width: 512, height: 512 },
   image: SHARE_IMAGE,
@@ -78,6 +83,7 @@ const website = {
   '@id': WEBSITE_ID,
   url: `${MAIN_ORIGIN}/`,
   name: site.name,
+  alternateName: ALTERNATE_NAMES,
   inLanguage: 'en-ZW',
   publisher: { '@id': ORG_ID },
 }
