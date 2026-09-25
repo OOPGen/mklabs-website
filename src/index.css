@@ -100,21 +100,28 @@
    a phone has Reduce Motion switched on.
    ============================================================ */
 
-/* scroll reveal */
+/* scroll reveal — see Reveal.jsx for the three phases */
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
+  --reveal-from: translate3d(0, 22px, 0);
   transition:
     opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
-.reveal[data-direction="left"]  { transform: translate3d(-24px, 0, 0); }
-.reveal[data-direction="right"] { transform: translate3d(24px, 0, 0); }
-.reveal[data-direction="zoom"]  { transform: scale(0.96); }
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+.reveal[data-direction="left"]  { --reveal-from: translate3d(-24px, 0, 0); }
+.reveal[data-direction="right"] { --reveal-from: translate3d(24px, 0, 0); }
+.reveal[data-direction="zoom"]  { --reveal-from: scale(0.96); }
+/* plays straight from the prerendered HTML, before any JavaScript */
+@keyframes reveal-in {
+  from { opacity: 0; transform: var(--reveal-from); }
+}
+.reveal.enter {
+  animation: reveal-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) both;
+}
+/* below the fold, waiting to be scrolled to */
+.reveal.armed {
+  opacity: 0;
+  transform: var(--reveal-from);
+  will-change: opacity, transform;
 }
 
 /* marquee */
@@ -147,6 +154,7 @@
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    animation: none !important;
   }
   .marquee-track,
   .orb-a,

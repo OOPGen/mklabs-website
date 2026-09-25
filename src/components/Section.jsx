@@ -29,30 +29,50 @@ export default function Section({
   )
 }
 
-/** Kicker + heading + optional lead, used at the top of most sections. */
-/** `level` is the heading element — 'h1' when this is the page's own title. */
+/**
+ * Kicker + heading + optional lead, used at the top of most sections.
+ * `level` is the heading element — 'h1' when this is the page's own title.
+ * A page title also takes in its kicker, so the h1 search engines read names
+ * what the page is about ("Contact MKLabs · Bulawayo, Zimbabwe") as well as
+ * the headline itself. It looks exactly the same either way.
+ */
 export function SectionHead({ kicker, title, lead, center = false, tone = 'light', level = 'h2' }) {
   const onDark = tone === 'dark' || tone === 'void'
   const muted = onDark ? 'text-lavender/70' : 'text-night/65 dark:text-lavender/70'
+  const pageTitle = level === 'h1'
+
+  const kickerPill = kicker && (
+    <Reveal
+      as="span"
+      className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide ${
+        onDark
+          ? 'border-white/15 bg-white/5 text-lilac'
+          : 'border-purple/15 bg-purple/5 text-purple dark:border-white/15 dark:bg-white/5 dark:text-lilac'
+      }`}
+    >
+      {kicker}
+    </Reveal>
+  )
+  const headingClass = 'mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]'
 
   return (
     <div className={`max-w-2xl ${center ? 'mx-auto text-center' : ''}`}>
-      {kicker && (
-        <Reveal
-          as="span"
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide ${
-            onDark
-              ? 'border-white/15 bg-white/5 text-lilac'
-              : 'border-purple/15 bg-purple/5 text-purple dark:border-white/15 dark:bg-white/5 dark:text-lilac'
-          }`}
-        >
-          {kicker}
-        </Reveal>
+      {pageTitle ? (
+        <h1>
+          {kickerPill}
+          {kicker && <span className="sr-only">: </span>}
+          <Reveal as="span" delay={80} className={`block ${headingClass}`}>
+            {title}
+          </Reveal>
+        </h1>
+      ) : (
+        <>
+          {kickerPill}
+          <Reveal as={level} delay={80} className={headingClass}>
+            {title}
+          </Reveal>
+        </>
       )}
-
-      <Reveal as={level} delay={80} className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[44px]">
-        {title}
-      </Reveal>
 
       {lead && (
         <Reveal as="p" delay={160} className={`mt-4 text-base leading-relaxed sm:text-lg ${muted}`}>

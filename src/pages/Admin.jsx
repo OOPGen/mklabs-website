@@ -225,7 +225,7 @@ export default function Admin() {
         </div>
 
         <div className="flex items-center gap-3">
-          {dirty && <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Unsaved changes</span>}
+          {dirty && <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">Unsaved changes</span>}
           <Button onClick={() => save()} disabled={saving || !dirty} className="disabled:opacity-50">
             {saving ? 'Saving…' : 'Save changes'}
           </Button>

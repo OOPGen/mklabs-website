@@ -6,6 +6,8 @@ import PosNav from './components/PosNav.jsx'
 import Footer from './components/Footer.jsx'
 import WhatsAppFab from './components/WhatsAppFab.jsx'
 import useSeo from './components/useSeo.js'
+import { isPosHost } from './host.js'
+import { trackPageView } from './analytics.js'
 
 import Home from './pages/Home.jsx'
 import Products from './pages/Products.jsx'
@@ -13,14 +15,6 @@ import ProductDetail from './pages/ProductDetail.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
-
-/**
- * pos.mklabs.co.zw serves the POS landing page from its own root.
- * Same deployment, same code — Cloudflare Pages points both custom domains at
- * this project and the hostname decides which site a visitor gets.
- */
-const isPosHost =
-  typeof window !== 'undefined' && /^pos\./i.test(window.location.hostname)
 
 /*
  * Split out of the main bundle: most visitors to mklabs.co.zw never open the
@@ -47,9 +41,11 @@ const AdminLoading = () => (
  * Every route change starts at the top of the new page, with its own title and
  * tags — unless the link names a section (/#services), which is scrolled to.
  */
-function RouteEffects() {
+function RouteEffects({ posHost }) {
   const { pathname, hash } = useLocation()
-  useSeo(pathname, { posHost: isPosHost })
+  useSeo(pathname, { posHost })
+  // after useSeo, so the page view carries the new page's title
+  useEffect(() => trackPageView(), [pathname])
 
   useEffect(() => {
     const target = hash && document.getElementById(decodeURIComponent(hash.slice(1)))
@@ -125,11 +121,12 @@ function MainSite() {
   )
 }
 
-export default function App() {
+/** `posHost` is only passed when prerendering; the browser reads the hostname. */
+export default function App({ posHost = isPosHost }) {
   return (
     <>
-      <RouteEffects />
-      {isPosHost ? <PosSite /> : <MainSite />}
+      <RouteEffects posHost={posHost} />
+      {posHost ? <PosSite /> : <MainSite />}
       <Footer />
       <WhatsAppFab />
     </>

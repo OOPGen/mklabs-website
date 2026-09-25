@@ -19,29 +19,29 @@ export const SHARE_IMAGE = `${MAIN_ORIGIN}/og-image.jpg`
 
 const pages = {
   '/': {
-    title: 'MKLabs | Software Development & Technology Solutions — Bulawayo, Zimbabwe',
+    title: 'MKLabs | Software Development Company in Bulawayo, Zimbabwe',
     description:
-      'MKLabs builds POS, accounting, school and lodge management software for businesses in Bulawayo, Zimbabwe. Custom software, websites, cloud, security and IT support.',
+      'MKLabs is a Bulawayo software company building POS, accounting, school and lodge management systems, plus custom software, websites, cloud and IT support across Zimbabwe.',
   },
   '/products': {
-    title: 'Products — POS, FinanceFlow, LearnCloud & LodgeCloud | MKLabs',
+    title: 'POS, Accounting, School & Lodge Software for Zimbabwe | MKLabs',
     description:
-      'Four systems from MKLabs: point of sale, accounting, school management and lodge management, built for Zimbabwe.',
+      'Four business systems built in Bulawayo for Zimbabwe: MKLabs POS, FinanceFlow accounting, LearnCloud school management and LodgeCloud lodge management.',
   },
   '/about': {
-    title: 'About MKLabs — Software company in Bulawayo',
+    title: 'About MKLabs — Software Company in Bulawayo, Zimbabwe',
     description:
-      'MKLabs builds practical software for businesses, schools and lodges in Bulawayo, Zimbabwe. Meet founder Michael Junior Jere.',
+      'MKLabs is a Bulawayo software development company building practical systems for businesses, schools and lodges in Zimbabwe. Meet founder Michael Junior Jere.',
   },
   '/contact': {
-    title: 'Contact MKLabs — Bulawayo, Zimbabwe',
+    title: 'Contact MKLabs — Software & IT Support in Bulawayo, Zimbabwe',
     description:
-      'Request a demo or a quote from MKLabs. WhatsApp 0786 233 766 or email info@mklabs.co.zw.',
+      'Request a demo or a quote from MKLabs in Bulawayo. Call or WhatsApp 0786 233 766, or email info@mklabs.co.zw. We reply within one working day.',
   },
   '/pos': {
-    title: 'MKLabs POS — Point of sale for Zimbabwean retail',
+    title: 'MKLabs POS — Offline Point of Sale System for Zimbabwe',
     description:
-      'Offline-first point of sale and stock management for shops in Bulawayo. Keeps selling when the internet drops. Book a free demo on WhatsApp.',
+      'Offline-first POS and stock management for shops, supermarkets and restaurants in Zimbabwe. Keeps selling when the internet drops. Book a free demo on WhatsApp.',
     // the POS landing's real home is its own subdomain; /pos is a preview
     canonical: `${POS_ORIGIN}/`,
   },
@@ -84,10 +84,7 @@ export function metaFor(path, { posHost = false } = {}) {
   if (productMatch) {
     const product = getProduct(productMatch[1])
     if (product) {
-      meta = {
-        title: `${product.name} — ${product.category} | MKLabs`,
-        description: product.summary,
-      }
+      meta = { title: product.seo.title, description: product.seo.description }
     }
   }
 

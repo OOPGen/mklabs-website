@@ -6,18 +6,19 @@ import AmbientOffice from '../components/AmbientOffice.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
+import { photoSrcSet } from '../components/responsive.js'
 
 export default function Products() {
   return (
     <>
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
       <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40 short:pb-10 short:pt-24">
-        <AmbientOffice intensity="strong" />
+        <AmbientOffice intensity="strong" priority />
         <Container className="relative">
           <SectionHead
             tone="dark"
             level="h1"
-            kicker="Product ecosystem"
+            kicker="Business software for Zimbabwe"
             title={<>One partner. <span className="logo-gradient-text">Four systems</span> that run a business.</>}
             lead="Each product solves one job properly. They share the same account, the same look and the same support line."
           />
@@ -26,6 +27,7 @@ export default function Products() {
 
       <Section>
         <Container>
+          <h2 className="sr-only">MKLabs products</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product, index) => (
               <Reveal key={product.slug} delay={index * 80}>
@@ -44,6 +46,8 @@ export default function Products() {
               >
                 <img
                   src={product.clientImage}
+                  srcSet={photoSrcSet(product.clientImage)}
+                  sizes="(min-width: 1152px) 544px, (min-width: 1024px) 45vw, 100vw"
                   alt={product.clientCaption}
                   loading="lazy"
                   decoding="async"

@@ -4,6 +4,7 @@ import { products } from '../data/products.js'
 import { waLink } from '../data/site.js'
 import Button from './Button.jsx'
 import Logo from './Logo.jsx'
+import { photoSrcSet } from './responsive.js'
 
 /** Tabbed gallery of the four products running in real Bulawayo businesses. */
 export default function ClientGallery() {
@@ -36,6 +37,8 @@ export default function ClientGallery() {
           <img
             key={product.slug}
             src={product.clientImage}
+            srcSet={photoSrcSet(product.clientImage)}
+            sizes="(min-width: 1152px) 576px, (min-width: 768px) 50vw, 100vw"
             alt={product.clientCaption}
             loading="lazy"
             decoding="async"

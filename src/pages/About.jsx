@@ -13,12 +13,12 @@ export default function About() {
     <>
       {/* -mt-20 lets the dark hero run up behind the floating bar */}
       <header className="relative -mt-20 overflow-hidden bg-void px-5 pb-16 pt-32 text-lavender sm:px-8 sm:pb-24 sm:pt-40 short:pb-10 short:pt-24">
-        <AmbientOffice intensity="strong" />
+        <AmbientOffice intensity="strong" priority />
         <Container className="relative">
           <SectionHead
             tone="dark"
             level="h1"
-            kicker="About MKLabs"
+            kicker="About MKLabs · Bulawayo software"
             title={<>We build technology <span className="logo-gradient-text">with purpose.</span></>}
             lead={`MKLabs is a software development and technology company creating practical digital solutions for businesses, schools, lodges and organisations in ${site.city}, ${site.country}.`}
           />

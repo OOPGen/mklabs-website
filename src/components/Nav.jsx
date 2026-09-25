@@ -215,6 +215,7 @@ export default function Nav() {
           menuOpen ? 'translate-y-0' : 'pointer-events-none -translate-y-full'
         }`}
         aria-hidden={!menuOpen}
+        inert={!menuOpen}
       >
         <BrandGlow />
 

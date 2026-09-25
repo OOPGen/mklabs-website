@@ -11,7 +11,10 @@ describe('metaFor', () => {
 
   it('builds product pages from the product data', () => {
     for (const product of products) {
-      expect(metaFor(`/products/${product.slug}`).description).toBe(product.summary)
+      expect(metaFor(`/products/${product.slug}`)).toMatchObject({
+        title: product.seo.title,
+        description: product.seo.description,
+      })
     }
   })
 
@@ -29,6 +32,21 @@ describe('metaFor', () => {
       expect(metaFor(path)).toMatchObject({ noindex: true, canonical: '' })
     }
     expect(metaFor('/about', { posHost: true }).noindex).toBe(true)
+  })
+
+  it('keeps every title and description within what search results show', () => {
+    for (const route of prerenderRoutes.filter((path) => !metaFor(path).noindex)) {
+      const { title, description } = metaFor(route)
+      expect(title.length, route).toBeLessThanOrEqual(65)
+      expect(description.length, route).toBeGreaterThanOrEqual(70)
+      expect(description.length, route).toBeLessThanOrEqual(175)
+    }
+  })
+
+  it('gives every indexable page a unique title and description', () => {
+    const pages = sitemapRoutes.map((route) => metaFor(route))
+    expect(new Set(pages.map((page) => page.title)).size).toBe(pages.length)
+    expect(new Set(pages.map((page) => page.description)).size).toBe(pages.length)
   })
 })
 

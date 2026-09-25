@@ -37,5 +37,8 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check the build as search engines see it
+        run: node scripts/check-build.js
+
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high

@@ -2,6 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
+# the POS home page's source file — crawl it at pos.mklabs.co.zw/ instead
+Disallow: /pos-host
 
 Sitemap: https://mklabs.co.zw/sitemap.xml
 Sitemap: https://mklabs.co.zw/sitemap-pos.xml

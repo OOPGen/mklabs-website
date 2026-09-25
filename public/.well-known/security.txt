@@ -1,0 +1,6 @@
+# How to report a security problem with mklabs.co.zw or pos.mklabs.co.zw
+# (RFC 9116). Renew "Expires" before it passes.
+Contact: mailto:support@mklabs.co.zw
+Expires: 2027-09-24T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://mklabs.co.zw/.well-known/security.txt

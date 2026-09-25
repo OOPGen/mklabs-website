@@ -5,6 +5,7 @@ import { HONEYPOT_FIELD, LIMITS, isValidEmail } from '../../functions/_lib/enqui
 import Button from './Button.jsx'
 import Turnstile from './Turnstile.jsx'
 import { TURNSTILE_SITE_KEY } from './turnstileKey.js'
+import { trackEvent } from '../analytics.js'
 
 const serviceOptions = [
   ...products.map((product) => product.name),
@@ -139,6 +140,7 @@ export default function ContactForm() {
     setTurnstileReset((count) => count + 1)
     setEmailed(delivered)
     setState('sent')
+    trackEvent('generate_lead', { form: 'contact', service: values.service || 'unspecified' })
   }
 
   if (state === 'sent') {
@@ -149,7 +151,7 @@ export default function ContactForm() {
         }`}
       >
         <div className="text-4xl">{emailed ? '✅' : '📩'}</div>
-        <h3 className="mt-4 text-xl font-bold">Thank you, {values.name.split(' ')[0]}.</h3>
+        <h2 className="mt-4 text-xl font-bold">Thank you, {values.name.split(' ')[0]}.</h2>
 
         {emailed ? (
           <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-night/65 dark:text-lavender/65">
@@ -188,7 +190,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="relative rounded-3xl border border-night/10 bg-white p-6 text-night sm:p-8 dark:border-white/10 dark:bg-white/5 dark:text-lavender">
-      <h3 className="text-xl font-bold">Request a demo or a quote</h3>
+      <h2 className="text-xl font-bold">Request a demo or a quote</h2>
       <p className="mt-1.5 text-sm text-night/60 dark:text-lavender/60">
         Tell us what you need. Fields marked * are required.
       </p>
