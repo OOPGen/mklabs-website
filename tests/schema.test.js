@@ -36,6 +36,14 @@ describe('structuredDataFor', () => {
     }
   })
 
+  it("describes Michael on his portfolio page and links him to MKLabs", () => {
+    const graph = structuredDataFor('/michael')['@graph']
+    const person = graph.find((node) => node['@type'] === 'Person')
+    expect(person).toMatchObject({ name: 'Michael Junior Jere', worksFor: { '@id': 'https://mklabs.co.zw/#organization' } })
+    expect(graph.find((node) => node['@type'] === 'ProfilePage').mainEntity['@id']).toBe(person['@id'])
+    expect(graph[0].founder['@id']).toBe(person['@id'])
+  })
+
   it('never lists an empty social profile', () => {
     const org = structuredDataFor('/')['@graph'][0]
     for (const url of org.sameAs || []) expect(url).toMatch(/^https:\/\//)

@@ -7,6 +7,11 @@
   X-Robots-Tag: noindex
   Cache-Control: no-store
 
+# the CV is for people, the portfolio page is what should rank
+/michael-junior-jere-cv.pdf
+  X-Robots-Tag: noindex
+  Content-Disposition: inline; filename="Michael-Junior-Jere-CV.pdf"
+
 # Vite fingerprints these filenames, so they can be cached forever.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

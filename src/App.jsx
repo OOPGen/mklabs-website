@@ -15,6 +15,7 @@ import ProductDetail from './pages/ProductDetail.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Portfolio from './pages/Portfolio.jsx'
 
 /*
  * Split out of the main bundle: most visitors to mklabs.co.zw never open the
@@ -106,6 +107,7 @@ function MainSite() {
           />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/michael" element={<Portfolio />} />
           <Route
             path="/admin"
             element={

@@ -11,6 +11,7 @@
 import { MAIN_ORIGIN, POS_ORIGIN, SHARE_IMAGE, metaFor } from './seo.js'
 import { getProduct, products } from './products.js'
 import { contact, founder, site, socials } from './site.js'
+import { portfolio } from './portfolio.js'
 
 const ORG_ID = `${MAIN_ORIGIN}/#organization`
 
@@ -18,6 +19,7 @@ const ORG_ID = `${MAIN_ORIGIN}/#organization`
    which one this is. Google also uses them as the site's name in results. */
 const ALTERNATE_NAMES = ['MKLabs Zimbabwe', 'MKLabs Bulawayo', 'MK Labs']
 const WEBSITE_ID = `${MAIN_ORIGIN}/#website`
+const PERSON_ID = `${MAIN_ORIGIN}${portfolio.path}#person`
 
 const organization = {
   '@type': ['Organization', 'ProfessionalService'],
@@ -37,7 +39,7 @@ const organization = {
     addressCountry: 'ZW',
   },
   areaServed: { '@type': 'Country', name: site.country },
-  founder: { '@type': 'Person', name: founder.name, jobTitle: founder.role },
+  founder: { '@type': 'Person', '@id': PERSON_ID, name: founder.name, jobTitle: founder.role },
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -87,6 +89,25 @@ const website = {
   inLanguage: 'en-ZW',
   publisher: { '@id': ORG_ID },
 }
+
+/* the founder, as his portfolio page describes him */
+const person = {
+  '@type': 'Person',
+  '@id': PERSON_ID,
+  name: portfolio.name,
+  jobTitle: portfolio.title,
+  url: `${MAIN_ORIGIN}${portfolio.path}`,
+  image: `${MAIN_ORIGIN}${portfolio.photo.large}`,
+  email: `mailto:${portfolio.email}`,
+  telephone: portfolio.phones[0].tel,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'ZW' },
+  worksFor: { '@id': ORG_ID },
+  alumniOf: { '@type': 'EducationalOrganization', name: 'Bulawayo Polytechnic College' },
+  knowsAbout: portfolio.skills.flatMap((group) => group.items),
+  knowsLanguage: ['English', 'Ndebele', 'Shona'],
+}
+const personLinks = portfolio.links.map((link) => link.url).filter(Boolean)
+if (personLinks.length) person.sameAs = personLinks
 
 function breadcrumbs(trail) {
   return {
@@ -159,6 +180,12 @@ export function structuredDataFor(path, { posHost = false } = {}) {
     graph.push(webPage('/about', 'AboutPage'), breadcrumbs([['Home', '/'], ['About', '/about']]))
   } else if (route === '/contact') {
     graph.push(webPage('/contact', 'ContactPage'), breadcrumbs([['Home', '/'], ['Contact', '/contact']]))
+  } else if (route === portfolio.path) {
+    graph.push(
+      { ...webPage(portfolio.path, 'ProfilePage'), about: { '@id': PERSON_ID }, mainEntity: { '@id': PERSON_ID } },
+      person,
+      breadcrumbs([['Home', '/'], ['About', '/about'], [portfolio.name, portfolio.path]])
+    )
   } else if (route === '/pos') {
     graph.push(softwareApplication(getProduct('pos'), `${POS_ORIGIN}/`))
   } else {
