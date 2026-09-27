@@ -38,6 +38,11 @@ const pages = {
     description:
       'Request a demo or a quote from MKLabs in Bulawayo. Call or WhatsApp 0786 233 766, or email info@mklabs.co.zw. We reply within one working day.',
   },
+  '/michael': {
+    title: 'Michael Junior Jere — Full-Stack Software Developer, Bulawayo',
+    description:
+      'Portfolio of Michael Junior Jere, full-stack developer (C#, ASP.NET Core, React, TypeScript, PostgreSQL) and founder of MKLabs. Open to full-time, contract and remote roles.',
+  },
   '/pos': {
     title: 'MKLabs POS — Offline Point of Sale System for Zimbabwe',
     description:

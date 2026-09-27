@@ -92,6 +92,9 @@ export default function About() {
                   <Button href={`mailto:${contact.emails[0].address}`} variant="ghost">
                     ✉️ Email
                   </Button>
+                  <Button to="/michael" variant="ghost">
+                    View Michael&apos;s portfolio →
+                  </Button>
                 </div>
               </div>
             </div>
