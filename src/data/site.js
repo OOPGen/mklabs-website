@@ -32,7 +32,7 @@ export const socials = [
   { id: 'linkedin', label: 'LinkedIn', url: '' },
   { id: 'x', label: 'X (Twitter)', url: '' },
   { id: 'instagram', label: 'Instagram', url: '' },
-  { id: 'tiktok', label: 'TikTok', url: '' },
+  { id: 'tiktok', label: 'TikTok', url: 'https://www.tiktok.com/@mklabszw' },
 ]
 
 export const founder = {
