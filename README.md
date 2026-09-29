@@ -5,6 +5,27 @@
 Marketing site for MKLabs — software development and technology solutions for
 businesses, schools and lodges in Zimbabwe.
 
+![React](https://img.shields.io/badge/React-19-20232A?logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages_+_Functions-F38020?logo=cloudflare&logoColor=white)
+
+**Highlights**
+
+- **Prerendered React:** every page ships as full HTML and is hydrated in the browser, so
+  search engines index it without JavaScript. Mobile Lighthouse performance 95–98.
+- **Two sites, one deployment:** `pos.mklabs.co.zw` is served from the same build, picked by hostname.
+- **Serverless back end:** Cloudflare Pages Functions for the enquiry mailer (Turnstile spam
+  check), a promotions API on KV, and an admin dashboard behind Cloudflare Access.
+- **Security:** strict Content-Security-Policy with no inline scripts, HSTS, and security
+  headers defined once for pages and APIs alike.
+- **SEO:** per-route titles and canonical URLs, schema.org structured data, sitemaps.
+- **Quality gates in CI:** lint, 90 Vitest tests, a production build, a search-engine check of
+  the built pages, and `npm audit`. Dependabot keeps dependencies current, and a nightly
+  workflow makes an encrypted backup of the site's data.
+
+Designed and built by **[Michael Junior Jere](https://mklabs.co.zw/michael)**.
+
 ---
 
 ## Live
