@@ -28,7 +28,7 @@ export const contact = {
  * sent to a missing page.
  */
 export const socials = [
-  { id: 'facebook', label: 'Facebook', url: '' },
+  { id: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594935448409' },
   { id: 'linkedin', label: 'LinkedIn', url: '' },
   { id: 'x', label: 'X (Twitter)', url: '' },
   { id: 'instagram', label: 'Instagram', url: '' },
