@@ -5,7 +5,8 @@ export const site = {
   country: 'Zimbabwe',
   domain: 'mklabs.co.zw',
   url: 'https://mklabs.co.zw',
-  hours: 'Monday – Friday, 8am – 5pm (CAT)',
+  // the team works on site and remotely, so it answers around the clock
+  hours: 'Open 24 hours, 7 days a week',
 }
 
 export const contact = {

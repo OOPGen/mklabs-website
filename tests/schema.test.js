@@ -50,6 +50,12 @@ describe('structuredDataFor', () => {
     expect(graph[0].founder['@id']).toBe(person['@id'])
   })
 
+  it('gives the same hours as the site and the Business Profile: open 24 hours, every day', () => {
+    const hours = structuredDataFor('/')['@graph'][0].openingHoursSpecification
+    expect(hours.dayOfWeek).toHaveLength(7)
+    expect(hours).toMatchObject({ opens: '00:00', closes: '23:59' })
+  })
+
   it('never lists an empty social profile', () => {
     const org = structuredDataFor('/')['@graph'][0]
     for (const url of org.sameAs || []) expect(url).toMatch(/^https:\/\//)
