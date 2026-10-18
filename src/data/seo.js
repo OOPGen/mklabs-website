@@ -35,7 +35,7 @@ const pages = {
   '/contact': {
     title: 'Contact MKLabs — Software & IT Support in Bulawayo, Zimbabwe',
     description:
-      'Request a demo or a quote from MKLabs in Bulawayo. Call or WhatsApp 0786 233 766, or email info@mklabs.co.zw. We reply within one working day.',
+      'Request a demo or a quote from MKLabs in Bulawayo. Call 0718 621 427, WhatsApp 0786 233 766 or email info@mklabs.co.zw. We reply within one working day.',
   },
   '/michael': {
     title: 'Michael Junior Jere — Full-Stack Software Developer, Bulawayo',

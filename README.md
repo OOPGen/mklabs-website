@@ -517,7 +517,7 @@ flash. The toggle itself lives in `src/components/useTheme.js`.
 
 ## Contact
 
-- **Phone:** 0786 233 766 / 0718 621 427
+- **Phone:** 0718 621 427 (main) / 0786 233 766
 - **WhatsApp:** https://wa.me/263786233766
 - **General:** info@mklabs.co.zw
 - **Support:** support@mklabs.co.zw

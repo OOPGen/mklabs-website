@@ -56,6 +56,11 @@ describe('structuredDataFor', () => {
     expect(hours).toMatchObject({ opens: '00:00', closes: '23:59' })
   })
 
+  it('gives the main business number first, the same as the Google Business Profile', () => {
+    const org = structuredDataFor('/')['@graph'][0]
+    expect(org.telephone).toBe('+263718621427')
+  })
+
   it('never lists an empty social profile', () => {
     const org = structuredDataFor('/')['@graph'][0]
     for (const url of org.sameAs || []) expect(url).toMatch(/^https:\/\//)

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { platform, products } from '../data/products.js'
-import { contact, waLink } from '../data/site.js'
+import { contact, waLink, whatsappPhone } from '../data/site.js'
 import BrandGlow from './BrandGlow.jsx'
 import Button from './Button.jsx'
 import Icon from './Icon.jsx'
@@ -273,7 +273,7 @@ export default function Nav() {
             Get started →
           </Button>
           <Button href={waLink('Hello MKLabs!')} variant="whatsapp">
-            💬 WhatsApp {contact.phones[0].label}
+            💬 WhatsApp {whatsappPhone.label}
           </Button>
           <Button href={`mailto:${contact.emails[0].address}`} variant="glass">
             ✉️ {contact.emails[0].address}

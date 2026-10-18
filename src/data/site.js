@@ -10,9 +10,10 @@ export const site = {
 }
 
 export const contact = {
+  // the main business number first - the same one as the Google Business Profile
   phones: [
-    { label: '0786 233 766', tel: '+263786233766', wa: '263786233766' },
     { label: '0718 621 427', tel: '+263718621427', wa: '263718621427' },
+    { label: '0786 233 766', tel: '+263786233766', wa: '263786233766' },
   ],
   emails: [
     { label: 'info@mklabs.co.zw', address: 'info@mklabs.co.zw', note: 'General enquiries, partnerships' },
@@ -50,6 +51,9 @@ export const founder = {
 }
 
 /** WhatsApp deep link with a prefilled message */
+/** The number the WhatsApp buttons open, for labelling them - not necessarily the first phone. */
+export const whatsappPhone = contact.phones.find((phone) => phone.wa === contact.whatsapp)
+
 export function waLink(message = 'Hello MKLabs!', number = contact.whatsapp) {
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
 }
