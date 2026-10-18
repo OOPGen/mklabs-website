@@ -50,11 +50,12 @@ take effect on the next deploy (push to `main`, or Deployments → Retry).
      Computer support and services, Computer security service
    - **Location:** a service-area business in Bulawayo, Zimbabwe (hide the
      street address unless clients visit you)
-   - **Phone:** 0786 233 766 (+263 786 233 766) · **Website:** `https://mklabs.co.zw/`
-   - **Hours:** Monday–Friday, 08:00–17:00
+   - **Phone:** 0718 621 427 (+263 718 621 427) as the main number, 0786 233 766 as the second (both take calls and WhatsApp) · **Website:** `https://mklabs.co.zw/`
+   - **Hours:** Open 24 hours, every day
    - **Description:** start with "MKLabs is a Bulawayo software development
-     company…" and name the four products
-3. Add the four products (link each to its `/products/…` page), a logo, a cover
+     company…" and name MKLabs Core ERP and its three systems
+3. Add the three products — MKLabs POS, MKLabs Accounting and MKLabs School —
+   each with its price and a **Learn more** link to its `/products/…` page; a logo, a cover
    photo and real work photos.
 4. After verification, ask a few happy clients for a Google review. Reviews and
    up-to-date details matter most for local ranking.

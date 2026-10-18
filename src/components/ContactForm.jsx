@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { contact, waLink } from '../data/site.js'
+import { contact, waLink, whatsappPhone } from '../data/site.js'
 import { products } from '../data/products.js'
 import { HONEYPOT_FIELD, LIMITS, isValidEmail } from '../../functions/_lib/enquiry.js'
 import Button from './Button.jsx'
@@ -283,7 +283,7 @@ export default function ContactForm() {
         </Button>
 
         <p className="text-center text-xs text-night/50 dark:text-lavender/50">
-          Prefer to talk? WhatsApp {contact.phones[0].label} — {' '}
+          Prefer to talk? WhatsApp {whatsappPhone.label} — {' '}
           <a href={waLink('Hello MKLabs!')} target="_blank" rel="noopener noreferrer" className="font-semibold text-purple underline dark:text-iris">
             open a chat
           </a>

@@ -43,9 +43,10 @@ const organization = {
   founder: { '@type': 'Person', '@id': PERSON_ID, name: founder.name, jobTitle: founder.role },
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    opens: '08:00',
-    closes: '17:00',
+    // open around the clock, every day - schema.org's way of writing 24/7
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '00:00',
+    closes: '23:59',
   },
   contactPoint: [
     {
