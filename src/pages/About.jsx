@@ -20,7 +20,7 @@ export default function About() {
             level="h1"
             kicker="About MKLabs · Bulawayo software"
             title={<>We build technology <span className="logo-gradient-text">with purpose.</span></>}
-            lead={`MKLabs is a software development and technology company creating practical digital solutions for businesses, schools, lodges and organisations in ${site.city}, ${site.country}.`}
+            lead={`MKLabs is a software development and technology company creating practical digital solutions for businesses, schools and organisations in ${site.city}, ${site.country}.`}
           />
         </Container>
       </header>

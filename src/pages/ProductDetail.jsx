@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 
-import { getProduct, products } from '../data/products.js'
+import { getProduct, platform, products } from '../data/products.js'
 import { waLink } from '../data/site.js'
 
 import AmbientOffice from '../components/AmbientOffice.jsx'
@@ -59,17 +59,17 @@ export default function ProductDetail() {
               </Reveal>
 
               <Reveal delay={240} className="mt-8 flex flex-wrap gap-3">
+                <Button href={product.signup} variant="brand">
+                  Start a free trial ↗
+                </Button>
                 <Button href={demoLink} variant="whatsapp">
                   💬 Book a free demo
                 </Button>
-                <Button to="/contact" variant="glass">
-                  Request a quote
-                </Button>
-                {product.site && (
-                  <Button href={product.site.url} variant="glass">
-                    Visit the {product.name} site ↗
-                  </Button>
-                )}
+              </Reveal>
+
+              <Reveal as="p" delay={300} className="mt-5 text-sm text-lavender/60">
+                <span className="text-lg font-bold text-white">{product.price.amount}</span> {product.price.per} ·{' '}
+                {product.price.points[0]} · part of {platform.name}
               </Reveal>
             </div>
 
@@ -157,6 +157,49 @@ export default function ProductDetail() {
         </Container>
       </Section>
 
+      {/* ------------------------------------------------ PLATFORM + PRICE */}
+      <Section>
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+            <div>
+              <SectionHead
+                kicker={`Part of ${platform.name}`}
+                title="Built on the same platform as everything we make."
+                lead={platform.summary}
+              />
+              <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+                {platform.features.map((feature) => (
+                  <li key={feature.title} className="rounded-2xl border border-night/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                    <span className="block text-[15px] font-bold">{feature.title}</span>
+                    <span className="mt-1 block text-sm leading-relaxed text-night/60 dark:text-lavender/60">{feature.body}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <Reveal className="logo-border rounded-3xl p-6 text-white [--fill:#08071A] sm:p-8">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-lilac">Price</span>
+              <p className="mt-3">
+                <span className="text-5xl font-bold tracking-tight">{product.price.amount}</span>{' '}
+                <span className="text-sm text-white/60">{product.price.per}</span>
+              </p>
+              <p className="mt-1 text-sm text-white/60">{product.price.note}</p>
+              <ul className="mt-6 grid gap-2.5">
+                {product.price.points.map((point) => (
+                  <li key={point} className="flex items-start gap-2.5 text-sm text-white/85">
+                    <span className="mt-0.5 text-cyan">✓</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <Button href={product.signup} variant="brand" className="mt-8 w-full">
+                Start a free trial ↗
+              </Button>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
       {/* ---------------------------------------------------------- CTA */}
       <Section tone="dark">
         <Orbs />
@@ -171,7 +214,10 @@ export default function ProductDetail() {
             <Button href={demoLink} variant="whatsapp">
               💬 Book a free demo
             </Button>
-            <Button to="/contact" variant="white">
+            <Button href={product.signup} variant="white">
+              Start a free trial ↗
+            </Button>
+            <Button to="/contact" variant="glass">
               Send an enquiry
             </Button>
           </Reveal>
@@ -183,7 +229,7 @@ export default function ProductDetail() {
         <Container>
           <h2 className="text-xl font-bold">Also from MKLabs</h2>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {others.map((item) => (
               <Link
                 key={item.slug}

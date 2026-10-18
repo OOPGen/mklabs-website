@@ -3,10 +3,10 @@ import useReducedMotion from './useReducedMotion.js'
 
 const items = [
   { logo: '/mklabs-logo-128.webp', label: 'MKLabs', tone: 'bare' },
+  { logo: '/mklabs-logo-128.webp', label: 'MKLabs Core ERP', tone: 'bare' },
   { logo: '/logo-pos.webp', label: 'MKLabs POS' },
-  { logo: '/logo-financeflow.webp', label: 'FinanceFlow' },
-  { logo: '/logo-learncloud.webp', label: 'LearnCloud' },
-  { logo: '/logo-lodgecloud.webp', label: 'LodgeCloud' },
+  { logo: '/logo-accounting.webp', label: 'MKLabs Accounting' },
+  { logo: '/logo-school.webp', label: 'MKLabs School' },
   { logo: '/logo-software.webp', label: 'Software Development' },
   { logo: '/logo-website.webp', label: 'Web Development' },
   { logo: '/logo-cloud.webp', label: 'Cloud & IT' },

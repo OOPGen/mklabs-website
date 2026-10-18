@@ -6,7 +6,7 @@ import Button from './Button.jsx'
 import Logo from './Logo.jsx'
 import { photoSrcSet } from './responsive.js'
 
-/** Tabbed gallery of the four products running in real Bulawayo businesses. */
+/** Tabbed gallery of the three systems, each in the kind of place it runs. */
 export default function ClientGallery() {
   const [active, setActive] = useState(0)
   const product = products[active]

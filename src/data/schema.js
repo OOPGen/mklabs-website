@@ -3,13 +3,14 @@
  * Google and Bing read to understand who MKLabs is, where it works and what
  * each product is. scripts/prerender.js writes it into the page's HTML.
  *
- * Only facts the site already states: no invented street address, prices
- * or ratings (Google penalises structured data the page does not back up).
+ * Only facts the site already states: no invented street address or
+ * ratings, and only the prices each product page shows (Google penalises
+ * structured data the page does not back up).
  * Test changes at https://search.google.com/test/rich-results
  */
 
-import { MAIN_ORIGIN, POS_ORIGIN, SHARE_IMAGE, metaFor } from './seo.js'
-import { getProduct, products } from './products.js'
+import { MAIN_ORIGIN, SHARE_IMAGE, metaFor } from './seo.js'
+import { getProduct, platform, products } from './products.js'
 import { contact, founder, site, socials } from './site.js'
 import { portfolio } from './portfolio.js'
 
@@ -69,7 +70,7 @@ const organization = {
     'Point of sale systems',
     'Accounting software',
     'School management systems',
-    'Hotel and lodge management software',
+    'ERP software',
     'Website development',
     'Cloud services',
     'Network security',
@@ -136,11 +137,21 @@ function softwareApplication(product, url) {
     publisher: { '@id': ORG_ID },
     provider: { '@id': ORG_ID },
     countriesSupported: 'ZW',
+    operatingSystem: 'Web browser, Android, iOS, Windows, macOS',
+    installUrl: product.signup,
+    isPartOf: { '@type': 'SoftwareApplication', name: platform.name, url: platform.url },
+    offers: {
+      '@type': 'Offer',
+      price: product.price.amount.replace('$', ''),
+      priceCurrency: 'USD',
+      description: `${product.price.amount} ${product.price.per.replace('/ ', 'per ')}. ${product.price.note}.`,
+      url: product.signup,
+    },
   }
 }
 
-function webPage(path, type = 'WebPage', { posHost = false } = {}) {
-  const meta = metaFor(path, { posHost })
+function webPage(path, type = 'WebPage') {
+  const meta = metaFor(path)
   return {
     '@type': type,
     '@id': `${meta.canonical}#webpage`,
@@ -157,11 +168,11 @@ function webPage(path, type = 'WebPage', { posHost = false } = {}) {
  * The JSON-LD graph for a route, or null for pages that should not carry any
  * (private and not-found pages).
  */
-export function structuredDataFor(path, { posHost = false } = {}) {
-  const meta = metaFor(path, { posHost })
+export function structuredDataFor(path) {
+  const meta = metaFor(path)
   if (meta.noindex) return null
 
-  const route = posHost ? '/pos' : path
+  const route = path
   const graph = [organization]
 
   if (route === '/') {
@@ -186,8 +197,6 @@ export function structuredDataFor(path, { posHost = false } = {}) {
       person,
       breadcrumbs([['Home', '/'], ['About', '/about'], [portfolio.name, portfolio.path]])
     )
-  } else if (route === '/pos') {
-    graph.push(softwareApplication(getProduct('pos'), `${POS_ORIGIN}/`))
   } else {
     const slug = route.match(/^\/products\/([^/]+)$/)?.[1]
     const product = slug && getProduct(slug)

@@ -18,14 +18,20 @@ describe('structuredDataFor', () => {
   })
 
   it('marks each product page up as software with a breadcrumb trail', () => {
-    const types = structuredDataFor('/products/learncloud')['@graph'].map((node) => node['@type'])
-    expect(types).toContain('SoftwareApplication')
-    expect(types).toContain('BreadcrumbList')
+    for (const slug of ['pos', 'accounting', 'school']) {
+      const types = structuredDataFor(`/products/${slug}`)['@graph'].map((node) => node['@type'])
+      expect(types, slug).toContain('SoftwareApplication')
+      expect(types, slug).toContain('BreadcrumbList')
+    }
   })
 
-  it('points the POS software at its own subdomain', () => {
-    const app = structuredDataFor('/', { posHost: true })['@graph'].find((node) => node['@type'] === 'SoftwareApplication')
-    expect(app.url).toBe('https://pos.mklabs.co.zw/')
+  it('gives each product the price its page shows, in US dollars, and its sign-up page', () => {
+    const app = (slug) => structuredDataFor(`/products/${slug}`)['@graph'].find((node) => node['@type'] === 'SoftwareApplication')
+    expect(app('pos').offers).toMatchObject({ price: '25', priceCurrency: 'USD' })
+    expect(app('accounting').offers).toMatchObject({ price: '5', priceCurrency: 'USD' })
+    expect(app('school').offers).toMatchObject({ price: '0.50', priceCurrency: 'USD' })
+    expect(app('school').installUrl).toBe('https://core.mklabs.co.zw/signup?product=School')
+    expect(app('pos').isPartOf.name).toBe('MKLabs Core ERP')
   })
 
   it('names MKLabs as the Zimbabwe company, apart from others with the same name', () => {

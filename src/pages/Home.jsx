@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { getProduct, products } from '../data/products.js'
+import { getProduct, platform, products } from '../data/products.js'
 import { services } from '../data/services.js'
 import { founder, waLink } from '../data/site.js'
 
@@ -139,8 +139,8 @@ export default function Home() {
             </Reveal>
 
             <Reveal as="p" delay={180} className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg short:mt-3 short:max-w-md short:text-sm">
-              MKLabs builds point-of-sale, accounting, school and lodge software — plus the websites,
-              networks and support behind them — for organisations across Zimbabwe.
+              MKLabs builds {platform.name} — point of sale, accounting and school management on one
+              platform — plus the websites, networks and support behind them, for organisations across Zimbabwe.
             </Reveal>
 
             <Reveal delay={260} className="mt-9 flex flex-wrap gap-3 short:mt-5">
@@ -244,15 +244,15 @@ export default function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <Eyebrow center>Our products</Eyebrow>
             <Reveal as="h2" delay={80} className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl">
-              Four systems, built for how <span className="logo-gradient-text">Zimbabwe actually works.</span>
+              Three systems, one platform, built for how <span className="logo-gradient-text">Zimbabwe actually works.</span>
             </Reveal>
             <Reveal as="p" delay={160} className="mt-5 text-base leading-relaxed text-white/60 sm:text-lg">
-              Pick the one that matches your business. Each has its own page with screens, features and a demo
-              you can book on WhatsApp.
+              Pick the one that matches your business and start a free trial on {platform.label}. Each has its own
+              page with screens, features and prices — or book a demo on WhatsApp.
             </Reveal>
           </div>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product, index) => (
               <Reveal key={product.slug} delay={index * 80}>
                 <ProductCard product={product} />
@@ -262,10 +262,10 @@ export default function Home() {
 
           <div className="mt-20">
             <Reveal as="h3" className="text-center text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              See the software in real businesses.
+              See the software at work.
             </Reveal>
             <Reveal as="p" delay={80} className="mx-auto mt-3 max-w-xl text-center text-white/55">
-              Boardrooms, classrooms, tills and lodge receptions — running in Bulawayo right now.
+              Tills, offices and classrooms — see where each system fits.
             </Reveal>
             <Reveal direction="zoom" delay={140} className="mt-10">
               <ClientGallery />
@@ -274,7 +274,7 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ------------------------------------------------ FEATURED: POS */}
+      {/* ------------------------------------- FEATURED: THE PLATFORM */}
       <section className="relative py-20 sm:py-28">
         <Container>
           <Reveal
@@ -287,20 +287,20 @@ export default function Home() {
               {/* the pitch */}
               <div>
                 <span className="inline-flex rounded-full border border-magenta/40 bg-magenta/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-magenta">
-                  Featured product
+                  The platform
                 </span>
                 <div className="mt-6 flex items-center gap-4">
-                  <Logo src={pos.logo} size="md" />
-                  <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{pos.name}</h2>
+                  <Logo src="/mklabs-logo-128.webp" size="md" tone="bare" />
+                  <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{platform.name}</h2>
                 </div>
-                <p className="mt-5 text-xl font-semibold text-white/90">{pos.tagline}</p>
-                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/60 sm:text-base">{pos.summary}</p>
+                <p className="mt-5 text-xl font-semibold text-white/90">{platform.tagline}</p>
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/60 sm:text-base">{platform.summary}</p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Button to={`/products/${pos.slug}`} variant="brand">
-                    Explore {pos.name} <Icon name="arrow" className="h-4 w-4" />
+                  <Button href={platform.signup} variant="brand">
+                    Start a free trial <Icon name="external" className="h-4 w-4" />
                   </Button>
-                  <Button href={pos.site.url} variant="glass">
-                    {pos.site.label} <Icon name="external" className="h-4 w-4" />
+                  <Button href={platform.url} variant="glass">
+                    {platform.label} <Icon name="external" className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
@@ -321,7 +321,7 @@ export default function Home() {
 
               {/* what it does */}
               <ul className="grid gap-3 sm:grid-cols-2 lg:col-span-2 xl:col-span-1 xl:grid-cols-1">
-                {pos.features.map((feature) => (
+                {platform.features.map((feature) => (
                   <li key={feature.title} className="flex items-start gap-3 text-sm text-white/80">
                     <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-cyan/50 text-cyan">
                       <Icon name="check" className="h-3 w-3" strokeWidth={3} />

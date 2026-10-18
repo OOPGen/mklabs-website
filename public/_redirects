@@ -1,0 +1,11 @@
+# Pages that moved. Each answers with a permanent redirect, so old links,
+# bookmarks and search results land on the page that replaced them.
+# tests/redirects.test.js keeps this list in step with src/data/products.js.
+
+# the POS pitch that used to live at pos.mklabs.co.zw (that address is now the app)
+/pos  /products/pos  301
+
+# the products before MKLabs Core ERP
+/products/financeflow  /products/accounting  301
+/products/learncloud  /products/school  301
+/products/lodgecloud  /products  301

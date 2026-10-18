@@ -26,9 +26,9 @@ const meta = (key, name) => () => {
  * the previous page. The build writes the same values into each route's HTML
  * (scripts/prerender.js), so this only takes over after the first load.
  */
-export default function useSeo(pathname, { posHost = false } = {}) {
+export default function useSeo(pathname) {
   useEffect(() => {
-    const page = metaFor(pathname, { posHost })
+    const page = metaFor(pathname)
 
     document.title = page.title
     setTag('meta[name="description"]', meta('name', 'description'), 'content', page.description)
@@ -46,5 +46,5 @@ export default function useSeo(pathname, { posHost = false } = {}) {
     setTag('meta[name="twitter:title"]', meta('name', 'twitter:title'), 'content', page.title)
     setTag('meta[name="twitter:description"]', meta('name', 'twitter:description'), 'content', page.description)
     setTag('meta[name="twitter:image"]', meta('name', 'twitter:image'), 'content', page.image)
-  }, [pathname, posHost])
+  }, [pathname])
 }

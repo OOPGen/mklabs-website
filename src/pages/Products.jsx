@@ -1,4 +1,4 @@
-import { products } from '../data/products.js'
+import { platform, products } from '../data/products.js'
 import { waLink } from '../data/site.js'
 import Button from '../components/Button.jsx'
 import Logo from '../components/Logo.jsx'
@@ -18,17 +18,25 @@ export default function Products() {
           <SectionHead
             tone="dark"
             level="h1"
-            kicker="Business software for Zimbabwe"
-            title={<>One partner. <span className="logo-gradient-text">Four systems</span> that run a business.</>}
-            lead="Each product solves one job properly. They share the same account, the same look and the same support line."
+            kicker={platform.name}
+            title={<>One platform. <span className="logo-gradient-text">Three systems</span> that run a business.</>}
+            lead="POS for shops, Accounting for businesses without a till, and School for schools. They share one sign-in, one set of books and one support line — and every one starts with a free trial."
           />
+          <Reveal delay={200} className="mt-8 flex flex-wrap gap-3">
+            <Button href={platform.signup} variant="brand">
+              Start a free trial ↗
+            </Button>
+            <Button href={platform.url} variant="glass">
+              Sign in at {platform.label} ↗
+            </Button>
+          </Reveal>
         </Container>
       </header>
 
       <Section>
         <Container>
           <h2 className="sr-only">MKLabs products</h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product, index) => (
               <Reveal key={product.slug} delay={index * 80}>
                 <ProductCard product={product} />
@@ -81,16 +89,70 @@ export default function Products() {
                     >
                       💬 Book a demo
                     </Button>
-                    {product.site && (
-                      <Button href={product.site.url} variant="ghost">
-                        Visit {product.site.label} ↗
-                      </Button>
-                    )}
+                    <Button href={product.signup} variant="ghost">
+                      Start free ↗
+                    </Button>
                   </div>
                 </div>
               </Reveal>
             ))}
           </div>
+        </Container>
+      </Section>
+
+      {/* ------------------------------------------------------- PRICES */}
+      <Section tone="tint" id="pricing">
+        <Container>
+          <SectionHead
+            center
+            kicker="Pricing"
+            title="Simple prices. Everything included."
+            lead="No modules to buy separately and no hardware to buy. Start free, then pay for what you use."
+          />
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {products.map((product, index) => (
+              <Reveal
+                key={product.slug}
+                delay={index * 80}
+                className="flex h-full flex-col rounded-2xl border border-night/10 bg-white p-6 dark:border-white/10 dark:bg-white/5"
+              >
+                <div className="flex items-center gap-3">
+                  <Logo src={product.logo} size="sm" />
+                  <h3 className="text-lg font-bold">{product.name}</h3>
+                </div>
+                <p className="mt-5">
+                  <span className="text-4xl font-bold tracking-tight">{product.price.amount}</span>{' '}
+                  <span className="text-sm text-night/60 dark:text-lavender/60">{product.price.per}</span>
+                </p>
+                <p className="mt-1 text-sm text-night/60 dark:text-lavender/60">{product.price.note}</p>
+                <ul className="mt-5 grid flex-1 content-start gap-2">
+                  {product.price.points.map((point) => (
+                    <li key={point} className="flex items-start gap-2.5 text-sm">
+                      <span className="mt-0.5 text-purple dark:text-iris">✓</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <Button href={product.signup} className="mt-7">
+                  Start free ↗
+                </Button>
+              </Reveal>
+            ))}
+          </div>
+
+          <p className="mx-auto mt-10 max-w-xl text-center text-sm text-night/65 dark:text-lavender/60">
+            Running a lodge or guest house? A lodge system is on the way.{' '}
+            <a
+              href={waLink('Hello MKLabs! I run a lodge and would like to hear about the lodge system.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-purple underline decoration-iris/50 underline-offset-4 dark:text-iris"
+            >
+              Talk to us on WhatsApp
+            </a>{' '}
+            and we will put something together for you.
+          </p>
         </Container>
       </Section>
     </>

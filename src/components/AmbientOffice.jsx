@@ -4,11 +4,11 @@ import useReducedMotion from './useReducedMotion.js'
 /**
  * Blurred office scenery behind dark sections.
  *
- * Real MKLabs client photography — glass-walled boardroom, lodge reception,
- * classroom, retail counter — pushed far out of focus so it reads as ambience
- * rather than a picture. Frosted glass panels then sit on top of it.
+ * MKLabs client photography — glass-walled boardroom, classroom, retail
+ * counter — pushed far out of focus so it reads as ambience rather than a
+ * picture. Frosted glass panels then sit on top of it.
  *
- * `cycle` slowly crossfades between the four scenes. With Reduce Motion on it
+ * `cycle` slowly crossfades between the three scenes. With Reduce Motion on it
  * holds the first frame, which still looks finished — nothing disappears.
  *
  * Under that much blur a full-size photo is wasted bytes, so each scene is
@@ -20,9 +20,8 @@ import useReducedMotion from './useReducedMotion.js'
 const ambient = (src) => src.replace(/\.webp$/, '-ambient.webp')
 
 const scenes = [
-  { src: '/client-financeflow-boardroom.webp', label: 'boardroom' },
-  { src: '/client-lodgecloud-lodge.webp', label: 'lodge reception' },
-  { src: '/client-learncloud-school.webp', label: 'classroom' },
+  { src: '/client-accounting-boardroom.webp', label: 'boardroom' },
+  { src: '/client-school-classroom.webp', label: 'classroom' },
   { src: '/client-pos-cashier.webp', label: 'retail counter' },
 ]
 
@@ -36,7 +35,7 @@ export default function AmbientOffice({
   const reduced = useReducedMotion()
   const [index, setIndex] = useState(0)
 
-  /* a still backdrop only needs one frame — don't fetch the other three */
+  /* a still backdrop only needs one frame — don't fetch the other two */
   const frames = cycle ? scenes : [{ src: src || scenes[0].src, label: 'office' }]
 
   useEffect(() => {

@@ -14,24 +14,23 @@
 import { getProduct, products } from './products.js'
 
 export const MAIN_ORIGIN = 'https://mklabs.co.zw'
-export const POS_ORIGIN = 'https://pos.mklabs.co.zw'
 export const SHARE_IMAGE = `${MAIN_ORIGIN}/og-image.jpg`
 
 const pages = {
   '/': {
     title: 'MKLabs | Software Development Company in Bulawayo, Zimbabwe',
     description:
-      'MKLabs is a Bulawayo software company building POS, accounting, school and lodge management systems, plus custom software, websites, cloud and IT support across Zimbabwe.',
+      'MKLabs is a Bulawayo software company. We build MKLabs Core ERP — POS, accounting and school management — plus custom software, websites, cloud and IT support.',
   },
   '/products': {
-    title: 'POS, Accounting, School & Lodge Software for Zimbabwe | MKLabs',
+    title: 'MKLabs Core ERP — POS, Accounting & School Software, Zimbabwe',
     description:
-      'Four business systems built in Bulawayo for Zimbabwe: MKLabs POS, FinanceFlow accounting, LearnCloud school management and LodgeCloud lodge management.',
+      'MKLabs Core ERP: MKLabs POS, MKLabs Accounting and MKLabs School on one platform, built in Bulawayo for Zimbabwe. Start any of them on a free trial.',
   },
   '/about': {
     title: 'About MKLabs — Software Company in Bulawayo, Zimbabwe',
     description:
-      'MKLabs is a Bulawayo software development company building practical systems for businesses, schools and lodges in Zimbabwe. Meet founder Michael Junior Jere.',
+      'MKLabs is a Bulawayo software development company building practical systems for businesses and schools in Zimbabwe. Meet founder Michael Junior Jere.',
   },
   '/contact': {
     title: 'Contact MKLabs — Software & IT Support in Bulawayo, Zimbabwe',
@@ -42,13 +41,6 @@ const pages = {
     title: 'Michael Junior Jere — Full-Stack Software Developer, Bulawayo',
     description:
       'Portfolio of Michael Junior Jere, full-stack developer (C#, ASP.NET Core, React, TypeScript, PostgreSQL) and founder of MKLabs. Open to full-time, contract and remote roles.',
-  },
-  '/pos': {
-    title: 'MKLabs POS — Offline Point of Sale System for Zimbabwe',
-    description:
-      'Offline-first POS and stock management for shops, supermarkets and restaurants in Zimbabwe. Keeps selling when the internet drops. Book a free demo on WhatsApp.',
-    // the POS landing's real home is its own subdomain; /pos is a preview
-    canonical: `${POS_ORIGIN}/`,
   },
   '/admin': {
     title: 'Promotions dashboard | MKLabs',
@@ -63,9 +55,6 @@ const notFound = {
   noindex: true,
 }
 
-/** Routes that exist on the POS subdomain, mapped to the page they render. */
-const posRoutes = { '/': '/pos', '/contact': '/contact' }
-
 function normalisePath(path) {
   const clean = String(path || '/').split(/[?#]/)[0].replace(/\/+$/, '')
   return clean || '/'
@@ -75,13 +64,8 @@ function normalisePath(path) {
  * Metadata for a path. Returns { title, description, canonical, image, noindex }.
  * Unknown paths get noindex, so a stray URL never competes with a real page.
  */
-export function metaFor(path, { posHost = false } = {}) {
-  let route = normalisePath(path)
-
-  if (posHost) {
-    if (!posRoutes[route]) return { ...notFound, canonical: '', image: SHARE_IMAGE }
-    route = posRoutes[route]
-  }
+export function metaFor(path) {
+  const route = normalisePath(path)
 
   let meta = pages[route]
 
@@ -99,7 +83,7 @@ export function metaFor(path, { posHost = false } = {}) {
     title: meta.title,
     description: meta.description,
     // a page that asks not to be indexed has no preferred address to declare
-    canonical: meta.noindex ? '' : meta.canonical || `${MAIN_ORIGIN}${route}`,
+    canonical: meta.noindex ? '' : `${MAIN_ORIGIN}${route}`,
     image: SHARE_IMAGE,
     noindex: Boolean(meta.noindex),
   }
@@ -111,8 +95,5 @@ export const prerenderRoutes = [
   ...products.map((product) => `/products/${product.slug}`),
 ]
 
-/** Routes listed in the main sitemap — indexable, and canonical on this host. */
-export const sitemapRoutes = prerenderRoutes.filter((route) => {
-  const meta = metaFor(route)
-  return !meta.noindex && meta.canonical.startsWith(MAIN_ORIGIN)
-})
+/** Routes listed in the sitemap — every indexable page. */
+export const sitemapRoutes = prerenderRoutes.filter((route) => !metaFor(route).noindex)

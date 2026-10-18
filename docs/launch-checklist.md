@@ -23,12 +23,11 @@ take effect on the next deploy (push to `main`, or Deployments → Retry).
    record is added for you. (Or add the TXT record by hand in Cloudflare → DNS.)
    - *Alternative:* a **URL prefix** property verified with the HTML tag — put
      the `content="…"` code in `GOOGLE_SITE_VERIFICATION` and redeploy.
-3. **Sitemaps** → submit both:
-   - `https://mklabs.co.zw/sitemap.xml`
-   - `https://mklabs.co.zw/sitemap-pos.xml`
+3. **Sitemaps** → submit `https://mklabs.co.zw/sitemap.xml`. If
+   `sitemap-pos.xml` is still listed from before, remove it: the POS pitch moved
+   to `/products/pos`, and `pos.mklabs.co.zw` is now the app.
 4. **URL inspection** → paste `https://mklabs.co.zw/` → **Request indexing**.
-   Repeat for `/products`, each `/products/…` page and
-   `https://pos.mklabs.co.zw/`.
+   Repeat for `/products` and each `/products/…` page.
 5. After a few days check **Indexing → Pages** (all sitemap URLs "Indexed") and
    **Enhancements → Breadcrumbs** (no errors).
 
