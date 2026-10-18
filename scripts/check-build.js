@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { MAIN_ORIGIN, POS_ORIGIN, metaFor, prerenderRoutes } from '../src/data/seo.js'
+import { MAIN_ORIGIN, metaFor, prerenderRoutes } from '../src/data/seo.js'
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
 const problems = []
@@ -17,9 +17,9 @@ const fail = (where, message) => problems.push(`${where}: ${message}`)
 const fileFor = (route) => (route === '/' ? 'index.html' : `${route.slice(1)}.html`)
 const read = (file) => readFileSync(join(dist, file), 'utf8')
 
-function checkPage(file, { path, posHost = false, expectContent = true }) {
+function checkPage(file, { path, expectContent = true }) {
   const html = read(file)
-  const meta = metaFor(path, { posHost })
+  const meta = metaFor(path)
   const count = (pattern) => (html.match(pattern) || []).length
 
   if (count(/<title>/g) !== 1) fail(file, 'needs exactly one <title>')
@@ -31,7 +31,7 @@ function checkPage(file, { path, posHost = false, expectContent = true }) {
 
   if (expectContent) {
     if (count(/<h1[\s>]/g) !== 1) fail(file, `needs exactly one <h1> in the prerendered HTML, found ${count(/<h1[\s>]/g)}`)
-    if (!/<div id="root" data-host="(main|pos)" data-path="[^"]+">\s*<\w/.test(html)) fail(file, 'no prerendered content in #root')
+    if (!/<div id="root" data-path="[^"]+">\s*<\w/.test(html)) fail(file, 'no prerendered content in #root')
   }
 
   for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
@@ -50,24 +50,24 @@ for (const route of prerenderRoutes) {
   if (!existsSync(join(dist, file))) fail(file, 'missing')
   else checkPage(file, { path: route, expectContent: route !== '/admin' })
 }
-checkPage('pos-host.html', { path: '/', posHost: true })
 checkPage('404.html', { path: '/__not-found__' })
 
 // every sitemap URL must be a real, indexable, self-canonical page
-for (const [file, origin] of [['sitemap.xml', MAIN_ORIGIN], ['sitemap-pos.xml', POS_ORIGIN]]) {
+{
+  const file = 'sitemap.xml'
   const urls = [...read(file).matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
   if (!urls.length) fail(file, 'is empty')
   for (const url of urls) {
-    if (!url.startsWith(origin)) fail(file, `${url} is not on ${origin}`)
+    if (!url.startsWith(MAIN_ORIGIN)) fail(file, `${url} is not on ${MAIN_ORIGIN}`)
     const path = new URL(url).pathname
-    const meta = metaFor(path, { posHost: origin === POS_ORIGIN })
+    const meta = metaFor(path)
     if (meta.noindex) fail(file, `${url} is noindex`)
     if (meta.canonical !== url) fail(file, `${url} declares ${meta.canonical} as canonical`)
   }
 }
 
 const robots = read('robots.txt')
-for (const line of ['Disallow: /admin', `Sitemap: ${MAIN_ORIGIN}/sitemap.xml`, `Sitemap: ${MAIN_ORIGIN}/sitemap-pos.xml`]) {
+for (const line of ['Disallow: /admin', `Sitemap: ${MAIN_ORIGIN}/sitemap.xml`]) {
   if (!robots.includes(line)) fail('robots.txt', `missing "${line}"`)
 }
 if (/^Disallow: \/\s*$/m.test(robots)) fail('robots.txt', 'blocks the whole site')
@@ -84,4 +84,4 @@ if (problems.length) {
   console.error(`Build check failed:\n  ${problems.join('\n  ')}`)
   process.exit(1)
 }
-console.log(`build check passed: ${prerenderRoutes.length + 2} pages, sitemaps, robots.txt, security.txt, headers`)
+console.log(`build check passed: ${prerenderRoutes.length + 1} pages, sitemap, robots.txt, security.txt, headers`)

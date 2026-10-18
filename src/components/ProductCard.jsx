@@ -3,9 +3,9 @@ import Logo from './Logo.jsx'
 
 /**
  * Product tile on the home and products pages. The whole card is one tap
- * target: the title link is stretched over it. A product with its own website
- * gets a second link that sits above that stretched area — links cannot be
- * nested, so this is the only way to have both.
+ * target: the title link is stretched over it. The free-trial link to the app
+ * sits above that stretched area — links cannot be nested, so this is the
+ * only way to have both.
  */
 export default function ProductCard({ product }) {
   return (
@@ -29,21 +29,24 @@ export default function ProductCard({ product }) {
         {product.summary}
       </p>
 
+      <p className="mt-4 text-sm">
+        <span className="text-2xl font-bold tracking-tight">{product.price.amount}</span>{' '}
+        <span className="text-night/60 dark:text-lavender/60">{product.price.per}</span>
+      </p>
+
       <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-purple dark:text-iris" aria-hidden="true">
         See how it works
         <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
       </span>
 
-      {product.site && (
-        <a
-          href={product.site.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative z-10 mt-3 inline-flex min-h-[44px] items-center gap-1.5 self-start text-sm font-semibold text-night/70 underline decoration-iris/50 underline-offset-4 hover:text-purple dark:text-lavender/75 dark:hover:text-iris"
-        >
-          Visit {product.site.label} ↗
-        </a>
-      )}
+      <a
+        href={product.signup}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative z-10 mt-3 inline-flex min-h-[44px] items-center gap-1.5 self-start text-sm font-semibold text-night/70 underline decoration-iris/50 underline-offset-4 hover:text-purple dark:text-lavender/75 dark:hover:text-iris"
+      >
+        Start a free trial ↗
+      </a>
     </article>
   )
 }

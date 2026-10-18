@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { POS_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
-import { getProduct, products } from '../src/data/products.js'
+import { metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
+import { APP_ORIGIN, platform, products } from '../src/data/products.js'
 
 describe('metaFor', () => {
   it('gives each page its own canonical address', () => {
@@ -18,20 +18,26 @@ describe('metaFor', () => {
     }
   })
 
-  it('links the POS product to the same subdomain the canonical uses', () => {
-    expect(`${getProduct('pos').site.url}/`).toBe(`${POS_ORIGIN}/`)
+  it('sends every product to its own sign-up form on core.mklabs.co.zw', () => {
+    expect(APP_ORIGIN).toBe('https://core.mklabs.co.zw')
+    expect(platform.name).toBe('MKLabs Core ERP')
+    expect(products.map((product) => product.signup)).toEqual([
+      'https://core.mklabs.co.zw/signup?product=Pos',
+      'https://core.mklabs.co.zw/signup?product=Accounting',
+      'https://core.mklabs.co.zw/signup?product=School',
+    ])
   })
 
-  it('points the /pos preview at the POS subdomain', () => {
-    expect(metaFor('/pos').canonical).toBe('https://pos.mklabs.co.zw/')
-    expect(metaFor('/', { posHost: true }).title).toBe(metaFor('/pos').title)
+  it('treats the old /pos pitch and the old products as gone, not as pages', () => {
+    for (const path of ['/pos', '/products/financeflow', '/products/learncloud', '/products/lodgecloud']) {
+      expect(metaFor(path).noindex, path).toBe(true)
+    }
   })
 
   it('marks unknown and private pages noindex, with no canonical', () => {
     for (const path of ['/nope', '/products/nope', '/admin']) {
       expect(metaFor(path)).toMatchObject({ noindex: true, canonical: '' })
     }
-    expect(metaFor('/about', { posHost: true }).noindex).toBe(true)
   })
 
   it('keeps every title and description within what search results show', () => {

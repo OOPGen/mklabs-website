@@ -1,7 +1,7 @@
 {
   "name": "MKLabs - Technology That Moves Your Business Forward",
   "short_name": "MKLabs",
-  "description": "MKLabs builds software, POS, school & hotel management, websites, cloud & security for Bulawayo businesses",
+  "description": "MKLabs builds MKLabs Core ERP (POS, accounting and school management), websites, cloud & security for Bulawayo businesses",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#05040F",

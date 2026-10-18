@@ -42,7 +42,7 @@ export const founder = {
   image: '/mklabs-enter-door-brand.webp',
   belief: 'Technology should make business easier, not more complicated.',
   bio: [
-    'I build practical technology that solves real problems — point of sale for retail, school management, lodge systems — designed to fit how organisations in Bulawayo actually work.',
+    'I build practical technology that solves real problems — point of sale for retail, accounting, school management — designed to fit how organisations in Bulawayo actually work.',
     'No fake promises and no jargon. Just honest work, delivered locally, built to a global standard.',
   ],
   why: 'Local understanding, global standards. You deal directly with the person who builds your system.',

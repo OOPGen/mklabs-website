@@ -43,14 +43,14 @@ export const portfolio = {
 
   projects: [
     {
-      name: 'MKLabs POS — Point-of-Sale & Inventory System',
-      url: 'https://pos.mklabs.co.zw',
-      urlLabel: 'pos.mklabs.co.zw',
+      name: 'MKLabs Core ERP — POS, Accounting & School Management Platform',
+      url: 'https://core.mklabs.co.zw',
+      urlLabel: 'core.mklabs.co.zw',
       image: '/client-pos-cashier.webp',
       stack: ['C#', 'ASP.NET Core', 'Entity Framework Core', 'React', 'TypeScript', 'PostgreSQL / MySQL', 'REST', 'Git/GitHub', 'Cloud hosting'],
       problem: 'Small and mid-sized trading businesses need accurate sales, stock and user control without costly enterprise software.',
       solution: 'A multi-user web application with REST APIs, a relational database and role-based access for owners, managers and cashiers.',
-      result: 'A live, cloud-hosted system covering sales processing, product and inventory management, and reporting — with stock and reconciliation logic drawn from years of hands-on retail stock control.',
+      result: 'A live, cloud-hosted platform that grew from the POS into three systems on one double-entry ledger — point of sale with ZIMRA fiscal receipts, accounting with VAT returns and bank reconciliation, and school management with fees, registers and report cards — with stock and reconciliation logic drawn from years of hands-on retail stock control.',
     },
     {
       name: 'MKLabs Company Website',
@@ -58,7 +58,7 @@ export const portfolio = {
       urlLabel: 'mklabs.co.zw',
       image: '/og-image.jpg',
       stack: ['React', 'TypeScript', 'HTML5', 'CSS3', 'Custom domain & subdomains', 'SSL'],
-      problem: "MKLabs needed a fast, secure home for its POS, accounting, school and lodge management solutions and IT services.",
+      problem: 'MKLabs needed a fast, secure home for MKLabs Core ERP — its POS, accounting and school systems — and its IT services.',
       solution: 'A responsive production website, designed, built, deployed and maintained end to end — including domain, subdomain and SSL configuration.',
       result: 'This site: prerendered for search engines, secured with strict security headers, and quick on a phone connection.',
     },

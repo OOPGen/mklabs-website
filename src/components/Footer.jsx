@@ -26,7 +26,7 @@ export default function Footer() {
               <span className="text-xl font-bold tracking-tight">MKLabs</span>
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/55">
-              Software development and technology solutions for businesses, schools and lodges in {site.city}, {site.country}.
+              Software development and technology solutions for businesses and schools in {site.city}, {site.country}.
             </p>
             <p className="mt-4 text-sm font-semibold">
               <span className="logo-gradient-text">{site.tagline}</span>

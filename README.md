@@ -3,7 +3,9 @@
 **Bulawayo, Zimbabwe • [mklabs.co.zw](https://mklabs.co.zw)**
 
 Marketing site for MKLabs — software development and technology solutions for
-businesses, schools and lodges in Zimbabwe.
+businesses and schools in Zimbabwe — and the shop window for **MKLabs Core ERP**
+(MKLabs POS, MKLabs Accounting and MKLabs School), which runs at
+[core.mklabs.co.zw](https://core.mklabs.co.zw).
 
 ![React](https://img.shields.io/badge/React-19-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
@@ -14,7 +16,8 @@ businesses, schools and lodges in Zimbabwe.
 
 - **Prerendered React:** every page ships as full HTML and is hydrated in the browser, so
   search engines index it without JavaScript. Mobile Lighthouse performance 95–98.
-- **Two sites, one deployment:** `pos.mklabs.co.zw` is served from the same build, picked by hostname.
+- **One source for the products:** `src/data/products.js` holds every product's features, prices
+  and sign-up link, and drives the cards, product pages, menus, structured data and sitemap.
 - **Serverless back end:** Cloudflare Pages Functions for the enquiry mailer (Turnstile spam
   check), a promotions API on KV, and an admin dashboard behind Cloudflare Access.
 - **Security:** strict Content-Security-Policy with no inline scripts, HSTS, and security
@@ -139,7 +142,6 @@ git push
 ├── scripts/check-build.js   Checks the built pages the way a search engine reads them
 ├── scripts/kv-backup.js     Export / restore the promotions KV namespace
 ├── functions/
-│   ├── index.js             Serves the POS page at / on pos.mklabs.co.zw
 │   ├── api/contact.js       The enquiry mailer
 │   ├── api/promotions.js    Live offers for the public site
 │   ├── api/admin/…          Promotions dashboard API (Cloudflare Access)
@@ -189,9 +191,7 @@ before the app has downloaded; the browser then *hydrates* that HTML
 
 - **`404.html`** — its presence tells Cloudflare Pages to return a real 404
   status for unknown URLs instead of a "200 OK" copy of the home page
-- **`sitemap.xml`** and **`sitemap-pos.xml`** — rebuilt on every deploy
-
-- **`pos-host.html`** — the POS pitch as pos.mklabs.co.zw shows it
+- **`sitemap.xml`** — rebuilt on every deploy
 
 A new route needs an entry in `seo.js`; without one it still works for
 visitors but answers with a 404 status.
@@ -202,9 +202,9 @@ that must differ between the build and the browser (the theme, the year)
 hydration-safe. `node scripts/check-build.js` (run by CI) fails the build if a
 page loses its title, canonical, h1, content or structured data.
 
-`/pos` is a preview of pos.mklabs.co.zw, so its canonical points at the
-subdomain. `functions/index.js` makes the subdomain's root return the POS page's
-HTML (the rest of the site is plain static files).
+Pages that moved answer with a permanent redirect from **`public/_redirects`**:
+`/pos` and the old FinanceFlow, LearnCloud and LodgeCloud pages
+(`tests/redirects.test.js` keeps it in step with `src/data/products.js`).
 
 Verifying the site with Google and Bing, submitting the sitemaps, analytics
 and the Google Business Profile are account steps only you can do — they are
@@ -240,14 +240,14 @@ the site A.
 | Route | What it does |
 |---|---|
 | `/` | Hero, live offers, product grid, cross-device showcase, clients, services, CTA |
-| `/products` | All four products with detail rows |
-| `/products/:slug` | Full page per product — dashboard preview, features, audience |
-| `/pos` | Preview of the POS landing site (its real home is pos.mklabs.co.zw) |
+| `/products` | MKLabs Core ERP: the three systems with detail rows and prices |
+| `/products/:slug` | Full page per system (`pos`, `accounting`, `school`) — dashboard preview, features, audience, price |
 | `/about` | Company, founder story, services |
 | `/contact` | Enquiry form, contact details, map |
 | `/admin` | Promotions dashboard — guarded by Cloudflare Access |
 
-On **pos.mklabs.co.zw** the same app serves the POS landing page at `/` instead.
+Every "Start a free trial" button opens the app's sign-up form for that system
+(`https://core.mklabs.co.zw/signup?product=…`).
 
 ---
 
@@ -323,7 +323,7 @@ form and the Function, so they always agree.
   their enquiry is dropped while looking successful to them.
 - **Cloudflare Turnstile** *(optional, recommended)* — Cloudflare's free,
   mostly invisible "are you human" check. Turn it on in Cloudflare →
-  **Turnstile → Add site** (`mklabs.co.zw`, `pos.mklabs.co.zw`), then add both
+  **Turnstile → Add site** (`mklabs.co.zw`), then add both
   keys below and redeploy. Until then the form works without it.
 - **Rate limit** *(recommended)* — Cloudflare → your domain → **Security →
   WAF → Rate limiting rules**: path equals `/api/contact`, e.g. 5 requests per
@@ -427,50 +427,6 @@ lets you in.
 Links entered in the dashboard are restricted to `http(s)`, `mailto:`, `tel:`
 and site-relative paths. `javascript:` and `data:` URLs are rejected, because
 that field ends up in an `href`.
-
----
-
-## The POS landing site
-
-**pos.mklabs.co.zw** serves a standalone sales page for MKLabs POS. Same
-deployment and same codebase; `src/App.jsx` checks the hostname and serves the
-POS site when it starts with `pos.`.
-
-Preview it without the subdomain at **/pos** on the main site.
-
-### How the page is built
-
-A full-height hero opens it: the headline, a letter-spaced `SALES · STOCK ·
-PROFIT` line, one paragraph, a solid and an outlined button with a rotated
-sticker across them, and a closing band of three tiles — dark, brand purple and
-light in turn. `SocialRail` runs down the left gutter from `xl` up. Below the
-fold: live offers, the three objections, the feature grid, the dashboard
-preview, who it is for, and the enquiry form.
-
-The backdrop is the same `AmbientOffice` used elsewhere on the site — blurred
-client photography under a night scrim — and the palette is the MKLabs one, so
-the page belongs to the same family as the rest of mklabs.co.zw.
-
-`PosNav` is bare over the hero and collects itself into a glass pill once the
-page scrolls onto the pale sections. Its centre link group is absolutely
-centred, so the brand and the button can be any width without moving it. Below
-`sm` the CTA drops out of the bar and lives in the sheet instead — there is not
-room for both it and the menu button on a 360px phone.
-
-Two things to know before editing it:
-
-- **A phone in landscape has ~390px of height**, which the full-size hero
-  cannot fit. `.hero-compact` in `src/index.css` shrinks the headline, the
-  gaps and the sticker under `max-height: 560px` until the button is back
-  above the fold. Those rules are deliberately outside `@layer`, because
-  unlayered CSS beats Tailwind's utilities.
-- **`Button` sets its own `display`.** Tailwind emits `.inline-flex` after
-  `.hidden`, so hiding a `Button` needs `!hidden` / `sm:!inline-flex`; a plain
-  `hidden` silently loses.
-
-To connect the subdomain: Pages project → **Custom domains → Set up a domain →
-`pos.mklabs.co.zw`**. Your nameservers are already Cloudflare, so the DNS
-record is created for you.
 
 ---
 

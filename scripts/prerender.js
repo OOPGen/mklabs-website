@@ -26,7 +26,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { MAIN_ORIGIN, POS_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
+import { MAIN_ORIGIN, metaFor, prerenderRoutes, sitemapRoutes } from '../src/data/seo.js'
 import { structuredDataFor } from '../src/data/schema.js'
 import { pageSecurityHeadersFor } from '../functions/_lib/security-headers.js'
 
@@ -69,21 +69,21 @@ const jsonLd = (data) =>
 
 /**
  * A complete page: the route's metadata in <head>, and the app as React
- * renders it inside #root. `host` and `path` are recorded on #root so the
- * browser only hydrates markup built for the page it is actually showing.
+ * renders it inside #root. `path` is recorded on #root so the browser only
+ * hydrates markup built for the page it is actually showing.
  */
-async function page({ path, posHost = false, recordPath = path, ssr = true }) {
-  let html = render(metaFor(path, { posHost }))
+async function page({ path, recordPath = path, ssr = true }) {
+  let html = render(metaFor(path))
   // replacer functions throughout, so a "$" in the content is never read as a pattern
-  html = html.replace('</head>', () => jsonLd(structuredDataFor(path, { posHost })))
+  html = html.replace('</head>', () => jsonLd(structuredDataFor(path)))
   if (!ssr) return html
 
-  const body = await renderApp(path, { posHost })
+  const body = await renderApp(path)
   const rootTag = '<div id="root"></div>'
   if (!html.includes(rootTag)) throw new Error('index.html is missing an empty <div id="root">')
   return html.replace(
     rootTag,
-    () => `<div id="root" data-host="${posHost ? 'pos' : 'main'}" data-path="${recordPath}">${body}</div>`
+    () => `<div id="root" data-path="${recordPath}">${body}</div>`
   )
 }
 
@@ -134,7 +134,7 @@ const chunkFor = (name) => {
   if (!file) throw new Error(`Could not find the ${name} chunk in dist/assets`)
   return `  <link rel="modulepreload" crossorigin href="/assets/${file}" />\n</head>`
 }
-const splitChunks = { '/pos': chunkFor('PosLanding'), '/admin': chunkFor('Admin') }
+const splitChunks = { '/admin': chunkFor('Admin') }
 
 /* the home page opens on a full-screen picture: ask for it with the HTML,
    not after the app has loaded and rendered the hero */
@@ -151,15 +151,6 @@ for (const route of prerenderRoutes) {
   write(route === '/' ? 'index.html' : `${route.slice(1)}.html`, html)
 }
 
-/* pos.mklabs.co.zw/ — the same pitch as /pos, but inside the POS site's own
-   header and footer. functions/index.js serves it at the POS host's root. */
-write(
-  'pos-host.html',
-  (await page({ path: '/', posHost: true }))
-    .replace('</head>', splitChunks['/pos'])
-    .replace('</head>', `${verification}</head>`)
-)
-
 // any path at all can land on the 404 page, so it hydrates wherever it is shown
 write('404.html', await page({ path: '/__not-found__', recordPath: '*' }))
 
@@ -170,7 +161,6 @@ const sitemap = (urls) =>
   '\n</urlset>\n'
 
 write('sitemap.xml', sitemap(sitemapRoutes.map((route) => `${MAIN_ORIGIN}${route}`)))
-write('sitemap-pos.xml', sitemap([`${POS_ORIGIN}/`]))
 
 const headersPath = join(dist, '_headers')
 const marker = '# @security-headers'
@@ -183,4 +173,4 @@ const securityBlock =
     .join('\n')
 writeFileSync(headersPath, headersFile.replace(marker, securityBlock))
 
-console.log(`prerendered ${prerenderRoutes.length} routes, pos-host.html, 404.html and sitemaps`)
+console.log(`prerendered ${prerenderRoutes.length} routes, 404.html and the sitemap`)

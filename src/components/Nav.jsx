@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { products } from '../data/products.js'
+import { platform, products } from '../data/products.js'
 import { contact, waLink } from '../data/site.js'
 import BrandGlow from './BrandGlow.jsx'
 import Button from './Button.jsx'
@@ -143,20 +143,15 @@ export default function Nav() {
                     </Link>
                   ))}
                   <div className="mt-1 border-t border-white/10 pt-1">
-                    {products
-                      .filter((product) => product.site)
-                      .map((product) => (
-                        <a
-                          key={`${product.slug}-site`}
-                          href={product.site.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/8"
-                        >
-                          Visit {product.site.label}
-                          <Icon name="external" className="h-4 w-4" />
-                        </a>
-                      ))}
+                    <a
+                      href={platform.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/8"
+                    >
+                      Sign in to {platform.name}
+                      <Icon name="external" className="h-4 w-4" />
+                    </a>
                     <Link
                       to="/products"
                       className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-white/8"
@@ -260,21 +255,16 @@ export default function Nav() {
                 </span>
               </Link>
             ))}
-            {products
-              .filter((product) => product.site)
-              .map((product) => (
-                <a
-                  key={`${product.slug}-site`}
-                  href={product.site.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMenuOpen(false)}
-                  className="logo-border flex min-h-[52px] items-center justify-between rounded-2xl px-4 text-[15px] font-semibold [--fill:rgba(5,4,15,0.6)]"
-                >
-                  Visit {product.site.label}
-                  <Icon name="external" className="h-4 w-4" />
-                </a>
-              ))}
+            <a
+              href={platform.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="logo-border flex min-h-[52px] items-center justify-between rounded-2xl px-4 text-[15px] font-semibold [--fill:rgba(5,4,15,0.6)]"
+            >
+              Sign in to {platform.name}
+              <Icon name="external" className="h-4 w-4" />
+            </a>
           </div>
         </div>
 

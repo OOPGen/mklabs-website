@@ -10,14 +10,14 @@ import { StaticRouter } from 'react-router-dom'
 
 import App from './App.jsx'
 
-export async function render(url, { posHost = false } = {}) {
+export async function render(url) {
   const { prelude } = await prerenderToNodeStream(
     <StrictMode>
       <StaticRouter location={url}>
-        <App posHost={posHost} />
+        <App />
       </StaticRouter>
     </StrictMode>,
-    // write every Suspense boundary (the lazy POS page) in place: an
+    // write every Suspense boundary (the lazy dashboard) in place: an
     // out-of-order boundary needs an inline script to swap it in, which the
     // Content-Security-Policy rightly refuses to run
     { progressiveChunkSize: Infinity }
