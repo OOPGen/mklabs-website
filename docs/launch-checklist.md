@@ -50,7 +50,7 @@ take effect on the next deploy (push to `main`, or Deployments → Retry).
      Computer support and services, Computer security service
    - **Location:** a service-area business in Bulawayo, Zimbabwe (hide the
      street address unless clients visit you)
-   - **Phone:** 0718 621 427 (+263 718 621 427) as the main number, 0786 233 766 as the second (WhatsApp) · **Website:** `https://mklabs.co.zw/`
+   - **Phone:** 0718 621 427 (+263 718 621 427) as the main number, 0786 233 766 as the second (both take calls and WhatsApp) · **Website:** `https://mklabs.co.zw/`
    - **Hours:** Open 24 hours, every day
    - **Description:** start with "MKLabs is a Bulawayo software development
      company…" and name MKLabs Core ERP and its three systems

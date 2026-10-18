@@ -34,10 +34,22 @@ export default function Contact() {
                   Phone · WhatsApp
                 </div>
                 <div className="mt-2 grid gap-1">
+                  {/* both numbers take calls and WhatsApp */}
                   {contact.phones.map((phone) => (
-                    <a key={phone.tel} href={`tel:${phone.tel}`} className="inline-flex min-h-[44px] items-center text-lg font-bold hover:underline">
-                      {phone.label}
-                    </a>
+                    <div key={phone.tel} className="flex flex-wrap items-center gap-x-4">
+                      <a href={`tel:${phone.tel}`} className="inline-flex min-h-[44px] items-center text-lg font-bold hover:underline">
+                        {phone.label}
+                      </a>
+                      <a
+                        href={waLink('Hello MKLabs!', phone.wa)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`WhatsApp ${phone.label}`}
+                        className="inline-flex min-h-[44px] items-center text-sm font-semibold text-purple underline decoration-iris/50 underline-offset-4 dark:text-iris"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
                   ))}
                 </div>
                 <a

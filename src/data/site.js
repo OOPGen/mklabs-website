@@ -10,7 +10,8 @@ export const site = {
 }
 
 export const contact = {
-  // the main business number first - the same one as the Google Business Profile
+  // the main business number first - the same one as the Google Business Profile.
+  // Both numbers take calls and WhatsApp.
   phones: [
     { label: '0718 621 427', tel: '+263718621427', wa: '263718621427' },
     { label: '0786 233 766', tel: '+263786233766', wa: '263786233766' },
@@ -19,7 +20,8 @@ export const contact = {
     { label: 'info@mklabs.co.zw', address: 'info@mklabs.co.zw', note: 'General enquiries, partnerships' },
     { label: 'support@mklabs.co.zw', address: 'support@mklabs.co.zw', note: 'Technical support for existing clients' },
   ],
-  whatsapp: '263786233766',
+  // the WhatsApp buttons open the main number
+  whatsapp: '263718621427',
   mapEmbed:
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19096.12823605702!2d28.56006179553784!3d-20.15!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1eb558d8ecc8c015%3A0x9d4cf33e71536410!2sBulawayo%2C%20Zimbabwe!5e0!3m2!1sen!2szw!4v1700000000000!5m2!1sen!2szw',
 }
