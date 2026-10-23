@@ -54,7 +54,7 @@ jobs:
             -in promos.json -out "promos-$(date -u +%Y-%m-%d).json.enc" -pass env:BACKUP_PASSPHRASE
           rm promos.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.config.outputs.ready == 'true'
         with:
           name: promotions-backup-${{ github.run_id }}
