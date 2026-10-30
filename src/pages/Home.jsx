@@ -14,6 +14,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import Promotions from '../components/Promotions.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { Container } from '../components/Section.jsx'
+import Magnetic from '../components/Magnetic.jsx'
 
 const pos = getProduct('pos')
 
@@ -144,12 +145,16 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={260} className="mt-9 flex flex-wrap gap-3 short:mt-5">
-              <Button to="/products" variant="brand">
-                Explore our products <Icon name="arrow" className="h-4 w-4" />
-              </Button>
-              <Button to="/contact" variant="glass">
-                Talk to MKLabs
-              </Button>
+              <Magnetic>
+                <Button to="/products" variant="brand">
+                  Explore our products <Icon name="arrow" className="h-4 w-4" />
+                </Button>
+              </Magnetic>
+              <Magnetic>
+                <Button to="/contact" variant="glass">
+                  Talk to MKLabs
+                </Button>
+              </Magnetic>
             </Reveal>
           </div>
 
@@ -296,12 +301,16 @@ export default function Home() {
                 <p className="mt-5 text-xl font-semibold text-white/90">{platform.tagline}</p>
                 <p className="mt-3 max-w-md text-sm leading-relaxed text-white/60 sm:text-base">{platform.summary}</p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Button href={platform.signup} variant="brand">
-                    Start a free trial <Icon name="external" className="h-4 w-4" />
-                  </Button>
-                  <Button href={platform.url} variant="glass">
-                    {platform.label} <Icon name="external" className="h-4 w-4" />
-                  </Button>
+                  <Magnetic>
+                    <Button href={platform.signup} variant="brand">
+                      Start a free trial <Icon name="external" className="h-4 w-4" />
+                    </Button>
+                  </Magnetic>
+                  <Magnetic>
+                    <Button href={platform.url} variant="glass">
+                      {platform.label} <Icon name="external" className="h-4 w-4" />
+                    </Button>
+                  </Magnetic>
                 </div>
               </div>
 

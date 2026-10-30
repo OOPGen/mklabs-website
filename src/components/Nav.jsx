@@ -8,6 +8,7 @@ import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
 import SocialLinks from './SocialLinks.jsx'
 import useTheme from './useTheme.js'
+import Magnetic from './Magnetic.jsx'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -183,13 +184,16 @@ export default function Nav() {
               <Icon name={dark ? 'sun' : 'moon'} className="h-5 w-5" />
             </button>
 
-            <Link
-              to="/contact"
-              className="logo-border hidden min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold text-white transition-shadow hover:shadow-lg hover:shadow-violet/30 sm:inline-flex [--fill:rgba(5,4,15,0.55)]"
-            >
-              Get started
-              <Icon name="arrow" className="h-4 w-4" />
-            </Link>
+            {/* max-sm:hidden! — the wrapper's own inline display would otherwise leave an empty gap on a phone */}
+            <Magnetic className="max-sm:hidden!">
+              <Link
+                to="/contact"
+                className="logo-border hidden min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold text-white transition-shadow hover:shadow-lg hover:shadow-violet/30 sm:inline-flex [--fill:rgba(5,4,15,0.55)]"
+              >
+                Get started
+                <Icon name="arrow" className="h-4 w-4" />
+              </Link>
+            </Magnetic>
 
             <button
               type="button"

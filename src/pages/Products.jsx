@@ -7,6 +7,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
 import { photoSrcSet } from '../components/responsive.js'
+import Magnetic from '../components/Magnetic.jsx'
 
 export default function Products() {
   return (
@@ -23,12 +24,16 @@ export default function Products() {
             lead="POS for shops, Accounting for businesses without a till, and School for schools. They share one sign-in, one set of books and one support line — and every one starts with a free trial."
           />
           <Reveal delay={200} className="mt-8 flex flex-wrap gap-3">
-            <Button href={platform.signup} variant="brand">
-              Start a free trial ↗
-            </Button>
-            <Button href={platform.url} variant="glass">
-              Sign in at {platform.label} ↗
-            </Button>
+            <Magnetic>
+              <Button href={platform.signup} variant="brand">
+                Start a free trial ↗
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href={platform.url} variant="glass">
+                Sign in at {platform.label} ↗
+              </Button>
+            </Magnetic>
           </Reveal>
         </Container>
       </header>

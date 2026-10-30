@@ -11,6 +11,7 @@ import Orbs from '../components/Orbs.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
 import { photoSrcSet } from '../components/responsive.js'
+import Magnetic from '../components/Magnetic.jsx'
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -59,12 +60,16 @@ export default function ProductDetail() {
               </Reveal>
 
               <Reveal delay={240} className="mt-8 flex flex-wrap gap-3">
-                <Button href={product.signup} variant="brand">
-                  Start a free trial ↗
-                </Button>
-                <Button href={demoLink} variant="whatsapp">
-                  💬 Book a free demo
-                </Button>
+                <Magnetic>
+                  <Button href={product.signup} variant="brand">
+                    Start a free trial ↗
+                  </Button>
+                </Magnetic>
+                <Magnetic>
+                  <Button href={demoLink} variant="whatsapp">
+                    💬 Book a free demo
+                  </Button>
+                </Magnetic>
               </Reveal>
 
               <Reveal as="p" delay={300} className="mt-5 text-sm text-lavender/60">
@@ -211,15 +216,21 @@ export default function ProductDetail() {
             Send us a message and we will walk you through it — no charge, no pressure.
           </Reveal>
           <Reveal delay={180} className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button href={demoLink} variant="whatsapp">
-              💬 Book a free demo
-            </Button>
-            <Button href={product.signup} variant="white">
-              Start a free trial ↗
-            </Button>
-            <Button to="/contact" variant="glass">
-              Send an enquiry
-            </Button>
+            <Magnetic>
+              <Button href={demoLink} variant="whatsapp">
+                💬 Book a free demo
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href={product.signup} variant="white">
+                Start a free trial ↗
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button to="/contact" variant="glass">
+                Send an enquiry
+              </Button>
+            </Magnetic>
           </Reveal>
         </Container>
       </Section>
