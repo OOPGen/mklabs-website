@@ -19,7 +19,7 @@
 
 const BUTTON = 'button, .btn, [role="button"], a.inline-flex.rounded-full'
 const CLASS = 'mk-ripple'
-const DURATION = 550
+const DURATION = 750
 
 const active = new WeakMap()
 
