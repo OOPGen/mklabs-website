@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import { initAnalytics } from './analytics.js'
+import { installRipple } from './ripple.js'
 // self-hosted, so no third-party font request and it caches with the build
 import '@fontsource-variable/instrument-sans'
 import './index.css'
@@ -31,3 +32,5 @@ if (matches) ReactDOM.hydrateRoot(root, app)
 else ReactDOM.createRoot(root).render(app)
 
 initAnalytics()
+// a Material-style ripple on every button (see ripple.js)
+installRipple()
