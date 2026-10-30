@@ -7,6 +7,7 @@ import AmbientOffice from '../components/AmbientOffice.jsx'
 import Orbs from '../components/Orbs.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Section, { Container, SectionHead } from '../components/Section.jsx'
+import Magnetic from '../components/Magnetic.jsx'
 
 export default function About() {
   return (
@@ -139,12 +140,16 @@ export default function About() {
             {site.hours} · {site.city}, {site.country}
           </Reveal>
           <Reveal delay={180} className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button to="/contact" variant="white">
-              Send an enquiry
-            </Button>
-            <Button href={waLink('Hello MKLabs!')} variant="whatsapp">
-              💬 {contact.phones[0].label}
-            </Button>
+            <Magnetic>
+              <Button to="/contact" variant="white">
+                Send an enquiry
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href={waLink('Hello MKLabs!')} variant="whatsapp">
+                💬 {contact.phones[0].label}
+              </Button>
+            </Magnetic>
           </Reveal>
         </Container>
       </Section>
