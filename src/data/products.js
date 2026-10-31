@@ -41,7 +41,7 @@ export const products = [
     category: 'Point of sale & stock',
     icon: '🛒',
     logo: '/logo-pos.webp',
-    accent: '#4B0082',
+    accent: '#6A3BEF', // brand purple - the logo's violet
     tagline: 'The till, the stockroom and the books. Even offline.',
     // search: the phrase people type, and this page's title and description
     seo: {
@@ -97,7 +97,7 @@ export const products = [
     category: 'Accounting & finance',
     icon: '📒',
     logo: '/logo-accounting.webp',
-    accent: '#191970',
+    accent: '#0F1A4A', // brand midnight
     tagline: 'Invoices, bills, the bank and VAT. Done properly.',
     // search: the phrase people type, and this page's title and description
     seo: {
@@ -150,7 +150,7 @@ export const products = [
     category: 'School management',
     icon: '🎓',
     logo: '/logo-school.webp',
-    accent: '#6495ED',
+    accent: '#12A1FF', // brand corn - the logo's cyan
     tagline: 'Fees, registers and report cards. Parents in the loop.',
     // search: the phrase people type, and this page's title and description
     seo: {
